@@ -23,14 +23,20 @@ namespace R5T.Magyar.Extensions
 
         public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable)
         {
+            var output = enumerable.ExceptLast(1);
+            return output;
+        }
+
+        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable, int nElements)
+        {
             var count = enumerable.Count();
 
             var enumerator = enumerable.GetEnumerator();
-            for (int iElement = 1; iElement < count; iElement++) // For each except the last.
+            for (int iElement = nElements; iElement < count; iElement++) // For each except the last N.
             {
-                yield return enumerator.Current;
-
                 enumerator.MoveNext();
+
+                yield return enumerator.Current;
             }
         }
     }
