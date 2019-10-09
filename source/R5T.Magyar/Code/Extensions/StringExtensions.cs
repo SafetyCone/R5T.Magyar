@@ -5,9 +5,21 @@ namespace R5T.Magyar.Extensions
 {
     public static class StringExtensions
     {
+        public static string Prefix(this string @string, char prefix)
+        {
+            var prefixedString = $"{prefix}{@string}";
+            return prefixedString;
+        }
+
         public static string Prefix(this string @string, string prefix)
         {
             var prefixedString = $"{prefix}{@string}";
+            return prefixedString;
+        }
+
+        public static string Suffix(this string @string, char suffix)
+        {
+            var prefixedString = $"{@string}{suffix}";
             return prefixedString;
         }
 
