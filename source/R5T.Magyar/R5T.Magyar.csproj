@@ -5,4 +5,7 @@
     <NoWarn>1701;1702;1591;1573</NoWarn>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\R5T.Cherusci\source\R5T.Cherusci\R5T.Cherusci.csproj" />
+  </ItemGroup>
 </Project>
