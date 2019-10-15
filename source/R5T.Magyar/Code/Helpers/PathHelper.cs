@@ -2,8 +2,6 @@
 using System.IO;
 using System.Reflection;
 
-using R5T.Cherusci;
-
 
 namespace R5T.Magyar
 {
@@ -103,17 +101,11 @@ namespace R5T.Magyar
             return randomFileNameWithoutExtension;
         }
 
-        public static string GetRandomFileName(string fileExtension)
+        public static string GetRandomFileName(string fileExtension = "tmp")
         {
             var randomFileNameWithoutExtension = PathHelper.GetRandomFileNameWithoutExtension();
 
             var randomFileName = $"{randomFileNameWithoutExtension}{PathHelper.FileExtensionSeparator}{fileExtension}";
-            return randomFileName;
-        }
-
-        public static string GetRandomFileName()
-        {
-            var randomFileName = PathHelper.GetRandomFileName(FileExtensions.Temporary);
             return randomFileName;
         }
     }
