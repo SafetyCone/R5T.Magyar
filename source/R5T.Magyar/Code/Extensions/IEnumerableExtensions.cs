@@ -7,6 +7,11 @@ namespace R5T.Magyar.Extensions
 {
     public static class IEnumerableExtensions
     {
+        /// <summary>
+        /// Get the Nth-to-last element.
+        /// N starts at 1st-to-last is the last.
+        /// Problematic evaluation of the enumerable (ToArray).
+        /// </summary>
         public static T NthToLast<T>(this IEnumerable<T> enumerable, int nth)
         {
             var array = enumerable.ToArray();
