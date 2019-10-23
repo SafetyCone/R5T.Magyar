@@ -2,3 +2,4 @@ R5T.Magyar - An extensions and helpers library for types in .NET Standard.
 
 Goals
 
+* NO dependencies! R5T.Magyar is meant to be a "language extensions" library suitable to be included in any project. While there is no real (non-aesthetic reason) to prevent R5T.Magyar from having dependencies, it is still nice to only see zero distracting dependencies. Thus if we are going to allow every library to depend at least on R5T.Magyar, then at least keep R5T.Magyar's dependencies to zero. 
