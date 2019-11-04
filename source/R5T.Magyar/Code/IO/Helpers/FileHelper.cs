@@ -2,7 +2,7 @@
 using System.IO;
 
 
-namespace R5T.Magyar
+namespace R5T.Magyar.IO
 {
     public static class FileHelper
     {
@@ -14,6 +14,12 @@ namespace R5T.Magyar
         public static void DeleteOnlyIfExists(string filePath)
         {
             File.Delete(filePath); // Idempotent, so ok.
+        }
+
+        public static bool Exists(string filePath)
+        {
+            var output = File.Exists(filePath);
+            return output;
         }
     }
 }
