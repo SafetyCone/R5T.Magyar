@@ -64,5 +64,16 @@ namespace R5T.Magyar.Extensions
             var output = @string.ExceptLast(1);
             return output;
         }
+
+        /// <summary>
+        /// Removes a number of characters equal to the length of the suffix from the input <paramref name="string"/>.
+        /// </summary>
+        public static string ExceptLast(this string @string, string suffix)
+        {
+            var suffixLength = suffix.Length;
+
+            var output = @string.ExceptLast(suffixLength);
+            return output;
+        }
     }
 }
