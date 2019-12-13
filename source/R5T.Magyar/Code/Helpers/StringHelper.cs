@@ -6,6 +6,7 @@ namespace R5T.Magyar
     public static class StringHelper
     {
         public const string Empty = "";
+        public const string Space = " ";
         public const string Invalid = null;
 
         /// <summary>
