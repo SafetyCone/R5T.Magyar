@@ -70,5 +70,19 @@ namespace R5T.Magyar.IO
                 DirectoryHelper.DisableReadOnly(subdirectory);
             }
         }
+
+        /// <summary>
+        /// Determine if a path is a directory.
+        /// </summary>
+        /// <remarks>
+        /// StackOverflow: https://stackoverflow.com/questions/1395205/better-way-to-check-if-a-path-is-a-file-or-a-directory
+        /// </remarks>
+        public static bool IsDirectory(string path)
+        {
+            var fileSystemEntryAttributes = File.GetAttributes(path); // Directories are actually files, with a special attribute.
+
+            var isDirectory = (fileSystemEntryAttributes & FileAttributes.Directory) == FileAttributes.Directory;
+            return isDirectory;
+        }
     }
 }
