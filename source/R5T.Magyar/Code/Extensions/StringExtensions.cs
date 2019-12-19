@@ -75,5 +75,31 @@ namespace R5T.Magyar.Extensions
             var output = @string.ExceptLast(suffixLength);
             return output;
         }
+
+        /// <summary>
+        /// Gets the last number of characters in a string.
+        /// </summary>
+        public static string Last(this string @string, int numberOfCharacters)
+        {
+            var last = @string.Substring(@string.Length - numberOfCharacters);
+            return last;
+        }
+
+        /// <summary>
+        /// Gets the last character in a string as a string.
+        /// </summary>
+        public static string LastString(this string @string)
+        {
+            var last = @string.Last(1);
+            return last;
+        }
+
+        public static char LastChar(this string @string)
+        {
+            var last = @string.LastString();
+
+            var lastChar = last[0];
+            return lastChar;
+        }
     }
 }
