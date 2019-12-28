@@ -7,7 +7,7 @@ namespace R5T.Magyar.Net
 {
     public static class HttpClientHelper
     {
-        public static async Task<string> GetString(string url)
+        public static async Task<string> GetStringAsync(string url)
         {
             using(var client = new HttpClient())
             {
