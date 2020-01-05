@@ -7,6 +7,14 @@ namespace R5T.Magyar.Extensions
 {
     public static class IEnumerableExtensions
     {
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var item in enumerable)
+            {
+                action(item);
+            }
+        }
+
         /// <summary>
         /// Get the Nth-to-last element.
         /// N starts at 1st-to-last is the last.
