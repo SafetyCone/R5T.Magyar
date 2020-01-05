@@ -6,7 +6,7 @@ namespace R5T.Magyar.Extensions
 {
     public static class DictionaryExtensions
     {
-        public static Dictionary<TKey, TValue> Copy<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
+        public static Dictionary<TKey, TValue> ShallowClone<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)
         {
             var output = new Dictionary<TKey, TValue>();
 
