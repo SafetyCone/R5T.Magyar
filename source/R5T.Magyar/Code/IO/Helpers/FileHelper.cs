@@ -1,11 +1,24 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 
 namespace R5T.Magyar.IO
 {
     public static class FileHelper
     {
+        public static Task DeleteAsync(string filePath)
+        {
+            var delete = Task.Run(() => File.Delete(filePath));
+            return delete;
+        }
+
+        public static Task DeleteOnlyIfExistsAsync(string filePath)
+        {
+            var delete = Task.Run(() => FileHelper.DeleteOnlyIfExistsAsync(filePath));
+            return delete;
+        }
+
         /// <summary>
         /// Deletes a file if it exists.
         /// Note: the <see cref="System.IO.File.Delete(string)"/> implementation is idempotent, meaning it will not throw an exception if the file does not exist.
