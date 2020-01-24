@@ -6,15 +6,21 @@ namespace R5T.Magyar.IO
 {
     public static class TextReaderHelper
     {
-        public const string EndOfString = null;
+        public const string EndOfTextLine = null;
 
+
+        public static bool IsEndOfTextLine(string line)
+        {
+            var output = line == TextReaderHelper.EndOfTextLine;
+            return output;
+        }
 
         public static bool ReadLine(this TextReader textReader, out string line)
         {
             line = textReader.ReadLine();
 
-            var isEnd = line == TextReaderHelper.EndOfString;
-            return isEnd;
+            var hasLine = !TextReaderHelper.IsEndOfTextLine(line);
+            return hasLine;
         }
     }
 }
