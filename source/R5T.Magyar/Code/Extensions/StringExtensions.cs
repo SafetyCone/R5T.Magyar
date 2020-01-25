@@ -101,5 +101,14 @@ namespace R5T.Magyar.Extensions
             var lastChar = last[0];
             return lastChar;
         }
+
+        /// <summary>
+        /// An ease-of-use overload that allows using a single string as the separator (instead of a full string array).
+        /// </summary>
+        public static string[] Split(this string @string, string separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
+        {
+            var output = @string.Split(new string[] { separator }, stringSplitOptions);
+            return output;
+        }
     }
 }
