@@ -7,6 +7,14 @@ namespace R5T.Magyar.Extensions
 {
     public static class IEnumerableExtensions
     {
+        public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            var count = enumerable.Count();
+
+            var isEmpty = count < 1;
+            return isEmpty;
+        }
+
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             foreach (var item in enumerable)
