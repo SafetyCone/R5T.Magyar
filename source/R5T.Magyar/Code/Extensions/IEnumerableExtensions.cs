@@ -7,6 +7,16 @@ namespace R5T.Magyar.Extensions
 {
     public static class IEnumerableExtensions
     {
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, T value)
+        {
+            foreach (var item in enumerable)
+            {
+                yield return item;
+            }
+
+            yield return value;
+        }
+
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
         {
             var count = enumerable.Count();
