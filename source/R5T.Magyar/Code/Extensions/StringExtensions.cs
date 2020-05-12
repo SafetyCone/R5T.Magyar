@@ -104,7 +104,9 @@ namespace R5T.Magyar.Extensions
 
         /// <summary>
         /// An ease-of-use overload that allows using a single string as the separator (instead of a full string array).
+        /// Fixes the lack of a string.Split(params string[]) function.
         /// </summary>
+        // Note: there is no char-equivalent because there is already a string.Split(params char[]) method.
         public static string[] Split(this string @string, string separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
         {
             var output = @string.Split(new string[] { separator }, stringSplitOptions);
