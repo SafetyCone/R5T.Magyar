@@ -31,6 +31,14 @@ namespace R5T.Magyar.IO
             return writer;
         }
 
+        public static XmlWriter New(TextWriter textWriter)
+        {
+            var settings = XmlWriterSettingsHelper.GetStandardSettings();
+
+            var writer = XmlWriter.Create(textWriter, settings);
+            return writer;
+        }
+
         public static XmlWriter New(string xmlFilePath)
         {
             var settings = XmlWriterSettingsHelper.GetStandardSettings();
