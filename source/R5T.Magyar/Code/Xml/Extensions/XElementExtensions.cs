@@ -8,6 +8,69 @@ namespace R5T.Magyar.Xml
 {
     public static class XElementExtensions
     {
+        /// <summary>
+        /// Get the element with the speicified name, if it exists, or adds an element with the specified if it does not exist.
+        /// Adds the element as well.
+        /// </summary>
+        public static XElement AcquireElement(this XElement xElement, XName name)
+        {
+            var hasElement = xElement.HasElement(name, out var element);
+            if (hasElement)
+            {
+                return element;
+            }
+
+            element = xElement.AddElement(name);
+            return element;
+        }
+
+        public static XElement AcquireElement(this XElement xElement, XName name, string value)
+        {
+            var element = xElement.AcquireElement(name);
+
+            element.Value = value;
+
+            return element;
+        }
+
+        public static XElement AddContents(this XElement xElement, object content)
+        {
+            xElement.Add(content);
+
+            return xElement;
+        }
+
+        public static XElement AddContents(this XElement xElement, params object[] contents)
+        {
+            xElement.Add(contents);
+
+            return xElement;
+        }
+
+        public static XElement AddElement(this XElement xElement, XName name)
+        {
+            var element = new XElement(name);
+            xElement.Add(element);
+
+            return element;
+        }
+
+        public static XElement AddElement(this XElement xElement, XName name, string value)
+        {
+            var element = xElement.AddElement(name);
+            element.Value = value;
+
+            return element;
+        }
+
+        public static XElement AddElement(this XElement xElement, XName name, object content)
+        {
+            var element = new XElement(name, content);
+            xElement.Add(element);
+
+            return element;
+        }
+
         public static string GetChildValueSingle(this XElement xElement, string childName)
         {
             var output = xElement.GetChildren(childName)
@@ -35,12 +98,40 @@ namespace R5T.Magyar.Xml
             return output;
         }
 
+        /// <summary>
+        /// Throws an <see cref="ArgumentException"/> if the <see cref="XElement"/> does not have an element of the specified name.
+        /// </summary>
+        public static XElement GetElement(this XElement xElement, XName name)
+        {
+            var hasElement = xElement.HasElement(name, out var element);
+            if (!hasElement)
+            {
+                throw new ArgumentException($"No element of name '{name}'.", nameof(name));
+            }
+
+            return element;
+        }
+
         public static IEnumerable<XElement> GetChildren(this XElement xElement, string childName)
         {
             var output = xElement.Elements()
                 .Where(x => x.Name == childName);
 
             return output;
+        }
+
+        public static bool HasElement(this XElement xElement, XName name, out XElement element)
+        {
+            element = xElement.Element(name);
+
+            var hasElement = XElementHelper.WasFound(element);
+            return hasElement;
+        }
+
+        public static bool HasElement(this XElement xElement, XName name)
+        {
+            var hasElement = xElement.HasElement(name, out var dummy);
+            return hasElement;
         }
 
         public static bool HasChildSingle(this XElement xElement, string childName, out XElement child)
