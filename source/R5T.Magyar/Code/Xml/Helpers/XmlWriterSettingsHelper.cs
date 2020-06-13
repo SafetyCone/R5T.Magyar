@@ -3,7 +3,7 @@ using System.Text;
 using System.Xml;
 
 
-namespace R5T.Magyar.IO
+namespace R5T.Magyar.Xml
 {
     public static class XmlWriterSettingsHelper
     {
