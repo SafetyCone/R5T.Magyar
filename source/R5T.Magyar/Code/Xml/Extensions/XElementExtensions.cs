@@ -8,6 +8,17 @@ namespace R5T.Magyar.Xml
 {
     public static class XElementExtensions
     {
+        public static XAttribute AcquireAttribute(this XElement xElement, XName xName)
+        {
+            var hasAttribute = xElement.HasAttribute(xName, out var xAttribute);
+            if(!hasAttribute)
+            {
+                xAttribute = xElement.AddAttribute(xName);
+            }
+
+            return xAttribute;
+        }
+
         /// <summary>
         /// Get the element with the speicified name, if it exists, or adds an element with the specified if it does not exist.
         /// Adds the element as well.
@@ -15,12 +26,11 @@ namespace R5T.Magyar.Xml
         public static XElement AcquireElement(this XElement xElement, XName name)
         {
             var hasElement = xElement.HasElement(name, out var element);
-            if (hasElement)
+            if (!hasElement)
             {
-                return element;
+                element = xElement.AddElement(name);
             }
 
-            element = xElement.AddElement(name);
             return element;
         }
 
@@ -31,6 +41,23 @@ namespace R5T.Magyar.Xml
             element.Value = value;
 
             return element;
+        }
+
+        public static XAttribute AddAttribute(this XElement xElement, XName xName)
+        {
+            var xAttribute = XAttributeHelper.New(xName);
+
+            xElement.Add(xAttribute);
+
+            return xAttribute;
+        }
+
+        public static XAttribute AddAttribute(this XElement xElement, XName xName, string value)
+        {
+            var xAttribute = xElement.AddAttribute(xName);
+            xAttribute.Value = value;
+
+            return xAttribute;
         }
 
         public static XElement AddContents(this XElement xElement, object content)
@@ -69,6 +96,25 @@ namespace R5T.Magyar.Xml
             xElement.Add(element);
 
             return element;
+        }
+
+        public static XElement GetChildSingle(this XElement xElement, string childName)
+        {
+            var xChild = xElement.Elements()
+                .Where(x => x.Name == childName)
+                .Single()
+                ;
+
+            return xChild;
+        }
+
+        /// <summary>
+        /// Default uses <see cref="GetChildSingle(XElement, string)"/>.
+        /// </summary>
+        public static XElement GetChild(this XElement xElement, string childName)
+        {
+            var xChild = xElement.GetChildSingle(childName);
+            return xChild;
         }
 
         public static string GetChildValueSingle(this XElement xElement, string childName)
@@ -118,6 +164,20 @@ namespace R5T.Magyar.Xml
                 .Where(x => x.Name == childName);
 
             return output;
+        }
+
+        public static bool HasAttribute(this XElement xElement, XName xName, out XAttribute xAttribute)
+        {
+            xAttribute = xElement.Attribute(xName);
+
+            var hasAttribute = XAttributeHelper.WasFound(xAttribute);
+            return hasAttribute;
+        }
+
+        public static bool HasAttribute(this XElement xElement, XName xName)
+        {
+            var hasAttribute = xElement.HasAttribute(xName, out _);
+            return hasAttribute;
         }
 
         public static bool HasElement(this XElement xElement, XName name, out XElement element)
@@ -191,6 +251,32 @@ namespace R5T.Magyar.Xml
                 xElement.Attributes()
                     .OrderBy(a => a.Name.ToString()),
                 xElement.Value);
+        }
+
+        public static bool RemoveAttributeOnlyIfExists(this XElement xElement, XName attributeName)
+        {
+            var hasAttribute = xElement.HasAttribute(attributeName, out var xAttribute);
+            if(hasAttribute)
+            {
+                xAttribute.Remove();
+            }
+
+            return hasAttribute;
+        }
+
+        /// <summary>
+        /// Default implementation uses <see cref="RemoveAttributeOnlyIfExists(XElement, XName)"/>.
+        /// </summary>
+        public static bool RemoveAttribute(this XElement xElement, XName attributeName)
+        {
+            var success = xElement.RemoveAttributeOnlyIfExists(attributeName);
+            return success;
+        }
+
+        public static bool ValueAsBoolean(this XElement xElement)
+        {
+            var valueAsBoolean = XElementHelper.ValueAsBoolean(xElement.Value);
+            return valueAsBoolean;
         }
     }
 }
