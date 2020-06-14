@@ -14,5 +14,11 @@ namespace R5T.Magyar.Xml
             var wasFound = xElement != XElementHelper.NotFound;
             return wasFound;
         }
+
+        public static bool ValueAsBoolean(string xElementValue)
+        {
+            var valueAsBoolean = Boolean.Parse(xElementValue);
+            return valueAsBoolean;
+        }
     }
 }

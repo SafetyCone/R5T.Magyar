@@ -6,14 +6,14 @@ namespace R5T.Magyar
 {
     public static class StringBuilderExtensions
     {
-        public static void Trim(this StringBuilder stringBuilder, int count)
+        public static void Remove(this StringBuilder stringBuilder, int count)
         {
             stringBuilder.Remove(stringBuilder.Length - count, count);
         }
 
-        public static void TrimLast(this StringBuilder stringBuilder)
+        public static void RemoveLast(this StringBuilder stringBuilder)
         {
-            stringBuilder.Trim(1);
+            stringBuilder.Remove(1);
         }
     }
 }
