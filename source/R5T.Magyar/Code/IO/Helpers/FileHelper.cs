@@ -7,6 +7,17 @@ namespace R5T.Magyar.IO
 {
     public static class FileHelper
     {
+        /// <summary>
+        /// Actually reads all lines. The <see cref="File.ReadLines(string)"/> method omits blank last lines!
+        /// </summary>
+        public static string[] ActuallyReadAllLines(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+
+            var lines = text.Split(new[] { "\n", "\r\n" }, StringSplitOptions.None);
+            return lines;
+        }
+
         public static Task DeleteAsync(string filePath)
         {
             var delete = Task.Run(() => File.Delete(filePath));
@@ -52,6 +63,15 @@ namespace R5T.Magyar.IO
 
             var parentDirectoryPath = fileInfo.Directory.FullName;
             return parentDirectoryPath;
+        }
+
+        /// <summary>
+        /// Ease of use name for the <see cref="ActuallyReadAllLines(string)"/> method.
+        /// </summary>
+        public static string[] ReadAllLines(string filePath)
+        {
+            var lines = FileHelper.ActuallyReadAllLines(filePath);
+            return lines;
         }
     }
 }
