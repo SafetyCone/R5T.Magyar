@@ -194,7 +194,7 @@ namespace R5T.Magyar.Xml
             return hasElement;
         }
 
-        public static bool HasChildSingle(this XElement xElement, string childName, out XElement child)
+        public static bool HasChildSingleOrDefault(this XElement xElement, string childName, out XElement child)
         {
             child = xElement.GetChildren(childName)
                 .SingleOrDefault();
@@ -203,12 +203,21 @@ namespace R5T.Magyar.Xml
             return hasChild;
         }
 
+        public static bool HasChildFirstOrDefault(this XElement xElement, string childName, out XElement child)
+        {
+            child = xElement.GetChildren(childName)
+                .FirstOrDefault();
+
+            var hasChild = XElementHelper.WasFound(child);
+            return hasChild;
+        }
+
         /// <summary>
-        /// Uses <see cref="XElementExtensions.HasChildSingle(XElement, string, out XElement)"/> as the default.
+        /// Uses <see cref="XElementExtensions.HasChildFirstOrDefault(XElement, string, out XElement)"/> as the default.
         /// </summary>
         public static bool HasChild(this XElement xElement, string childName, out XElement child)
         {
-            var hasChild = xElement.HasChildSingle(childName, out child);
+            var hasChild = xElement.HasChildFirstOrDefault(childName, out child);
             return hasChild;
         }
 
