@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 
 namespace R5T.Magyar.Extensions
@@ -100,6 +101,13 @@ namespace R5T.Magyar.Extensions
 
             var lastChar = last[0];
             return lastChar;
+        }
+
+        // See: https://stackoverflow.com/questions/3754582/is-there-an-easy-way-to-return-a-string-repeated-x-number-of-times
+        public static string Repeat(this string value, int numberOfTimes)
+        {
+            var output = String.Concat(Enumerable.Repeat(value, numberOfTimes));
+            return output;
         }
 
         /// <summary>

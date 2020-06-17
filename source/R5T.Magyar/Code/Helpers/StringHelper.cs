@@ -1,5 +1,7 @@
 ﻿using System;
 
+using R5T.Magyar.Extensions;
+
 
 namespace R5T.Magyar
 {
@@ -27,6 +29,12 @@ namespace R5T.Magyar
         public static bool IsValid(string value)
         {
             var output = value != StringHelper.Invalid;
+            return output;
+        }
+
+        public static string Repeat(string value, int numberOfTimes)
+        {
+            var output = value.Repeat(numberOfTimes);
             return output;
         }
     }
