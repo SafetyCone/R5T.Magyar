@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 
-namespace R5T.Magyar.Extensions
+namespace System.Collections.Generic
 {
     public static class IEnumerableExtensions
     {
@@ -71,13 +73,111 @@ namespace R5T.Magyar.Extensions
             }
         }
     }
+}
 
-    public static class IEnumerableStringExtensions
+namespace System.Linq
+{
+    public static class IEnumerableExtensions
     {
-        public static IEnumerable<string> SortAlphabetically(this IEnumerable<string> strings)
+        public static async Task<bool> SequenceEqualAsync<T>(this IEnumerable<T> x, IEnumerable<T> y, IEqualityComparer<T> equalityComparer, Func<string, Task> messageHandler, bool stopAtFirstElementDifference = true)
         {
-            var output = strings.OrderBy(x => x);
-            return output;
+            var areEqual = true;
+
+            int xCount = 0;
+            int yCount = 0;
+
+            using (var xEnumerator = x.GetEnumerator())
+            using (var yEnumerator = y.GetEnumerator())
+            {
+                while (xEnumerator.MoveNext())
+                {
+                    xCount++;
+
+                    var otherHasElement = yEnumerator.MoveNext();
+                    if (!otherHasElement)
+                    {
+                        var message = $"Sequence element count difference:\nX:{xCount}\nY:{yCount}";
+                        await messageHandler(message);
+
+                        return false; // Cannot continue comparing values because one is different!
+                    }
+                    yCount++;
+
+                    var elementsAreEqual = equalityComparer.Equals(xEnumerator.Current, yEnumerator.Current);
+                    if(!elementsAreEqual)
+                    {
+                        var message = $"Element difference at index {xCount - 1}:\nX:\n{xEnumerator.Current.ToString()}\nY:\n{yEnumerator.Current.ToString()}";
+                        await messageHandler(message);
+
+                        areEqual = false;
+
+                        if (stopAtFirstElementDifference)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return areEqual;
+        }
+
+        public static async Task<bool> SetEqualAsync<T>(this IEnumerable<T> x, IEnumerable<T> y, IEqualityComparer<T> equalityComparer, Func<string, Task> messageHandler)
+        {
+            var missingFromX = y.Except(x, equalityComparer).ToList();
+            var missingFromY = x.Except(y, equalityComparer).ToList();
+
+            var anyMissingFromX = missingFromX.Any();
+            var anyMissingFromY = missingFromY.Any();
+
+            var setEquals = !anyMissingFromX && !anyMissingFromY;
+            if (!setEquals)
+            {
+                var missingFromXBuilder = new StringBuilder();
+                var missingFromYBuilder = new StringBuilder();
+
+                if (anyMissingFromX)
+                {
+                    var message = $"Elements were missing from X. Count: {missingFromX.Count}";
+                    await messageHandler(message);
+
+                    foreach (var element in missingFromX)
+                    {
+                        missingFromXBuilder.Append($"\n{element.ToString()}");
+                    }
+                }
+
+                if (anyMissingFromY)
+                {
+                    var message = $"Elements were missing from Y. Count: {missingFromY.Count}";
+                    await messageHandler(message);
+
+                    foreach (var element in missingFromY)
+                    {
+                        missingFromYBuilder.Append($"\n{element.ToString()}");
+                    }
+                }
+
+                // Separated to allow message output order.
+
+                if (anyMissingFromX)
+                {
+                    var missingFromXMessage = missingFromXBuilder.ToString();
+
+                    var message = $"Elements missing from X:\n{missingFromXMessage}";
+                    await messageHandler(message);
+                }
+
+                if (anyMissingFromY)
+                {
+                    var missingFromYMessage = missingFromYBuilder.ToString();
+
+                    var message = $"Elements missing from Y:\n{missingFromYMessage}";
+                    await messageHandler(message);
+                }
+            }
+            
+            return setEquals;
         }
     }
 }
