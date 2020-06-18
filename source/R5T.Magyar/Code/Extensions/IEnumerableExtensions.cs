@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace System.Collections.Generic
+namespace R5T.Magyar
 {
     public static class IEnumerableExtensions
     {
