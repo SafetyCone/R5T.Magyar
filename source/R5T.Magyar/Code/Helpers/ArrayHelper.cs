@@ -38,5 +38,11 @@ namespace R5T.Magyar
             var output = ArrayHelper.Copy(array, 0, array.Length - 1);
             return output;
         }
+
+        public static T[] From<T>(T value)
+        {
+            var output = new T[] { value };
+            return output;
+        }
     }
 }
