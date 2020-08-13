@@ -15,7 +15,7 @@ namespace R5T.Magyar.IO
             return output;
         }
 
-        public static bool ReadLine(this TextReader textReader, out string line)
+        public static bool ReadLineIsNotEnd(TextReader textReader, out string line)
         {
             line = textReader.ReadLine();
 
