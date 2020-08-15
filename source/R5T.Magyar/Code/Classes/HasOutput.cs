@@ -50,7 +50,9 @@ namespace R5T.Magyar
     /// <typeparam name="T">The type of the result.</typeparam>
     /// <remarks>
     /// This is the same idea as suggested in Stack Overflow: https://stackoverflow.com/questions/18716928/how-to-write-a-async-method-with-out-parameter
+    /// An older version of <see cref="WasFound{T}"/>
     /// </remarks>
+    /// <seealso cref="WasFound{T}"/>
     public class HasOutput<T>
     {
         public bool Exists { get; set; }
