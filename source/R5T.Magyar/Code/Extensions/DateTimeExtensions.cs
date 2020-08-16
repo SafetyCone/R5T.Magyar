@@ -61,5 +61,15 @@ namespace R5T.Magyar.Extensions
             var output = $"{dateTime:MM/dd/yyyy HH:mm:ss tt}";
             return output;
         }
+
+        // Note! Cannot convert this way since OSX/Ubuntu/Linux does not have "Pacific Standard Time".
+        // Instead, use the TimeZoneConverter NuGet package: https://devblogs.microsoft.com/dotnet/cross-platform-time-zones-with-net-core/
+        //public static DateTime ToPacificFromUTC(this DateTime dateTimeUtc)
+        //{
+        //    TimeZoneInfo pacificStandardTime = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
+
+        //    var pacificDateTime = TimeZoneInfo.ConvertTimeFromUtc(dateTimeUtc, pacificStandardTime);
+        //    return pacificDateTime;
+        //}
     }
 }
