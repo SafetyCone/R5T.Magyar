@@ -73,5 +73,13 @@ namespace R5T.Magyar.IO
             var lines = FileHelper.ActuallyReadAllLines(filePath);
             return lines;
         }
+
+        public static void HandleOverwrite(string filePath, bool overwrite)
+        {
+            if(overwrite)
+            {
+                FileHelper.DeleteOnlyIfExists(filePath);
+            }
+        }
     }
 }
