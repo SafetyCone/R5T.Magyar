@@ -44,5 +44,10 @@ namespace R5T.Magyar
             var output = new T[] { value };
             return output;
         }
+
+        public static T[] From<T>(params T[] values)
+        {
+            return values;
+        }
     }
 }

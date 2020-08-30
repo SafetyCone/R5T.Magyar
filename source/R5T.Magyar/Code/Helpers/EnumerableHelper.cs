@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace R5T.Magyar
@@ -9,6 +10,11 @@ namespace R5T.Magyar
         public static IEnumerable<T> From<T>(T value)
         {
             yield return value;
+        }
+
+        public static IEnumerable<T> From<T>(params T[] values)
+        {
+            return values;
         }
     }
 }
