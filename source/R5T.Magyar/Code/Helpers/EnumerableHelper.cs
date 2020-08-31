@@ -7,6 +7,11 @@ namespace R5T.Magyar
 {
     public static class EnumerableHelper
     {
+        public static IEnumerable<T> Empty<T>()
+        {
+            return Enumerable.Empty<T>();
+        }
+
         public static IEnumerable<T> From<T>(T value)
         {
             yield return value;
