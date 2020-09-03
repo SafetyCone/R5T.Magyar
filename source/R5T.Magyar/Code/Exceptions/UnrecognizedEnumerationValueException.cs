@@ -10,6 +10,28 @@ namespace R5T.Magyar
         private const string UnrecognizedValuePropertyName = "UnrecogizedValue";
 
 
+        #region Static
+
+        public static UnrecognizedEnumerationValueException From<T>(string unrecognizedValue, string message)
+        {
+            var enumerationTypeFullName = typeof(T).FullName;
+
+            var exception = new UnrecognizedEnumerationValueException(enumerationTypeFullName, unrecognizedValue, message);
+            return exception;
+        }
+
+        public static UnrecognizedEnumerationValueException From<T>(string unrecognizedValue)
+            where T: Enum
+        {
+            var message = EnumerationHelper.UnrecognizedEnumerationValueMessage<T>(unrecognizedValue);
+
+            var exception = UnrecognizedEnumerationValueException.From<T>(unrecognizedValue, message);
+            return exception;
+        }
+
+        #endregion
+
+
         public string EnumerationTypeFullName { get; }
         public string UnrecognizedValue { get; }
 

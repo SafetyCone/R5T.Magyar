@@ -63,5 +63,17 @@ namespace R5T.Magyar
             var wasFound = new WasFound<T>(exists, resultOrDefault);
             return wasFound;
         }
+
+        public static WasFound<T> From<T>(bool exists, T result)
+        {
+            var wasFound = new WasFound<T>(exists, result);
+            return wasFound;
+        }
+
+        public static WasFound<T> NotFound<T>()
+        {
+            var wasFound = new WasFound<T>(false, default(T));
+            return wasFound;
+        }
     }
 }
