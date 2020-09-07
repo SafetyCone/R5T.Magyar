@@ -37,5 +37,18 @@ namespace R5T.Magyar
                 return output;
             }
         }
+
+        public static WasFound<T> Is<T>(this WasFound<T> wasFound, Func<T, bool> predicate)
+        {
+            if(!wasFound)
+            {
+                return wasFound;
+            }
+
+            var exists = predicate(wasFound.Result);
+            var result = exists ? wasFound.Result : default;
+
+            return WasFound.From(exists, result);
+        }
     }
 }
