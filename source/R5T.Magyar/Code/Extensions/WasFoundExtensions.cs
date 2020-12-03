@@ -8,7 +8,7 @@ namespace R5T.Magyar
         /// <summary>
         /// Useful in the cases where C# does not realize it should use the implicit conversion operator (such as returning when you need to return a boolean and C# will not accept a WasFound).
         /// </summary>
-        public static bool ToBoolean<TResult>(this WasFound<TResult> wasFound)
+        public static bool AsBoolean<TResult>(this WasFound<TResult> wasFound)
         {
 #pragma warning disable CS0618 // Type or member is obsolete
             return wasFound.Exists;

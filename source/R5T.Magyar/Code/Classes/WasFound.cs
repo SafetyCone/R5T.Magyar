@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 
 namespace R5T.Magyar
@@ -55,7 +56,7 @@ namespace R5T.Magyar
         /// </summary>
         public static WasFound<T> From<T>(T resultOrDefault)
         {
-            var defaultEqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
+            var defaultEqualityComparer = EqualityComparer<T>.Default;
 
             var defaultValue = default(T);
             var exists = !defaultEqualityComparer.Equals(resultOrDefault, defaultValue);
