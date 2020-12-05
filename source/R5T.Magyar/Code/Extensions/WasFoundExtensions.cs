@@ -38,6 +38,20 @@ namespace R5T.Magyar
             }
         }
 
+        /// <summary>
+        /// With no converter specified, the default of <typeparamref name="TDestination"/> is returned.
+        /// </summary>
+        public static WasFound<TDestination> Convert<TSource, TDestination>(this WasFound<TSource> wasFound)
+        {
+            TDestination GetDefaultDestination(TSource source)
+            {
+                return default;
+            }
+
+            var output = wasFound.Convert<TSource, TDestination>(GetDefaultDestination);
+            return output;
+        }
+
         public static WasFound<T> Is<T>(this WasFound<T> wasFound, Func<T, bool> predicate)
         {
             if(!wasFound)
