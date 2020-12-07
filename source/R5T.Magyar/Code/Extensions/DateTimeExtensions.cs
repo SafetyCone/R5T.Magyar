@@ -23,6 +23,12 @@ namespace R5T.Magyar.Extensions
             return output;
         }
 
+        public static string ToMMSlashDD_HHColonMM(this DateTime dateTime)
+        {
+            var output = $"{dateTime:MM/dd HH:mm}";
+            return output;
+        }
+
         public static string ToYYYYMMDD_HHMMSS(this DateTime dateTime)
         {
             string yyyymmdd = dateTime.ToYYYYMMDD();
