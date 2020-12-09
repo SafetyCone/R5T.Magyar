@@ -41,7 +41,7 @@ namespace R5T.Magyar
         /// <summary>
         /// With no converter specified, the default of <typeparamref name="TDestination"/> is returned.
         /// </summary>
-        public static WasFound<TDestination> Convert<TSource, TDestination>(this WasFound<TSource> wasFound)
+        public static WasFound<TDestination> ConvertDefault<TSource, TDestination>(this WasFound<TSource> wasFound)
         {
             TDestination GetDefaultDestination(TSource source)
             {
@@ -49,6 +49,18 @@ namespace R5T.Magyar
             }
 
             var output = wasFound.Convert<TSource, TDestination>(GetDefaultDestination);
+            return output;
+        }
+
+        public static WasFound<TDestination> Convert<TSource, TDestination>(this WasFound<TSource> wasFound)
+            where TDestination : class
+        {
+            TDestination GetDestination(TSource source)
+            {
+                return source as TDestination;
+            }
+
+            var output = wasFound.Convert<TSource, TDestination>(GetDestination);
             return output;
         }
 
