@@ -19,12 +19,23 @@ namespace R5T.Magyar
             yield return value;
         }
 
-        public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
+        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.ExceptLast(1);
+            return output;
+        }
+
+        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable, int nElements)
         {
             var count = enumerable.Count();
 
-            var isEmpty = count < 1;
-            return isEmpty;
+            var enumerator = enumerable.GetEnumerator();
+            for (int iElement = nElements; iElement < count; iElement++) // For each except the last N.
+            {
+                enumerator.MoveNext();
+
+                yield return enumerator.Current;
+            }
         }
 
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
@@ -33,6 +44,14 @@ namespace R5T.Magyar
             {
                 action(item);
             }
+        }
+
+        public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            var count = enumerable.Count();
+
+            var isEmpty = count < 1;
+            return isEmpty;
         }
 
         /// <summary>
@@ -53,32 +72,143 @@ namespace R5T.Magyar
             var output = enumerable.NthToLast(2);
             return output;
         }
-
-        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable)
-        {
-            var output = enumerable.ExceptLast(1);
-            return output;
-        }
-
-        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable, int nElements)
-        {
-            var count = enumerable.Count();
-
-            var enumerator = enumerable.GetEnumerator();
-            for (int iElement = nElements; iElement < count; iElement++) // For each except the last N.
-            {
-                enumerator.MoveNext();
-
-                yield return enumerator.Current;
-            }
-        }
     }
 }
 
+// Functionality placed in the LINQ namespace since including a reference to Magyar is enough to indicate desire to use this functionality.
 namespace System.Linq
 {
+    using R5T.Magyar;
+
+
     public static class IEnumerableExtensions
     {
+        public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int nElements)
+        {
+            return enumerable.Take(nElements);
+        }
+
+        public static T MaxOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue)
+        {
+            var maxOrDefault = enumerable.Any()
+                ? enumerable.Max()
+                : defaultValue;
+
+            return maxOrDefault;
+        }
+
+        public static T MaxOrDefault<T>(this IEnumerable<T> enumerable)
+        {
+            var maxOrDefault = enumerable.MaxOrDefault(default);
+            return maxOrDefault;
+        }
+
+        public static T MinOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue)
+        {
+            var minOrDefault = enumerable.Any()
+                ? enumerable.Min()
+                : defaultValue;
+
+            return minOrDefault;
+        }
+
+        public static T MinOrDefault<T>(this IEnumerable<T> enumerable)
+        {
+            var minOrDefault = enumerable.MinOrDefault(default);
+            return minOrDefault;
+        }
+
+        // Note, adapted from: https://github.com/morelinq/MoreLINQ/
+        public static T MaximumBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, IComparer<TKey> keyComparer)
+        {
+            var comparer = keyComparer ?? Comparer<TKey>.Default;
+
+            using (var enumerator = enumerable.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    throw new InvalidOperationException("Enumerable contains no elements.");
+                }
+
+                var maximum = enumerator.Current;
+                var maximumKey = keySelector(maximum);
+
+                while (enumerator.MoveNext())
+                {
+                    var candidate = enumerator.Current;
+                    var candidateKey = keySelector(candidate);
+                    if (comparer.Compare(candidateKey, maximumKey) > 0)
+                    {
+                        maximum = candidate;
+                        maximumKey = candidateKey;
+                    }
+                }
+
+                return maximum;
+            }
+        }
+
+        public static T MaximumBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
+        {
+            var maximum = enumerable.MaximumBy(keySelector, null);
+            return maximum;
+        }
+
+        // Note, adapted from: https://github.com/morelinq/MoreLINQ/
+        public static T MinimumBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, IComparer<TKey> keyComparer)
+        {
+            var comparer = keyComparer ?? Comparer<TKey>.Default;
+
+            using (var enumerator = enumerable.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    throw new InvalidOperationException("Enumerable contains no elements.");
+                }
+
+                var minimum = enumerator.Current;
+                var minimumKey = keySelector(minimum);
+
+                while (enumerator.MoveNext())
+                {
+                    var candidate = enumerator.Current;
+                    var candidateKey = keySelector(candidate);
+                    if (comparer.Compare(candidateKey, minimumKey) < 0)
+                    {
+                        minimum = candidate;
+                        minimumKey = candidateKey;
+                    }
+                }
+
+                return minimum;
+            }
+        }
+
+        public static T MinimumBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
+        {
+            var minimum = enumerable.MinimumBy(keySelector, null);
+            return minimum;
+        }
+
+        public static IEnumerable<TResult> SelectIncludeNulls<T, TResult>(this IEnumerable<T> items, Func<T, TResult> selector, bool includeNulls = false)
+            where TResult: class
+        {
+            var selectedItemsWithNull = items
+                .Select(selector);
+
+            if(includeNulls)
+            {
+                return selectedItemsWithNull;
+            }
+            else
+            {
+                var selectedItemsWithoutNull = selectedItemsWithNull
+                    .Where(x => NullHelper.NotNull(x));
+
+                return selectedItemsWithoutNull;
+            }
+        }
+
         public static async Task<bool> SequenceEqualAsync<T>(this IEnumerable<T> x, IEnumerable<T> y, IEqualityComparer<T> equalityComparer, Func<string, Task> messageHandler, bool stopAtFirstElementDifference = true)
         {
             var areEqual = true;
