@@ -6,6 +6,7 @@ namespace System
 {
     public static class Strings
     {
+        public const string Asterix = "*";
         public const string Ellipsis = "...";
         public const string Space = " ";
         public const string Tab = "\t";

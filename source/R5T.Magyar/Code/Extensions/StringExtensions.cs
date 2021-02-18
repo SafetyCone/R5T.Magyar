@@ -2,6 +2,19 @@
 using System.Linq;
 
 
+namespace System
+{
+    public static class StringExtensions
+    {
+        public static bool IsNonNullOrEmpty(this string @string)
+        {
+            var output = !@String.IsNullOrEmpty(@string);
+            return output;
+        }
+    }
+}
+
+
 namespace R5T.Magyar.Extensions
 {
     public static class StringExtensions
