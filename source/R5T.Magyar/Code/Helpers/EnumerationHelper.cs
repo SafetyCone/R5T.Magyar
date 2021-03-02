@@ -14,15 +14,23 @@ namespace R5T.Magyar
             return output;
         }
 
+        public static string UnrecognizedEnumerationValueMessage(Type enumerationType, string unrecognizedValue)
+        {
+            var enumerationTypeFullName = enumerationType.FullName;
+
+            var output = EnumerationHelper.UnrecognizedEnumerationValueMessage(enumerationTypeFullName, unrecognizedValue);
+            return output;
+        }
+
         /// <summary>
         /// Gets a message indicating that the input string representation of an enumeration value was not recognized among the string representations of a possible values of the <typeparamref name="TEnum"/> enumeration.
         /// </summary>
         public static string UnrecognizedEnumerationValueMessage<TEnum>(string unrecognizedValue)
             where TEnum : Enum // Requires C# 7.3.
         {
-            var enumerationTypeFullName = typeof(TEnum).FullName;
+            var enumerationType = typeof(TEnum);
 
-            var output = EnumerationHelper.UnrecognizedEnumerationValueMessage(enumerationTypeFullName, unrecognizedValue);
+            var output = EnumerationHelper.UnrecognizedEnumerationValueMessage(enumerationType, unrecognizedValue);
             return output;
         }
 
@@ -32,13 +40,31 @@ namespace R5T.Magyar
             return unrecognizedEnumerationValueException;
         }
 
-        public static UnrecognizedEnumerationValueException UnrecognizedEnumerationValueException<TEnum>(string unrecognizedValue)
-            where TEnum: Enum
+        public static UnrecognizedEnumerationValueException UnrecognizedEnumerationValueException(Type enumerationType, string unrecognizedValue)
         {
-            var enumerationTypeFullName = typeof(TEnum).FullName;
+            var enumerationTypeFullName = enumerationType.FullName;
 
             var unrecognizedEnumerationValueException = EnumerationHelper.UnrecognizedEnumerationValueException(enumerationTypeFullName, unrecognizedValue);
             return unrecognizedEnumerationValueException;
+        }
+
+        public static UnrecognizedEnumerationValueException UnrecognizedEnumerationValueException<TEnum>(string unrecognizedValue)
+            where TEnum: Enum
+        {
+            var enumerationType = typeof(TEnum);
+
+            var unrecognizedEnumerationValueException = EnumerationHelper.UnrecognizedEnumerationValueException(enumerationType, unrecognizedValue);
+            return unrecognizedEnumerationValueException;
+        }
+
+        /// <summary>
+        /// Produces an exception in the case where the string represenation of a enumeration value is unrecognizable as one of the values of the <typeparamref name="TEnum"/> enumeration.
+        /// </summary>
+        public static UnrecognizedEnumerationValueException RepresentationUnrecognizedException<TEnum>(string unrecognizedRepresentation)
+            where TEnum : Enum
+        {
+            var output = EnumerationHelper.UnrecognizedEnumerationValueException<TEnum>(unrecognizedRepresentation);
+            return output;
         }
 
         /// <summary>
@@ -81,11 +107,25 @@ namespace R5T.Magyar
             return output;
         }
 
+        /// <summary>
+        /// Produces an exception for the situation where a value of the <typeparamref name="TEnum"/> enumeration was unexpected.
+        /// This is useful in producing an error in the default case for switch statements based on enumeration values.
+        /// </summary>
         public static UnexpectedEnumerationValueException<TEnum> UnexpectedEnumerationValueException<TEnum>(TEnum unexpectedValue)
             where TEnum: Enum
         {
             var unexpectedEnumerationValueException = new UnexpectedEnumerationValueException<TEnum>(unexpectedValue);
             return unexpectedEnumerationValueException;
+        }
+
+        /// <summary>
+        /// Produces an exception for use in the default case of a switch statement based on values of the <typeparamref name="TEnum"/> enumeration.
+        /// </summary>
+        public static UnexpectedEnumerationValueException<TEnum> SwitchDefaultCaseException<TEnum>(TEnum value)
+            where TEnum : Enum
+        {
+            var exception = EnumerationHelper.UnexpectedEnumerationValueException(value);
+            return exception;
         }
 
         /// <summary>
