@@ -1,5 +1,23 @@
 ﻿using System;
 
+namespace R5T.Magyar
+{
+    public static class BooleanExtensions
+    {
+        public static bool ValueOrFalse(this bool? nullableValue)
+        {
+            if (nullableValue.HasValue)
+            {
+                return nullableValue.Value;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
+
 
 namespace R5T.Magyar.Extensions
 {
