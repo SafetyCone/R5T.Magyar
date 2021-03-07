@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 
 namespace R5T.Magyar
 {
-    public class UnexpectedEnumerationValueException<TEnum> : System.IO.FileNotFoundException
+    public class UnexpectedEnumerationValueException<TEnum> : Exception
         where TEnum: Enum
     {
         protected const string ValuePropertyName = "Value";

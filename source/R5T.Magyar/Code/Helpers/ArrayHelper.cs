@@ -49,5 +49,10 @@ namespace R5T.Magyar
         {
             return values;
         }
+
+        public static T[] NewEmpty<T>()
+        {
+            return new T[] { };
+        }
     }
 }
