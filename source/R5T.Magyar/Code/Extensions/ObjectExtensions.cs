@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 
-namespace R5T.Magyar.Extensions.Object
+namespace R5T.Magyar.Extensions
 {
     public static class ObjectExtensions
     {
@@ -9,6 +10,11 @@ namespace R5T.Magyar.Extensions.Object
         {
             var output = new T[] { item };
             return output;
+        }
+
+        public static IEnumerable<T> ToEnumerable<T>(this T item)
+        {
+            yield return item;
         }
     }
 }

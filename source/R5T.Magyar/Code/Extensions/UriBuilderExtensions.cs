@@ -39,6 +39,20 @@ namespace R5T.Magyar
             return output;
         }
 
+        public static UriBuilder SetPath(this UriBuilder uriBuilder, string path)
+        {
+            uriBuilder.Path = path;
+
+            return uriBuilder;
+        }
+
+        public static UriBuilder SetQuery(this UriBuilder uriBuilder, string query)
+        {
+            uriBuilder.Query = query;
+
+            return uriBuilder;
+        }
+
         /// <summary>
         /// Server can include both host and port.
         /// </summary>

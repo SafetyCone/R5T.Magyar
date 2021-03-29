@@ -5,6 +5,12 @@ namespace R5T.Magyar.Extensions
 {
     public static class DateTimeExtensions
     {
+        public static string ToMM_DD_YYYY(this DateTime dateTime)
+        {
+            var output = $"{dateTime:MM/dd/yyyy}";
+            return output;
+        }
+
         public static string ToYYYYMMDD(this DateTime dateTime)
         {
             var output = $"{dateTime:yyyyMMdd}";

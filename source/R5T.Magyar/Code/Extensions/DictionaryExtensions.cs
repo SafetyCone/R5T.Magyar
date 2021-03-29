@@ -7,6 +7,23 @@ namespace R5T.Magyar
 {
     public static class DictionaryExtensions
     {
+        public static Dictionary<TKey, TValue> Add<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, KeyValuePair<TKey, TValue> pair)
+        {
+            dictionary.Add(pair.Key, pair.Value);
+
+            return dictionary;
+        }
+
+        public static Dictionary<TKey, TValue> AddRange<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, Dictionary<TKey, TValue> other)
+        {
+            foreach (var pair in other)
+            {
+                dictionary.Add(pair.Key, pair.Value);
+            }
+
+            return dictionary;
+        }
+
         public static Dictionary<TValue, TKey> Invert<TKey, TValue>(this Dictionary<TKey, TValue> dictionary,
             DuplicateValueHandling duplicateValueHandling = DuplicateValueHandling.Error)
         {
