@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 
 namespace R5T.Magyar
@@ -34,12 +35,20 @@ namespace R5T.Magyar
             return output;
         }
 
+        /// <summary>
+        /// Produces an exception in the case where the string representation of a enumeration value is unrecognizable as one of the values of the <paramref name="enumerationTypeFullName"/> enumeration.
+        /// Useful in the default case of a switch statement for parsing a string to an enumeration.
+        /// </summary>
         public static UnrecognizedEnumerationValueException UnrecognizedEnumerationValueException(string enumerationTypeFullName, string unrecognizedValue)
         {
             var unrecognizedEnumerationValueException = new UnrecognizedEnumerationValueException(enumerationTypeFullName, unrecognizedValue);
             return unrecognizedEnumerationValueException;
         }
 
+        /// <summary>
+        /// Produces an exception in the case where the string representation of a enumeration value is unrecognizable as one of the values of the <paramref name="enumerationType"/> enumeration.
+        /// Useful in the default case of a switch statement for parsing a string to an enumeration.
+        /// </summary>
         public static UnrecognizedEnumerationValueException UnrecognizedEnumerationValueException(Type enumerationType, string unrecognizedValue)
         {
             var enumerationTypeFullName = enumerationType.FullName;
@@ -48,6 +57,10 @@ namespace R5T.Magyar
             return unrecognizedEnumerationValueException;
         }
 
+        /// <summary>
+        /// Produces an exception in the case where the string representation of a enumeration value is unrecognizable as one of the values of the <typeparamref name="TEnum"/> enumeration.
+        /// Useful in the default case of a switch statement for parsing a string to an enumeration.
+        /// </summary>
         public static UnrecognizedEnumerationValueException UnrecognizedEnumerationValueException<TEnum>(string unrecognizedValue)
             where TEnum: Enum
         {
@@ -58,7 +71,8 @@ namespace R5T.Magyar
         }
 
         /// <summary>
-        /// Produces an exception in the case where the string represenation of a enumeration value is unrecognizable as one of the values of the <typeparamref name="TEnum"/> enumeration.
+        /// Produces an exception in the case where the string representation of a enumeration value is unrecognizable as one of the values of the <typeparamref name="TEnum"/> enumeration.
+        /// Useful in the default case of a switch statement for parsing a string to an enumeration.
         /// </summary>
         public static UnrecognizedEnumerationValueException RepresentationUnrecognizedException<TEnum>(string unrecognizedRepresentation)
             where TEnum : Enum
@@ -134,6 +148,8 @@ namespace R5T.Magyar
         public static TEnum[] GetValues<TEnum>()
             where TEnum : Enum
         {
+            // Alternate implementation using LINQ: https://stackoverflow.com/questions/972307/how-to-loop-through-all-enum-values-in-c
+
             var values = Enum.GetValues(typeof(TEnum)) as TEnum[];
             return values;
         }

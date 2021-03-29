@@ -4,6 +4,10 @@ using System.Runtime.Serialization;
 
 namespace R5T.Magyar
 {
+    /// <summary>
+    /// An exception for when where the string representation of a enumeration value is unrecognizable as one of the values of the enumeration.
+    /// Useful in the default case of a switch statement for parsing a string to an enumeration.
+    /// </summary>
     public class UnrecognizedEnumerationValueException : Exception
     {
         private const string EnumerationTypeFullNamePropertyName = "EnumerationTypeName";
