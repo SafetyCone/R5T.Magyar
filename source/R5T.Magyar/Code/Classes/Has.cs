@@ -17,7 +17,8 @@ namespace R5T.Magyar
         }
 
         public Has(T value)
-            : this(EqualityComparer<T>.Default.Equals(value, default), value)
+        // if the value == default, then HasValue should be false
+            : this(!EqualityComparer<T>.Default.Equals(value, default), value)
         {
         }
 
