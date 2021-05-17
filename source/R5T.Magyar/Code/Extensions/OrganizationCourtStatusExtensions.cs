@@ -90,6 +90,9 @@ namespace R5T.Magyar
                 case OrganizationCourtStatus.Denied:
                     return denied;
 
+                case OrganizationCourtStatus.DeniedWithReroute:
+                    return denied;
+
                 case OrganizationCourtStatus.Pending:
                     return pending;
 
