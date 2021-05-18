@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 
@@ -15,6 +16,15 @@ namespace R5T.Magyar.IO
             // Does not throw an exception if a directory already exists.
             // See proof at: https://github.com/MinexAutomation/Public/blob/a8c302415b56fb8903c751436cbeef3eae8e1692/Source/Experiments/CSharp/ExaminingCSharp/ExaminingCSharp/Code/Experiments/IOExperiments.cs#L24
             Directory.CreateDirectory(directoryPath);
+        }
+
+        /// <summary>
+        /// Ensures that a directory exists.
+        /// Just an quality-of-life rename for the idempotent <see cref="CreateDirectoryOkIfExists(string)"/>.
+        /// </summary>
+        public static void EnsureDirectoryExists(string directoryPath)
+        {
+            DirectoryHelper.CreateDirectoryOkIfExists(directoryPath);
         }
 
         public static void DeleteDirectoryOkIfNotExists(string directoryPath)
@@ -69,6 +79,15 @@ namespace R5T.Magyar.IO
             {
                 DirectoryHelper.DisableReadOnly(subdirectory);
             }
+        }
+
+        /// <summary>
+        /// Note, there is no System.IO asynchronous directory contents enumeration functionality. So must be synchronous.
+        /// </summary>
+        public static IDistinctEnumerable<string> EnumerateFilePaths(string directoryPath)
+        {
+            var output = Directory.EnumerateFiles(directoryPath, SearchPatternHelper.All, SearchOption.TopDirectoryOnly);
+            return output.AsDistinct();
         }
 
         /// <summary>

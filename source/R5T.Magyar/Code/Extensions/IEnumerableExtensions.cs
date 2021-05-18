@@ -38,14 +38,6 @@ namespace R5T.Magyar
             }
         }
 
-        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
-        {
-            foreach (var item in enumerable)
-            {
-                action(item);
-            }
-        }
-
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
         {
             var count = enumerable.Count();
@@ -72,6 +64,308 @@ namespace R5T.Magyar
             var output = enumerable.NthToLast(2);
             return output;
         }
+
+        public static EnumerableWrapper<T> Wrap<T>(this IEnumerable<T> enumerable)
+        {
+            var wrapper = EnumerableWrapper.From(enumerable);
+            return wrapper;
+        }
+    }
+}
+
+namespace System.Collections.Generic
+{
+    using R5T.Magyar;
+
+
+    public static class IEnumerableExtensions
+    {
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var item in enumerable)
+            {
+                action(item);
+            }
+        }
+
+        public static async Task ForEach<T>(this IEnumerable<T> enumerable, Func<T, Task> action)
+        {
+            foreach (var item in enumerable)
+            {
+                await action(item);
+            }
+        }
+
+        /// <summary>
+        /// Get all repeated elements (including all elements in each series of repeats).
+        /// </summary>
+        public static IEnumerable<T> GetRepeatedElements<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            // Based on: https://stackoverflow.com/questions/2127406/get-non-distinct-elements-from-an-ienumerable
+            return enumerable
+                .GroupBy(x => x, equalityComparer)
+                .Where(group => group.Count() > 1)
+                .SelectMany(x => x);
+        }
+
+        /// <summary>
+        /// Get one of each repeated element.
+        /// </summary>
+        public static IDistinctEnumerable<T> GetDistinctRepeatedElements<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            return enumerable
+                .GetRepeatedElements(equalityComparer)
+                .ToDistinct(equalityComparer); // No repeats among the non-distinct elements.
+        }
+
+        public static Dictionary<TValue, TValue> ToDictionarySameKeyAndValue<TValue>(this IEnumerable<TValue> enumerable)
+        {
+            return enumerable.ToDictionary(
+                x => x,
+                x => x);
+        }
+
+        #region Distinct
+
+        public static IDistinctEnumerable<T> AsDistinct<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.Wrap();
+        }
+
+        public static IDistinctEnumerable<T> ToDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            return enumerable
+                .Distinct(equalityComparer)
+                .Wrap();
+        }
+
+        public static IDistinctEnumerable<T> ToDistinct<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.ToDistinct(EqualityComparer<T>.Default);
+        }
+
+        public static bool IsDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            var distinctEnumerable = enumerable.ToDistinct(equalityComparer);
+
+            // If both the distinct and the input enumerable have the same number of elements, the input enumerable is distinct.
+            var isDistinct = distinctEnumerable.Count() == enumerable.Count();
+            return isDistinct;
+        }
+
+        public static bool IsDistinct<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.IsDistinct(EqualityComparer<T>.Default);
+        }
+
+        public static IDistinctEnumerable<T> VerifyDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            var isDistinct = enumerable.IsDistinct(equalityComparer);
+            if (!isDistinct)
+            {
+                throw new ArgumentException("Enumerable was not distinct.");
+            }
+
+            return enumerable.Wrap();
+        }
+
+        public static IDistinctEnumerable<T> VerifyDistinct<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.VerifyDistinct(EqualityComparer<T>.Default);
+        }
+
+        public static IDistinctEnumerable<T> EnsureDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            var distinctEnumerable = enumerable.ToDistinct(equalityComparer);
+            return distinctEnumerable;
+        }
+
+        public static IDistinctEnumerable<T> EnsureDistinct<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.EnsureDistinct(EqualityComparer<T>.Default);
+        }
+
+        #endregion
+
+        #region Sorted Ascending
+
+        public static ISortedAscendingEnumerable<T> ToSortedAscending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
+            return enumerable
+                .OrderBy(x => x, comparer)
+                .Wrap();
+        }
+
+        public static ISortedAscendingEnumerable<T> ToSortedAscending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.ToSortedAscending(Comparer<T>.Default);
+        }
+
+        public static bool IsSortedAscending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            var sortedEnumerable = enumerable.ToSortedAscending(comparer);
+
+            var areEqual = enumerable.SequenceEqual(sortedEnumerable, equalityComparer);
+            return areEqual;
+        }
+
+        public static bool IsSortedAscending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.IsSortedAscending(Comparer<T>.Default, EqualityComparer<T>.Default);
+        }
+
+        public static ISortedAscendingEnumerable<T> VerifySortedAscending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            var isSortedAscending = enumerable.IsSortedAscending(comparer, equalityComparer);
+            if (!isSortedAscending)
+            {
+                throw new ArgumentException("Enumerable was not sorted in ascending order.");
+            }
+
+            return enumerable.Wrap();
+        }
+
+        public static ISortedAscendingEnumerable<T> VerifySortedAscending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.VerifySortedAscending(Comparer<T>.Default, EqualityComparer<T>.Default);
+        }
+
+        public static ISortedAscendingEnumerable<T> EnsureSortedAscending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            var sortedAscendingEnumerable = enumerable.ToSortedAscending();
+            return sortedAscendingEnumerable;
+        }
+
+        public static ISortedAscendingEnumerable<T> EnsureSortedAscending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.EnsureSortedAscending(Comparer<T>.Default, EqualityComparer<T>.Default);
+        }
+
+        #endregion
+
+        #region Sorted Descending
+
+        public static ISortedDescendingEnumerable<T> ToSortedDescending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
+            return enumerable
+                .OrderByDescending(x => x, comparer)
+                .Wrap();
+        }
+
+        public static ISortedDescendingEnumerable<T> ToSortedDescending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.ToSortedDescending(Comparer<T>.Default);
+        }
+
+        public static bool IsSortedDescending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            var sortedEnumerable = enumerable.ToSortedDescending(comparer);
+
+            var areEqual = enumerable.SequenceEqual(sortedEnumerable, equalityComparer);
+            return areEqual;
+        }
+
+        public static bool IsSortedDescending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.IsSortedDescending(Comparer<T>.Default, EqualityComparer<T>.Default);
+        }
+
+        public static ISortedDescendingEnumerable<T> VerifySortedDescending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            var isSortedDescending = enumerable.IsSortedDescending(comparer, equalityComparer);
+            if (!isSortedDescending)
+            {
+                throw new ArgumentException("Enumerable was not sorted in descending order.");
+            }
+
+            return enumerable.Wrap();
+        }
+
+        public static ISortedDescendingEnumerable<T> VerifySortedDescending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.VerifySortedDescending(Comparer<T>.Default, EqualityComparer<T>.Default);
+        }
+
+        public static ISortedDescendingEnumerable<T> EnsureSortedDescending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            var sortedDescendingEnumerable = enumerable.ToSortedDescending();
+            return sortedDescendingEnumerable;
+        }
+
+        public static ISortedDescendingEnumerable<T> EnsureSortedDescending<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.EnsureSortedDescending(Comparer<T>.Default, EqualityComparer<T>.Default);
+        }
+
+        #endregion
+
+        #region Sorted
+
+        /// <summary>
+        /// Chooses ascending is the default sort order.
+        /// </summary>
+        public static ISortedEnumerable<T> ToSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
+        {
+            return enumerable.ToSortedAscending();
+        }
+
+        /// <summary>
+        /// Chooses ascending as the default sort order.
+        /// </summary>
+        public static ISortedEnumerable<T> ToSorted<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.ToSorted(Comparer<T>.Default);
+        }
+
+        /// <summary>
+        /// Chooses sorted ascending as the default sort order.
+        /// </summary>
+        public static bool IsSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            return enumerable.Wrap().IsSortedAscending(comparer, equalityComparer);
+        }
+
+        /// <summary>
+        /// Chooses sorted ascending as the default sort order.
+        /// </summary>
+        public static bool IsSorted<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.Wrap().IsSortedAscending();
+        }
+
+        /// <summary>
+        /// Chooses sorted ascending as the default sort order.
+        /// </summary>
+        public static ISortedEnumerable<T> VerifySorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            return enumerable.Wrap().VerifySortedAscending(comparer, equalityComparer);
+        }
+
+        /// <summary>
+        /// Chooses sorted ascending as the default sort order.
+        /// </summary>
+        public static ISortedEnumerable<T> VerifySorted<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.Wrap().VerifySortedAscending();
+        }
+
+        /// <summary>
+        /// Chooses sorted ascending as the default sort order.
+        /// </summary>
+        public static ISortedEnumerable<T> EnsureSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        {
+            return enumerable.Wrap().EnsureSortedAscending(comparer, equalityComparer);
+        }
+
+        /// <summary>
+        /// Chooses sorted ascending as the default sort order.
+        /// </summary>
+        public static ISortedEnumerable<T> EnsureSorted<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.Wrap().EnsureSortedAscending();
+        }
+
+        #endregion
     }
 }
 

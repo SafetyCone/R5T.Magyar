@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
 
 // Extensions for which referencing the Magyar library and using the Magyar namespace is sufficient to indicate desire for use.
@@ -24,30 +27,23 @@ namespace R5T.Magyar
             return dictionary;
         }
 
-        public static Dictionary<TValue, TKey> Invert<TKey, TValue>(this Dictionary<TKey, TValue> dictionary,
-            DuplicateValueHandling duplicateValueHandling = DuplicateValueHandling.Error)
+        public static void DescribeTo<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, StringBuilder stringBuilder)
         {
-            var output = new Dictionary<TValue, TKey>();
-
             foreach (var pair in dictionary)
             {
-                var key = pair.Value;
-                var value = pair.Key;
-
-                if (output.ContainsKey(key))
-                {
-                    var existing = output[key];
-                    var chosen = duplicateValueHandling.Choose(existing, value);
-
-                    output[key] = chosen;
-                }
-                else
-                {
-                    output.Add(key, value);
-                }
+                stringBuilder.AppendLine($"{pair.Key}: {pair.Value}");
             }
+        }
 
-            return output;
+        public static Task DescribeTo<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TextWriter textWriter)
+        {
+            var stringBuilder = new StringBuilder();
+
+            dictionary.DescribeTo(stringBuilder);
+
+            var description = stringBuilder.ToString();
+
+            return textWriter.WriteAsync(description);
         }
     }
 }

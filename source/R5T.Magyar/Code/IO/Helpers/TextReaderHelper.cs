@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 
 namespace R5T.Magyar.IO
@@ -15,12 +16,22 @@ namespace R5T.Magyar.IO
             return output;
         }
 
-        public static bool ReadLineIsNotEnd(TextReader textReader, out string line)
+        public static bool ReadLineIsNotEndSynchronous(TextReader textReader, out string line)
         {
             line = textReader.ReadLine();
 
             var hasLine = !TextReaderHelper.IsEndOfTextLine(line);
             return hasLine;
+        }
+
+        public static async Task<WasFound<string>> ReadLineIsNotEnd(TextReader textReader)
+        {
+            var line = await textReader.ReadLineAsync();
+
+            var hasLine = !TextReaderHelper.IsEndOfTextLine(line);
+
+            var wasFound = WasFound.From(hasLine, line);
+            return wasFound;
         }
     }
 }

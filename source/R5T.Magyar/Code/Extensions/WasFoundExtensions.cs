@@ -76,5 +76,33 @@ namespace R5T.Magyar
 
             return WasFound.From(exists, result);
         }
+
+        public static void ThrowExceptionIfNotFound<TValue, TException>(this WasFound<TValue> wasFound, Func<string> messageProvider, Func<string, TException> exceptionConstructor)
+            where TException : Exception
+        {
+            if (!wasFound)
+            {
+                var message = messageProvider();
+
+                var exception = exceptionConstructor(message);
+                throw exception;
+            }
+        }
+
+        public static void ThrowExceptionIfNotFound<TValue, TException>(this WasFound<TValue> wasFound, string message, Func<string, TException> exceptionConstructor)
+            where TException : Exception
+        {
+            wasFound.ThrowExceptionIfNotFound(() => message, exceptionConstructor);
+        }
+
+        public static void ThrowArgumentExceptionIfNotFound<TValue>(this WasFound<TValue> wasFound, string message)
+        {
+            wasFound.ThrowExceptionIfNotFound(message, ArgumentExceptionHelper.New);
+        }
+
+        public static void ThrowArgumentExceptionIfNotFound<TValue>(this WasFound<TValue> wasFound, Func<string> messageProvider)
+        {
+            wasFound.ThrowExceptionIfNotFound(messageProvider, ArgumentExceptionHelper.New);
+        }
     }
 }

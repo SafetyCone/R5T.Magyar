@@ -23,10 +23,16 @@ namespace R5T.Magyar
             return wasFound.zExists;
         }
 
+        public static implicit operator T(WasFound<T> wasFound)
+        {
+            return wasFound.Result;
+        }
+
         #endregion
 
 
         private bool zExists;
+
         [Obsolete("Use the implicit conversion of to bool instead.", false)]
         public bool Exists
         {
@@ -71,9 +77,15 @@ namespace R5T.Magyar
             return wasFound;
         }
 
+        public static WasFound<T> Found<T>(T value)
+        {
+            var wasFound = new WasFound<T>(true, value);
+            return wasFound;
+        }
+
         public static WasFound<T> NotFound<T>()
         {
-            var wasFound = new WasFound<T>(false, default(T));
+            var wasFound = new WasFound<T>(false, default);
             return wasFound;
         }
     }

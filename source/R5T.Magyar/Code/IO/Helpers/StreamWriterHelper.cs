@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 
 namespace R5T.Magyar.IO
@@ -47,6 +49,55 @@ namespace R5T.Magyar.IO
             // This constructor produces no BOM as proven in an ExaminingCSharp experiment.
             var output = new StreamWriter(stream);
             return output;
+        }
+
+        public static StreamWriter NewWrite(string filePath, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            var stream = FileStreamHelper.NewWrite(filePath, overwrite);
+
+            var output = StreamWriterHelper.NewCloseAfter(stream);
+            return output;
+        }
+
+        public static async Task WriteAllLinesOneByOne(StreamWriter writer, IEnumerable<string> lines)
+        {
+            foreach (var line in lines)
+            {
+                await writer.WriteLineAsync(line);
+            }
+        }
+
+        public static async Task WriteAllLinesOneByOne(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            using (var streamWriter = StreamWriterHelper.NewWrite(filePath, overwrite))
+            {
+                await StreamWriterHelper.WriteAllLinesOneByOne(streamWriter, lines);
+            }
+        }
+
+        public static Task WriteAllLines(StreamWriter writer, IEnumerable<string> lines, string lineSeparator)
+        {
+            var text = String.Join(lineSeparator, lines);
+
+            return writer.WriteAsync(text);
+        }
+
+        public static Task WriteAllLines(StreamWriter writer, IEnumerable<string> lines)
+        {
+            return StreamWriterHelper.WriteAllLines(writer, lines, Strings.NewLineForEnvironment);
+        }
+
+        public static async Task WriteAllLines(string filePath, IEnumerable<string> lines, string lineSeparator, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            using (var writer = StreamWriterHelper.NewWrite(filePath, overwrite))
+            {
+                await StreamWriterHelper.WriteAllLines(writer, lines, lineSeparator);
+            }
+        }
+
+        public static Task WriteAllLines(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            return StreamWriterHelper.WriteAllLines(filePath, lines, Strings.NewLineForEnvironment, overwrite);
         }
     }
 }

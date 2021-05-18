@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -40,6 +41,14 @@ namespace R5T.Magyar.IO
             File.Delete(filePath); // Idempotent, so ok.
         }
 
+        public static void DeleteOkIfNotExists(string filePath)
+        {
+            File.Delete(filePath); // Idempotent, so ok.
+        }
+
+        /// <summary>
+        /// Note, there is no system supported asynchrons method for testing file existence. :-( See: https://stackoverflow.com/questions/19076652/check-if-a-file-exists-async
+        /// </summary>
         public static bool Exists(string filePath)
         {
             var output = File.Exists(filePath);
@@ -68,10 +77,24 @@ namespace R5T.Magyar.IO
         /// <summary>
         /// Ease of use name for the <see cref="ActuallyReadAllLines(string)"/> method.
         /// </summary>
-        public static string[] ReadAllLines(string filePath)
+        public static string[] ReadAllLinesSynchronous(string filePath)
         {
             var lines = FileHelper.ActuallyReadAllLines(filePath);
             return lines;
+        }
+
+        public static Task<string[]> ReadAllLines(string filePath)
+        {
+            return StreamReaderHelper.ReadAllLines(filePath);
+        }
+
+        public static async Task<string> Read(string filePath)
+        {
+            using (var reader = StreamReaderHelper.New(filePath))
+            {
+                var output = await reader.ReadToEndAsync();
+                return output;
+            }
         }
 
         public static void HandleOverwrite(string filePath, bool overwrite)
@@ -79,6 +102,35 @@ namespace R5T.Magyar.IO
             if(overwrite)
             {
                 FileHelper.DeleteOnlyIfExists(filePath);
+            }
+        }
+
+        public static void ThrowIfExists(string filePath)
+        {
+            if(FileHelper.Exists(filePath))
+            {
+                throw new IOException($"File exists: {filePath}");
+            }
+        }
+
+        public static void ThrowIfExists(string filePath, bool overwrite)
+        {
+            if(!overwrite)
+            {
+                FileHelper.ThrowIfExists(filePath);
+            }
+        }
+
+        public static Task WriteAllLines(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            return StreamWriterHelper.WriteAllLines(filePath, lines, overwrite);
+        }
+
+        public static async Task Write(string filePath, string content, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            using (var writer = StreamWriterHelper.NewWrite(filePath, overwrite))
+            {
+                await writer.WriteAsync(content);
             }
         }
     }

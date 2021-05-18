@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+
+using R5T.Magyar.Extensions;
 
 
 namespace R5T.Magyar.IO
@@ -21,6 +25,69 @@ namespace R5T.Magyar.IO
         {
             var output = new StreamReader(stream, Encoding.UTF8, true, StreamReaderHelper.DefaultBufferSize, true);
             return output;
+        }
+
+        public static StreamReader New(Stream stream)
+        {
+            var output = new StreamReader(stream);
+            return output;
+        }
+
+        public static StreamReader New(string filePath)
+        {
+            var output = new StreamReader(filePath);
+            return output;
+        }
+
+        public static async Task<List<string>> ReadAllLinesOneByOne(StreamReader streamReader)
+        {
+            var lines = new List<string>();
+
+            var lineWasFound = await streamReader.ReadLineIsNotEnd();
+            while(lineWasFound)
+            {
+                lines.Add(lineWasFound);
+
+                lineWasFound = await streamReader.ReadLineIsNotEnd();
+            }
+
+            return lines;
+        }
+
+        public static async Task<List<string>> ReadAllLinesOneByOne(string filePath)
+        {
+            using (var streamReader = StreamReaderHelper.New(filePath))
+            {
+                var output = await StreamReaderHelper.ReadAllLinesOneByOne(streamReader);
+                return output;
+            }
+        }
+
+        public static async Task<string[]> ReadAllLines(StreamReader streamReader, string lineSeparator)
+        {
+            var allText = await streamReader.ReadToEndAsync();
+
+            var lines = allText.Split(lineSeparator);
+            return lines;
+        }
+
+        public static Task<string[]> ReadAllLines(StreamReader streamReader)
+        {
+            return StreamReaderHelper.ReadAllLines(streamReader, Strings.NewLineForEnvironment);
+        }
+
+        public static async Task<string[]> ReadAllLines(string filePath, string lineSeparator)
+        {
+            using (var streamReader = StreamReaderHelper.New(filePath))
+            {
+                var output = await StreamReaderHelper.ReadAllLines(streamReader, lineSeparator);
+                return output;
+            }
+        }
+
+        public static Task<string[]> ReadAllLines(string filePath)
+        {
+            return StreamReaderHelper.ReadAllLines(filePath, Strings.NewLineForEnvironment);
         }
     }
 }

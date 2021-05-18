@@ -133,5 +133,29 @@ namespace R5T.Magyar.Extensions
             var output = @string.Split(new string[] { separator }, stringSplitOptions);
             return output;
         }
+
+        public static string EncodeToBase64(this string @string)
+        {
+            var output = StringHelper.EncodeBase64(@string);
+            return output;
+        }
+
+        public static string DecodeFromBase64(this string @string)
+        {
+            var output = StringHelper.DecodeBase64(@string);
+            return output;
+        }
+
+        public static string EncodeToBase64Url(this string @string)
+        {
+            var output = StringHelper.EncodeBase64Url(@string);
+            return output;
+        }
+
+        public static string DecodeFromBase64Url(this string @string)
+        {
+            var output = StringHelper.DecodeBase64Url(@string);
+            return output;
+        }
     }
 }

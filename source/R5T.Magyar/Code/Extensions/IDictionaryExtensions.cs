@@ -1,0 +1,88 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+
+namespace R5T.Magyar
+{
+    using System.Collections.Generic;
+
+
+    public static class IDictionaryExtensions
+    {
+        public static DictionaryWrapper<TKey, TValue> Wrap<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        {
+            var wrapper = DictionaryWrapper.From(dictionary);
+            return wrapper;
+        }
+
+        public static async Task<TDictionary> WrapAs<TKey, TValue, TDictionary>(this Task<IDictionary<TKey, TValue>> gettingDictionary)
+            where TDictionary: class, IDictionary<TKey, TValue>
+        {
+            var dictionary = await gettingDictionary;
+
+            var wrapper = DictionaryWrapper.From(dictionary);
+            return wrapper as TDictionary;
+        }
+    }
+}
+
+
+namespace System.Collections.Generic
+{
+    using R5T.Magyar;
+
+
+    public static class IDictionaryExtensions
+    {
+        /// <summary>
+        /// Because the input <see cref="IDictionary{TKey, TValue}"/> is not an <see cref="IDistinctValuedDictionary{TKey, TValue}"/>, duplicate value handling must be specified.
+        /// </summary>
+        public static Dictionary<TValue, TKey> Invert<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+            DuplicateValueHandling duplicateValueHandling = DuplicateValueHandling.Error)
+        {
+            var output = new Dictionary<TValue, TKey>();
+
+            foreach (var pair in dictionary)
+            {
+                var key = pair.Value;
+                var value = pair.Key;
+
+                if (output.ContainsKey(key))
+                {
+                    var existing = output[key];
+                    var chosen = duplicateValueHandling.Choose(existing, value);
+
+                    output[key] = chosen;
+                }
+                else
+                {
+                    output.Add(key, value);
+                }
+            }
+
+            return output;
+        }
+
+        public static IDistinctValuedDictionary<TKey, TValue> AsDistinctValued<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        {
+            return dictionary.Wrap();
+        }
+
+        public static async Task<IDistinctValuedDictionary<TKey, TValue>> AsDistinctValued<TKey, TValue>(this Task<IDictionary<TKey, TValue>> gettingDictionary)
+        {
+            var dictionary = await gettingDictionary;
+
+            return dictionary.Wrap();
+        }
+
+        public static IDistinctValuedDictionary<TKey, TValue> ToDistinctValued<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TValue> valueEqualityComparer)
+        {
+            // Verify that the values are distinct (exception will be thrown if not).
+            dictionary.Values.VerifyDistinct(valueEqualityComparer);
+
+            // Input passes, so just wrap it.
+            return dictionary.Wrap();
+        }
+    }
+}

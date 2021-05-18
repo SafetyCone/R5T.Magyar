@@ -12,5 +12,13 @@ namespace R5T.Magyar.Extensions
             var output = strings.OrderBy(x => x);
             return output;
         }
+
+        public static string CommaSeparatorJoin(this IEnumerable<string> strings)
+        {
+            var separator = $"{Characters.Comma}{Characters.Space}";
+
+            var joined = String.Join(separator, strings);
+            return joined;
+        }
     }
 }

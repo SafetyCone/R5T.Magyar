@@ -11,15 +11,21 @@ namespace System
         public const string At = "@";
         public const string Backslash = @"\";
         public const string Colon = ":";
+        public const string DoubleEquals = "==";
         public const string DoubleSlash = "//";
         public const string Ellipsis = "...";
         public const string Empty = ""; // Constant, as opposed to String.Empty, which is static readonly. Constants can be used as default parameter values.
         public const string Hash = "#";
         public const string Null = null;
+        public const string NewLineForWindows = "\r\n";
+        public const string NewLineForNonWindows = "\n";
         public const string QuestionMark = "?";
         public const string Space = " ";
         public const string Slash = "/";
         public const string Tab = "\t";
+
+
+        public static string NewLineForEnvironment => Environment.NewLine;
 
 
         /// <summary>
