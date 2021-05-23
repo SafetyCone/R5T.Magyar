@@ -23,3 +23,18 @@ namespace System.Threading.Tasks
         }
     }
 }
+
+
+namespace R5T.Magyar
+{
+    using System.Threading.Tasks;
+
+
+    public static class TaskExtensions
+    {
+        public static Task<T> AsTask<T>(this T value)
+        {
+            return Task.FromResult(value);
+        }
+    }
+}

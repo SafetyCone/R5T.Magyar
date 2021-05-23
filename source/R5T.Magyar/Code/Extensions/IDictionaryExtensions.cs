@@ -1,15 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 
 namespace R5T.Magyar
 {
+    using System.Collections;
     using System.Collections.Generic;
 
 
     public static class IDictionaryExtensions
     {
+        public static IEnumerable<KeyValuePair<object, object>> AsObjectKeyValuePairEnumerable(this IDictionary dictionary)
+        {
+            var dictionaryEnumerator = dictionary.GetEnumerator();
+            while(dictionaryEnumerator.MoveNext())
+            {
+                yield return new KeyValuePair<object, object>(dictionaryEnumerator.Key, dictionaryEnumerator.Value);
+            }
+        }
+
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IDictionary dictionary,
+            Func<object, TKey> keyConverter,
+            Func<object, TValue> valueConverter)
+        {
+            var pairs = dictionary.AsObjectKeyValuePairEnumerable();
+
+            var output = pairs.ToDictionary(
+                pair => keyConverter(pair.Key),
+                pair => valueConverter(pair.Value));
+            
+            return output;
+        }
+
         public static DictionaryWrapper<TKey, TValue> Wrap<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
         {
             var wrapper = DictionaryWrapper.From(dictionary);

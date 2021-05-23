@@ -11,6 +11,7 @@ namespace System
         public const string At = "@";
         public const string Backslash = @"\";
         public const string Colon = ":";
+        public const string DoubleDot = "..";
         public const string DoubleEquals = "==";
         public const string DoubleSlash = "//";
         public const string Ellipsis = "...";
