@@ -20,6 +20,7 @@ namespace System
         public const string Null = null;
         public const string NewLineForWindows = "\r\n";
         public const string NewLineForNonWindows = "\n";
+        public const string Period = ".";
         public const string QuestionMark = "?";
         public const string Space = " ";
         public const string Slash = "/";
