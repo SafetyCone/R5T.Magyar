@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
+using R5T.Magyar;
 using R5T.Magyar.Base64Url;
 using R5T.Magyar.Extensions;
 
 
-namespace R5T.Magyar
+namespace System
 {
     public static class StringHelper
     {
@@ -34,9 +36,27 @@ namespace R5T.Magyar
             return output;
         }
 
+        public static string Join(string separator, params string[] values)
+        {
+            var output = String.Join(separator, values);
+            return output;
+        }
+
+        public static string Join(string separator, IEnumerable<string> values)
+        {
+            var output = String.Join(separator, values);
+            return output;
+        }
+
         public static string Repeat(string value, int numberOfTimes)
         {
             var output = value.Repeat(numberOfTimes);
+            return output;
+        }
+
+        public static string[] Split(string separator, string value)
+        {
+            var output = value.Split(separator);
             return output;
         }
 
