@@ -5,6 +5,18 @@ namespace System.Threading.Tasks
 {
     public static class TaskHelper
     {
+        public static Func<TInput, Task<TOutput>> MakeAsynchronous<TInput, TOutput>(this Func<TInput, TOutput> synchronousFunction)
+        {
+            Task<TOutput> AsynchronousFunction(TInput input)
+            {
+                var output = synchronousFunction(input);
+
+                return Task.FromResult(output);
+            }
+
+            return AsynchronousFunction;
+        }
+
         public static async Task<(T1 Task1Result, T2 Task2Result, T3 Task3Result)> WhenAll<T1, T2, T3>(Func<Task<T1>> t1Task, Func<Task<T2>> t2Task, Func<Task<T3>> t3Task)
         {
             var gettingT1 = t1Task();

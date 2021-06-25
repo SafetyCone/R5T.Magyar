@@ -230,7 +230,7 @@ namespace System.Collections.Generic
             return enumerable.VerifySortedAscending(Comparer<T>.Default, EqualityComparer<T>.Default);
         }
 
-        public static ISortedAscendingEnumerable<T> EnsureSortedAscending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        public static ISortedAscendingEnumerable<T> EnsureSortedAscending<T>(this IEnumerable<T> enumerable, IComparer<T> _0, IEqualityComparer<T> _1)
         {
             var sortedAscendingEnumerable = enumerable.ToSortedAscending();
             return sortedAscendingEnumerable;
@@ -286,7 +286,7 @@ namespace System.Collections.Generic
             return enumerable.VerifySortedDescending(Comparer<T>.Default, EqualityComparer<T>.Default);
         }
 
-        public static ISortedDescendingEnumerable<T> EnsureSortedDescending<T>(this IEnumerable<T> enumerable, IComparer<T> comparer, IEqualityComparer<T> equalityComparer)
+        public static ISortedDescendingEnumerable<T> EnsureSortedDescending<T>(this IEnumerable<T> enumerable, IComparer<T> _0, IEqualityComparer<T> _1)
         {
             var sortedDescendingEnumerable = enumerable.ToSortedDescending();
             return sortedDescendingEnumerable;
@@ -304,7 +304,7 @@ namespace System.Collections.Generic
         /// <summary>
         /// Chooses ascending is the default sort order.
         /// </summary>
-        public static ISortedEnumerable<T> ToSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
+        public static ISortedEnumerable<T> ToSorted<T>(this IEnumerable<T> enumerable, IComparer<T> _)
         {
             return enumerable.ToSortedAscending();
         }
@@ -530,7 +530,7 @@ namespace System.Linq
                     var elementsAreEqual = equalityComparer.Equals(xEnumerator.Current, yEnumerator.Current);
                     if(!elementsAreEqual)
                     {
-                        var message = $"Element difference at index {xCount - 1}:\nX:\n{xEnumerator.Current.ToString()}\nY:\n{yEnumerator.Current.ToString()}";
+                        var message = $"Element difference at index {xCount - 1}:\nX:\n{xEnumerator.Current}\nY:\n{yEnumerator.Current}";
                         await messageHandler(message);
 
                         areEqual = false;
@@ -567,7 +567,7 @@ namespace System.Linq
 
                     foreach (var element in missingFromX)
                     {
-                        missingFromXBuilder.Append($"\n{element.ToString()}");
+                        missingFromXBuilder.Append($"\n{element}");
                     }
                 }
 
@@ -578,7 +578,7 @@ namespace System.Linq
 
                     foreach (var element in missingFromY)
                     {
-                        missingFromYBuilder.Append($"\n{element.ToString()}");
+                        missingFromYBuilder.Append($"\n{element}");
                     }
                 }
 
@@ -602,6 +602,12 @@ namespace System.Linq
             }
             
             return setEquals;
+        }
+
+        public static IEnumerable<T> SkipFirst<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.Skip(1);
+            return output;
         }
     }
 }

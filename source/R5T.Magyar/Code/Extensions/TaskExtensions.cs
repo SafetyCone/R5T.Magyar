@@ -21,6 +21,15 @@ namespace System.Threading.Tasks
             var output = input as TOut;
             return output;
         }
+
+        public static async Task<(T, T1, T2)> WhenAlso<T, T1, T2>(this Task<T> gettingT, Task<T1> gettingT1, Task<T2> gettingT2)
+        {
+            var t = await gettingT;
+            var t1 = await gettingT1;
+            var t2 = await gettingT2;
+
+            return (t, t1, t2);
+        }
     }
 }
 

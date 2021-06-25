@@ -2,6 +2,29 @@
 using System.Collections.Generic;
 
 
+namespace System
+{
+    public static class ObjectExtensions
+    { 
+        public static TIn As<TIn, T>(this TIn value, Action<T> action)
+            where T : class
+        {
+            var valueAsT = value as T;
+
+            action(valueAsT);
+
+            return value;
+        }
+
+        public static T For<T>(this T value, Action<T> action)
+        {
+            action(value);
+
+            return value;
+        }
+    }
+}
+
 namespace R5T.Magyar.Extensions
 {
     public static class ObjectExtensions
