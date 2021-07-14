@@ -50,6 +50,18 @@ namespace R5T.Magyar
             return values;
         }
 
+        public static bool IsEmpty<T>(this T[] array)
+        {
+            var output = array.Length < 1;
+            return output;
+        }
+
+        public static bool IsNullOrEmpty<T>(this T[] array)
+        {
+            var output = array is null || array.IsEmpty();
+            return output;
+        }
+
         public static T[] NewEmpty<T>()
         {
             return new T[] { };

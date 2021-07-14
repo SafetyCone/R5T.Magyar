@@ -6,9 +6,15 @@ namespace System
 {
     public static class StringExtensions
     {
+        public static bool IsNullOrEmpty(this string @string)
+        {
+            var output = String.IsNullOrEmpty(@string);
+            return output;
+        }
+
         public static bool IsNonNullOrEmpty(this string @string)
         {
-            var output = !@String.IsNullOrEmpty(@string);
+            var output = !String.IsNullOrEmpty(@string);
             return output;
         }
     }
