@@ -8,6 +8,7 @@ namespace System
         public const char Comma = ',';
         public new const char Equals = '=';
         public const char Minus = '-';
+        public static char Period => '.';
         public const char Plus = '+';
         public const char Slash = '/';
         public const char Space = ' ';

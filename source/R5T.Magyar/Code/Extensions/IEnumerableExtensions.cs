@@ -9,7 +9,7 @@ namespace R5T.Magyar
 {
     public static class IEnumerableExtensions
     {
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, T value)
+        public static IEnumerable<T> Append2<T>(this IEnumerable<T> enumerable, T value)
         {
             foreach (var item in enumerable)
             {
@@ -38,12 +38,35 @@ namespace R5T.Magyar
             }
         }
 
+        public static bool AnyDuplicates<T>(this IEnumerable<T> items)
+        {
+            var anyDuplicates = items.GetDuplicates().Any();
+            return anyDuplicates;
+        }
+
+        public static IEnumerable<T> GetDuplicates<T>(this IEnumerable<T> items)
+        {
+            var output = items
+                .GroupBy(item => item)
+                .Where(group => group.Count() > 1)
+                .Select(group => group.Key)
+                ;
+
+            return output;
+        }
+
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
         {
             var count = enumerable.Count();
 
             var isEmpty = count < 1;
             return isEmpty;
+        }
+
+        public static bool None<T>(this IEnumerable<T> enumerable)
+        {
+            var output = !enumerable.Any();
+            return output;
         }
 
         /// <summary>
@@ -80,6 +103,17 @@ namespace System.Collections.Generic
 
     public static class IEnumerableExtensions
     {
+        public static void For<T>(this IEnumerable<T> enumerable, Action<T, int> actionWithIndex)
+        {
+            var index = 0;
+            foreach (var item in enumerable)
+            {
+                actionWithIndex(item, index);
+
+                index++;
+            }
+        }
+
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             foreach (var item in enumerable)
@@ -377,6 +411,39 @@ namespace System.Linq
 
     public static class IEnumerableExtensions
     {
+        public static WasFound<T[]> AnyMissing<T>(this IEnumerable<T> required, IEnumerable<T> available)
+        {
+            var theMissing = required.Except(available).ToArray();
+
+            var anyMissing = theMissing.Any();
+
+            var output = WasFound.From(anyMissing, theMissing);
+            return output;
+        }
+
+        public static bool AreUnique<T>(this IEnumerable<T> items)
+        {
+            var itemCount = items.Count();
+
+            var uniqueItemCount = items.Distinct().Count();
+
+            var output = uniqueItemCount == itemCount;
+            return output;
+        }
+
+        public static bool ContainsAll<T>(this IEnumerable<T> superset, IEnumerable<T> subset)
+        {
+            var output = subset.Except(superset).None();
+            return output;
+        }
+
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> items, T item)
+            where T : IEquatable<T>
+        {
+            var output = items.Where(x => !x.Equals(item));
+            return output;
+        }
+
         public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int nElements)
         {
             return enumerable.Take(nElements);
@@ -484,6 +551,21 @@ namespace System.Linq
             return minimum;
         }
 
+        /// <summary>
+        /// Selects array as the preferred data structure for an evaluated enumerable.
+        /// </summary>
+        public static T[] Now<T>(this IEnumerable<T> items)
+        {
+            var output = items.ToArray();
+            return output;
+        }
+
+        public static IEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
+        {
+            var output = items.OrderBy(keySelector);
+            return output;
+        }
+
         public static IEnumerable<TResult> SelectIncludeNulls<T, TResult>(this IEnumerable<T> items, Func<T, TResult> selector, bool includeNulls = false)
             where TResult: class
         {
@@ -497,7 +579,7 @@ namespace System.Linq
             else
             {
                 var selectedItemsWithoutNull = selectedItemsWithNull
-                    .Where(x => NullHelper.NotNull(x));
+                    .Where(x => NullHelper.IsNonNull(x));
 
                 return selectedItemsWithoutNull;
             }

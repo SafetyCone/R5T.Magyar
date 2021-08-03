@@ -12,6 +12,11 @@ namespace System
             return Words.No;
         }
 
+        public static string Null(this IWord _)
+        {
+            return Words.Null;
+        }
+
         public static string Yes(this IWord _)
         {
             return Words.Yes;

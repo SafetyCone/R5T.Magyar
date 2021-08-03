@@ -31,7 +31,7 @@ namespace R5T.Magyar
         #endregion
 
 
-        private bool zExists;
+        private readonly bool zExists;
 
         [Obsolete("Use the implicit conversion of to bool instead.", false)]
         public bool Exists

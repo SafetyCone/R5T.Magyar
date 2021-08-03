@@ -21,6 +21,35 @@ namespace System
 }
 
 
+namespace System.Linq
+{
+    using System.Collections.Generic;
+
+
+    public static class StringExtensions
+    {
+        public static IEnumerable<string> OrderAlphabetically(this IEnumerable<string> items)
+        {
+            var output = items.OrderBy(x => x);
+            return output;
+        }
+    }
+}
+
+
+namespace R5T.Magyar
+{
+    public static class StringExtensions
+    {
+        public static bool BeginsWith(this string @string, string subString)
+        {
+            var output = @string.Substring(0, subString.Length) == subString;
+            return output;
+        }
+    }
+}
+
+
 namespace R5T.Magyar.Extensions
 {
     public static class StringExtensions

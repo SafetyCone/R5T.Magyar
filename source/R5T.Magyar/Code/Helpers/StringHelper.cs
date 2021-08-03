@@ -21,6 +21,12 @@ namespace System
         public const int IndexOfNotFound = -1;
 
 
+        public static string Enquote(string value)
+        {
+            var output = $"\"{value}\"";
+            return output;
+        }
+
         /// <summary>
         /// Useful for testing the return value of the <see cref="String.IndexOf(string)"/> method to see if the search string was found.
         /// </summary>
@@ -45,6 +51,17 @@ namespace System
         public static string Join(string separator, IEnumerable<string> values)
         {
             var output = String.Join(separator, values);
+            return output;
+        }
+
+        public static string NullIfNull(string value)
+        {
+            var isNull = value is null;
+
+            var output = isNull
+                ? $"<{Instances.Word.Null()}>"
+                : value;
+
             return output;
         }
 
@@ -119,5 +136,11 @@ namespace System
         }
 
         #endregion
+
+        public static string FormatAsTwoDigits(int value)
+        {
+            var output = $"{value:00}";
+            return output;
+        }
     }
 }

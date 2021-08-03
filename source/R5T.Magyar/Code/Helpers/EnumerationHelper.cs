@@ -117,7 +117,7 @@ namespace R5T.Magyar
         public static string UnexpectedEnumerationValueMessage<TEnum>(TEnum unexpectedValue)
             where TEnum : Enum
         {
-            var output = $@"Unexpected enumeration value: '{unexpectedValue.ToString()}' for enumeration type {typeof(TEnum).FullName}";
+            var output = $@"Unexpected enumeration value: '{unexpectedValue}' for enumeration type {typeof(TEnum).FullName}";
             return output;
         }
 
@@ -134,6 +134,7 @@ namespace R5T.Magyar
 
         /// <summary>
         /// Produces an exception for use in the default case of a switch statement based on values of the <typeparamref name="TEnum"/> enumeration.
+        /// Note: there is no method just throwing the exception, as the VS linter does not detect that a method call will always produce an exception, and thus demands that switch default case behavior cannot fall through one default case to another. The throw keyword in the switch default case must be present.
         /// </summary>
         public static UnexpectedEnumerationValueException<TEnum> SwitchDefaultCaseException<TEnum>(TEnum value)
             where TEnum : Enum

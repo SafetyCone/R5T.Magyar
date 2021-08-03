@@ -22,5 +22,21 @@ namespace R5T.Magyar
         {
             // Do nothing.
         }
+
+        public static void Run(Action action)
+        {
+            if(action is object)
+            {
+                action();
+            }
+        }
+
+        public static void Run<T>(Action<T> action, T value)
+        {
+            if(action is object)
+            {
+                action(value);
+            }
+        }
     }
 }

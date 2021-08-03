@@ -21,7 +21,7 @@ namespace R5T.Magyar
             return notNull;
         }
 
-        public static bool NotNull<T>(T value)
+        public static bool IsNonNull<T>(T value)
             where T : class
         {
             var notNull = value != null;
