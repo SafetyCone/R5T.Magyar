@@ -449,6 +449,30 @@ namespace System.Linq
             return enumerable.Take(nElements);
         }
 
+        public static WasFound<T> GetPriorAlphabeticalElement<T>(this IEnumerable<T> elements, Func<T, string> keySelector, string key)
+        {
+            var element = elements
+                .OrderAlphabetically(keySelector)
+                .Where(x => StringHelper.IsLessThan(keySelector(x), key))
+                .LastOrDefault()
+                ;
+
+            var wasFound = WasFound.From(element);
+            return wasFound;
+        }
+
+        public static WasFound<T> GetPostAlphabeticalElement<T>(this IEnumerable<T> elements, Func<T, string> keySelector, string key)
+        {
+            var element = elements
+                .OrderAlphabetically(keySelector)
+                .Where(x => StringHelper.IsGreaterThan(keySelector(x), key))
+                .FirstOrDefault()
+                ;
+
+            var wasFound = WasFound.From(element);
+            return wasFound;
+        }
+
         public static T MaxOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue)
         {
             var maxOrDefault = enumerable.Any()

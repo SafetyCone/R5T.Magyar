@@ -33,7 +33,7 @@ namespace R5T.Magyar
 
         private readonly bool zExists;
 
-        [Obsolete("Use the implicit conversion of to bool instead.", false)]
+        //[Obsolete("Use the implicit conversion of to bool instead.", false)]
         public bool Exists
         {
             get
@@ -52,6 +52,12 @@ namespace R5T.Magyar
         {
             this.zExists = exists;
             this.Result = result;
+        }
+
+        public override string ToString()
+        {
+            var representation = $"{this.Exists}, {this.Result}";
+            return representation;
         }
     }
 

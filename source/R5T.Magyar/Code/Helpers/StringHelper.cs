@@ -36,6 +36,24 @@ namespace System
             return isFound;
         }
 
+        /// <summary>
+        /// <paramref name="rhs"/> is less than <paramref name="lhs"/>.
+        /// </summary>
+        public static bool IsGreaterThan(string lhs, string rhs)
+        {
+            var output = lhs.CompareTo(rhs) > 0;
+            return output;
+        }
+
+        /// <summary>
+        /// <paramref name="lhs"/> is less than <paramref name="rhs"/>.
+        /// </summary>
+        public static bool IsLessThan(string lhs, string rhs)
+        {
+            var output = lhs.CompareTo(rhs) < 0;
+            return output;
+        }
+
         public static bool IsValid(string value)
         {
             var output = value != StringHelper.Invalid;
