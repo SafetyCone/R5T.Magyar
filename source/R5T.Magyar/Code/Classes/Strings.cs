@@ -32,6 +32,7 @@ namespace System
         public const string Percent = "%";
         public const string Period = ".";
         public const string QuestionMark = "?";
+        public const string S_LowerCase = "s";
         public const string Space = " ";
         public const string Slash = "/";
         public const string Tab = "\t";

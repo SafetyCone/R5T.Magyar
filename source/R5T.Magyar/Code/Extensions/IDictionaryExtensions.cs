@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using R5T.Magyar;
+
 
 namespace R5T.Magyar
 {
-    using System.Collections;
-    using System.Collections.Generic;
-
-
     public static class IDictionaryExtensions
     {
         public static IEnumerable<KeyValuePair<object, object>> AsObjectKeyValuePairEnumerable(this IDictionary dictionary)
@@ -54,9 +54,6 @@ namespace R5T.Magyar
 
 namespace System.Collections.Generic
 {
-    using R5T.Magyar;
-
-
     public static class IDictionaryExtensions
     {
         /// <summary>
@@ -107,6 +104,22 @@ namespace System.Collections.Generic
 
             // Input passes, so just wrap it.
             return dictionary.Wrap();
+        }
+    }
+}
+
+
+namespace System
+{
+    public static class IDictionaryExtensions
+    {
+        public static TValue AddAndReturnValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+            TKey key,
+            TValue value)
+        {
+            dictionary.Add(key, value);
+
+            return value;
         }
     }
 }
