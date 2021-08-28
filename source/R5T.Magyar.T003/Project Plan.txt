@@ -1,0 +1,3 @@
+R5T.Magyar.T003 - IWord extension method base types.
+
+Goals

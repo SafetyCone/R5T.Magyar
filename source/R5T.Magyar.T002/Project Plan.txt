@@ -1,0 +1,3 @@
+R5T.Magyar.T002 - IExceptionMessageGenerator and IExceptionGenerator extension method base types.
+
+Goals

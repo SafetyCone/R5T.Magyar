@@ -121,5 +121,17 @@ namespace System
 
             return value;
         }
+
+        public static void AddUniqueValueByKey<TKey, TValue>(this IDictionary<TKey, HashSet<TValue>> uniqueValuesByKey,
+            TKey key,
+            TValue value)
+        {
+            var uniqueValues = uniqueValuesByKey.ContainsKey(key)
+                ? uniqueValuesByKey[key]
+                : uniqueValuesByKey.AddAndReturnValue(key, new HashSet<TValue>())
+                ;
+
+            uniqueValues.Add(value);
+        }
     }
 }

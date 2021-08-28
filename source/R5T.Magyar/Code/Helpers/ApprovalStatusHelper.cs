@@ -60,7 +60,7 @@ namespace R5T.Magyar
         {
             var message = ApprovalStatusHelper.GetApprovalWasStillPendingExceptionMessage();
 
-            var argumentNameIsNotEmpty = Strings.IsNotEmpty(argumentName);
+            var argumentNameIsNotEmpty = StringHelper.IsNotEmpty(argumentName);
 
             var exception = argumentNameIsNotEmpty
                 ? new ArgumentException(message, argumentName)

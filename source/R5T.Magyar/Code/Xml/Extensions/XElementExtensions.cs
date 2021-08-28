@@ -190,7 +190,7 @@ namespace R5T.Magyar.Xml
 
         public static bool HasElement(this XElement xElement, XName name)
         {
-            var hasElement = xElement.HasElement(name, out var dummy);
+            var hasElement = xElement.HasElement(name, out var _);
             return hasElement;
         }
 

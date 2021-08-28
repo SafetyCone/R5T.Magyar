@@ -21,6 +21,20 @@ namespace System
         public const int IndexOfNotFound = -1;
 
 
+        public static bool BeginsWith(
+            string @string,
+            string beginning)
+        {
+            var stringIsTooShort = @string.Length < beginning.Length;
+            if (stringIsTooShort)
+            {
+                return false;
+            }
+
+            var output = @string.Substring(0, beginning.Length) == beginning;
+            return output;
+        }
+
         public static string Enquote(string value)
         {
             var output = $"\"{value}\"";
@@ -77,7 +91,7 @@ namespace System
             var isNull = value is null;
 
             var output = isNull
-                ? $"<{Instances.Word.Null()}>"
+                ? $"<{Words.Null}>"
                 : value;
 
             return output;
@@ -158,6 +172,48 @@ namespace System
         public static string FormatAsTwoDigits(int value)
         {
             var output = $"{value:00}";
+            return output;
+        }
+
+        /// <summary>
+        /// Determines if the input is specifically the <see cref="Strings.Empty"/> string.
+        /// </summary>
+        public static bool IsEmpty(string value)
+        {
+            var isEmpty = value == Strings.Empty;
+            return isEmpty;
+        }
+
+        /// <summary>
+        /// Determines if the input is specifically *not* the <see cref="Strings.Empty"/> string.
+        /// </summary>
+        public static bool IsNotEmpty(string value)
+        {
+            var isEmpty = !StringHelper.IsEmpty(value);
+            return isEmpty;
+        }
+
+        /// <summary>
+        /// Determines if the input is specifically the <see cref="Strings.Null"/> string.
+        /// </summary>
+        public static bool IsNull(string value)
+        {
+            var isEmpty = value == Strings.Null;
+            return isEmpty;
+        }
+
+        /// <summary>
+        /// Determines if the input is specifically *not* the <see cref="Strings.Null"/> string.
+        /// </summary>
+        public static bool IsNotNull(string value)
+        {
+            var isEmpty = !StringHelper.IsNull(value);
+            return isEmpty;
+        }
+
+        public static bool IsNotNullOrEmpty(string value)
+        {
+            var output = !String.IsNullOrEmpty(value);
             return output;
         }
     }

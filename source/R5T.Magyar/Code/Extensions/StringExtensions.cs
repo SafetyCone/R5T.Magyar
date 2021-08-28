@@ -6,6 +6,33 @@ namespace System
 {
     public static class StringExtensions
     {
+        public static string BeginningByIndex(this string @string,
+            int index)
+        {
+            var output = @string.Substring(0, index);
+            return output;
+        }
+
+        public static string Beginning(this string @string,
+            int index)
+        {
+            var output = @string.BeginningByIndex(index);
+            return output;
+        }
+
+        public static bool BeginsWith(this string @string,
+            string beginning)
+        {
+            var output = StringHelper.BeginsWith(@string, beginning);
+            return output;
+        }
+
+        public static string ExceptFirst(this string @string)
+        {
+            var output = @string.Substring(1);
+            return output;
+        }
+
         public static bool IsNullOrEmpty(this string @string)
         {
             var output = String.IsNullOrEmpty(@string);
@@ -41,11 +68,7 @@ namespace R5T.Magyar
 {
     public static class StringExtensions
     {
-        public static bool BeginsWith(this string @string, string subString)
-        {
-            var output = @string.Substring(0, subString.Length) == subString;
-            return output;
-        }
+        
     }
 }
 

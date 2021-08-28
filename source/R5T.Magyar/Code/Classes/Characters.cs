@@ -5,13 +5,14 @@ namespace System
 {
     public static class Characters
     {
-        public const char Comma = ',';
-        public new const char Equals = '=';
-        public const char Minus = '-';
+        public static char Backslash => '\\';
+        public static char Comma => ',';
+        public new static char Equals => '=';
+        public static char Minus => '-';
         public static char Period => '.';
-        public const char Plus = '+';
-        public const char Slash = '/';
-        public const char Space = ' ';
-        public const char Underscore = '_';
+        public static char Plus => '+';
+        public static char Slash => '/';
+        public static char Space => ' ';
+        public static char Underscore => '_';
     }
 }

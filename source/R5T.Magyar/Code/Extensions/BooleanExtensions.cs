@@ -11,8 +11,8 @@ namespace System
         public static string YesOrNo(this bool value)
         {
             var output = value
-                ? Instances.Word.Yes()
-                : Instances.Word.No();
+                ? Words.Yes
+                : Words.No;
 
             return output;
         }

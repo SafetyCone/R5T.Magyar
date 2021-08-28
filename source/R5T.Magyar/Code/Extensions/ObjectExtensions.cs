@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace System
+namespace R5T.Magyar
 {
     public static class ObjectExtensions
     { 

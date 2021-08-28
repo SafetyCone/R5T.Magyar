@@ -19,6 +19,12 @@ namespace R5T.Magyar
             yield return value;
         }
 
+        public static IEnumerable<T> ExceptFirst<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.Skip(1);
+            return output;
+        }
+
         public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable)
         {
             var output = enumerable.ExceptLast(1);

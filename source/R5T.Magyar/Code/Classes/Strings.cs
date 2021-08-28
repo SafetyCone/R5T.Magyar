@@ -14,6 +14,8 @@ namespace System
         public const string CloseBracket = "]";
         public const string CloseParenthesis = ")";
         public const string Colon = ":";
+        public static string Comma => ",";
+        public static string CommaSeparatedListSpacedSeparator => ", ";
         public const string DoubleDot = "..";
         public const string DoubleEquals = "==";
         public const string DoubleSlash = "//";
@@ -40,42 +42,5 @@ namespace System
 
 
         public static string NewLineForEnvironment => Environment.NewLine;
-
-
-        /// <summary>
-        /// Determines if the input is specifically the <see cref="Strings.Empty"/> string.
-        /// </summary>
-        public static bool IsEmpty(string value)
-        {
-            var isEmpty = value == Strings.Empty;
-            return isEmpty;
-        }
-
-        /// <summary>
-        /// Determines if the input is specifically *not* the <see cref="Strings.Empty"/> string.
-        /// </summary>
-        public static bool IsNotEmpty(string value)
-        {
-            var isEmpty = !Strings.IsEmpty(value);
-            return isEmpty;
-        }
-
-        /// <summary>
-        /// Determines if the input is specifically the <see cref="Strings.Null"/> string.
-        /// </summary>
-        public static bool IsNull(string value)
-        {
-            var isEmpty = value == Strings.Null;
-            return isEmpty;
-        }
-
-        /// <summary>
-        /// Determines if the input is specifically *not* the <see cref="Strings.Null"/> string.
-        /// </summary>
-        public static bool IsNotNull(string value)
-        {
-            var isEmpty = !Strings.IsNull(value);
-            return isEmpty;
-        }
     }
 }

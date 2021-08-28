@@ -1,12 +1,15 @@
 using System;
 
+using R5T.T0039.T002;
 
-namespace R5T.Magyar
+
+namespace R5T.Magyar.T001
 {
     /// <summary>
     /// Empty interface as base for extension methods.
     /// </summary>
-    public interface IWord
+    [ExtensionMethodBaseMarker]
+    public interface IModiferGenerator
     {
     }
 }

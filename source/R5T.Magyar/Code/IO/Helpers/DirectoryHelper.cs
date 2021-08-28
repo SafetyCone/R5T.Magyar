@@ -81,6 +81,14 @@ namespace R5T.Magyar.IO
             }
         }
 
+        public static IDistinctEnumerable<string> EnumerateFilePaths(
+            string directoryPath,
+            string searchPattern)
+        {
+            var output = Directory.EnumerateFiles(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
+            return output.AsDistinct();
+        }
+
         /// <summary>
         /// Note, there is no System.IO asynchronous directory contents enumeration functionality. So must be synchronous.
         /// </summary>

@@ -1,11 +1,12 @@
 using System;
 
 using R5T.Magyar;
+using R5T.Magyar.T003;
 
 
 namespace System
 {
-    public static class WordExtensions
+    public static class IWordExtensions
     {
         public static string No(this IWord _)
         {
@@ -15,6 +16,11 @@ namespace System
         public static string Null(this IWord _)
         {
             return Words.Null;
+        }
+
+        public static string Unspecified(this IWord _)
+        {
+            return Words.Unspecified;
         }
 
         public static string Yes(this IWord _)

@@ -1,17 +1,17 @@
 using System;
 
 
-namespace R5T.Magyar
+namespace R5T.Magyar.T003
 {
     /// <summary>
     /// Empty implementation as base for extension methods.
     /// </summary>
-    public class ModiferGenerator : IModiferGenerator
+    public class Word : IWord
     {
         #region Static
-
-        public static ModiferGenerator Instance { get; } = new ModiferGenerator();
-
+        
+        public static Word Instance { get; } = new Word();
+        
         #endregion
     }
 }

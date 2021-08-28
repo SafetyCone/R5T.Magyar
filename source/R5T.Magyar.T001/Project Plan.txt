@@ -1,0 +1,3 @@
+R5T.Magyar.T001 - Basic extension method base types.
+
+Goals

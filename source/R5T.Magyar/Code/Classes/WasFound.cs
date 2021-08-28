@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace R5T.Magyar
@@ -63,6 +64,12 @@ namespace R5T.Magyar
 
     public static class WasFound
     {
+        public static WasFound<T> Found<T>(T value)
+        {
+            var wasFound = new WasFound<T>(true, value);
+            return wasFound;
+        }
+
         /// <summary>
         /// Default assumes a reference type.
         /// </summary>
@@ -83,10 +90,12 @@ namespace R5T.Magyar
             return wasFound;
         }
 
-        public static WasFound<T> Found<T>(T value)
+        public static WasFound<T[]> FromArray<T>(T[] result)
         {
-            var wasFound = new WasFound<T>(true, value);
-            return wasFound;
+            var exists = result is object && result.Any();
+
+            var output = new WasFound<T[]>(exists, result);
+            return output;
         }
 
         public static WasFound<T> NotFound<T>()
