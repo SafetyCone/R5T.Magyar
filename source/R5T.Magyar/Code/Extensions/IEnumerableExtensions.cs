@@ -427,6 +427,11 @@ namespace System.Linq
             return output;
         }
 
+        public static IEnumerable<T> AppendRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
+        {
+            return enumerable.Concat(appendix);
+        }
+
         public static bool AreUnique<T>(this IEnumerable<T> items)
         {
             var itemCount = items.Count();

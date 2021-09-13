@@ -16,6 +16,14 @@ namespace System
             return output;
         }
 
+        public static void Run<T>(Action<T> action, T value)
+        {
+            if (action is object)
+            {
+                action(value);
+            }
+        }
+
         public static Task Run<T>(Func<T, Task> action, Func<T> valueGenerator)
         {
             if( action is object)

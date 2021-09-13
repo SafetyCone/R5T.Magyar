@@ -27,7 +27,10 @@ namespace System
             return output;
         }
 
-        public static string ExceptFirst(this string @string)
+        /// <summary>
+        /// Provides the input string, but without its first character.
+        /// </summary>
+        public static string ExceptFirstCharacter(this string @string)
         {
             var output = @string.Substring(1);
             return output;
@@ -68,7 +71,12 @@ namespace R5T.Magyar
 {
     public static class StringExtensions
     {
-        
+        public static string ExceptEnding(this string @string,
+            string ending)
+        {
+            var output = @string.Substring(0, @string.Length - ending.Length);
+            return output;
+        }
     }
 }
 
