@@ -484,6 +484,48 @@ namespace System.Linq
             return wasFound;
         }
 
+        /// <summary>
+        /// Returns the elements in <paramref name="elements"/> that are after the last common element in other elements.
+        /// Example: elements [A, B, C, E] with other elements [A, B, D, E] would return [C, E]. This is not just a set complement.
+        /// </summary>
+        public static IEnumerable<T> GetTrailingComplement<T>(this IEnumerable<T> elements, IEnumerable<T> otherElements)
+        {
+            var equalityComparer = EqualityComparer<T>.Default;
+
+            var elementsEnumerator = elements.GetEnumerator();
+            var otherElementsEnumerator = otherElements.GetEnumerator();
+
+            // Determine how many elements to skip. Stop skipping elements if either enumerable runs out of elements, or at the first element that is not the same.
+            var elementsToSkip = 0;
+            while(true)
+            {
+                var elementsCanMoveNext = elementsEnumerator.MoveNext();
+                var otherElementsCanMoveNext = otherElementsEnumerator.MoveNext();
+
+                if (elementsCanMoveNext && otherElementsCanMoveNext)
+                {
+                    var currentElement = elementsEnumerator.Current;
+                    var currentOtherElement = otherElementsEnumerator.Current;
+
+                    if(equalityComparer.Equals(currentElement, currentOtherElement))
+                    {
+                        elementsToSkip++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            var output = elements.Skip(elementsToSkip);
+            return output;
+        }
+
         public static T MaxOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue)
         {
             var maxOrDefault = enumerable.Any()
