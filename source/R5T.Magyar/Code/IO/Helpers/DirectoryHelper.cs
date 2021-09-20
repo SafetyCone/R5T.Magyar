@@ -81,12 +81,30 @@ namespace R5T.Magyar.IO
             }
         }
 
-        public static IDistinctEnumerable<string> EnumerateFilePaths(
+        public static IDistinctEnumerable<string> EnumerateChildFilePaths(
             string directoryPath,
             string searchPattern)
         {
             var output = Directory.EnumerateFiles(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
             return output.AsDistinct();
+        }
+
+        public static IDistinctEnumerable<string> EnumerateChildDirectoryPaths(
+            string directoryPath,
+            string searchPattern)
+        {
+            var output = Directory.EnumerateDirectories(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
+            return output.AsDistinct();
+        }
+
+        public static IDistinctEnumerable<string> EnumerateAllChildDirectoryPaths(
+            string directoryPath)
+        {
+            var output = DirectoryHelper.EnumerateChildDirectoryPaths(
+                directoryPath,
+                SearchPatternHelper.All);
+
+            return output;
         }
 
         /// <summary>

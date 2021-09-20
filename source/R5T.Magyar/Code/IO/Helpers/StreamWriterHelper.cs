@@ -82,9 +82,21 @@ namespace R5T.Magyar.IO
             return writer.WriteAsync(text);
         }
 
+        public static void WriteAllLinesSynchronous(StreamWriter writer, IEnumerable<string> lines, string lineSeparator)
+        {
+            var text = String.Join(lineSeparator, lines);
+
+            writer.Write(text);
+        }
+
         public static Task WriteAllLines(StreamWriter writer, IEnumerable<string> lines)
         {
             return StreamWriterHelper.WriteAllLines(writer, lines, Strings.NewLineForEnvironment);
+        }
+
+        public static void WriteAllLinesSynchronous(StreamWriter writer, IEnumerable<string> lines)
+        {
+            StreamWriterHelper.WriteAllLinesSynchronous(writer, lines, Strings.NewLineForEnvironment);
         }
 
         public static async Task WriteAllLines(string filePath, IEnumerable<string> lines, string lineSeparator, bool overwrite = IOHelper.DefaultOverwriteValue)
@@ -95,9 +107,22 @@ namespace R5T.Magyar.IO
             }
         }
 
+        public static void WriteAllLinesSynchronous(string filePath, IEnumerable<string> lines, string lineSeparator, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            using (var writer = StreamWriterHelper.NewWrite(filePath, overwrite))
+            {
+                StreamWriterHelper.WriteAllLinesSynchronous(writer, lines, lineSeparator);
+            }
+        }
+
         public static Task WriteAllLines(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
         {
             return StreamWriterHelper.WriteAllLines(filePath, lines, Strings.NewLineForEnvironment, overwrite);
+        }
+
+        public static void WriteAllLinesSynchronous(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            StreamWriterHelper.WriteAllLinesSynchronous(filePath, lines, Strings.NewLineForEnvironment, overwrite);
         }
     }
 }

@@ -133,5 +133,22 @@ namespace System
 
             uniqueValues.Add(value);
         }
+
+        public static TValue AcquireValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+            TKey key,
+            Func<TValue> valueConstructor)
+        {
+            if(dictionary.ContainsKey(key))
+            {
+                var value = dictionary[key];
+                return value;
+            }
+            else
+            {
+                var value = valueConstructor();
+
+                return dictionary.AddAndReturnValue(key, value);
+            }
+        }
     }
 }

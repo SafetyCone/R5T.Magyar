@@ -126,6 +126,11 @@ namespace R5T.Magyar.IO
             return StreamWriterHelper.WriteAllLines(filePath, lines, overwrite);
         }
 
+        public static void WriteAllLinesSynchronous(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        {
+            StreamWriterHelper.WriteAllLinesSynchronous(filePath, lines, overwrite);
+        }
+
         public static async Task Write(string filePath, string content, bool overwrite = IOHelper.DefaultOverwriteValue)
         {
             using (var writer = StreamWriterHelper.NewWrite(filePath, overwrite))

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using R5T.Magyar.IO;
+
 
 namespace R5T.Magyar
 {
@@ -13,6 +15,15 @@ namespace R5T.Magyar
             {
                 { key, value }
             };
+
+            return output;
+        }
+
+        public static Dictionary<string, List<string>> FromFile_StringsByString(string filePath)
+        {
+            var output = new Dictionary<string, List<string>>();
+
+            output.FillFromFile(filePath);
 
             return output;
         }
