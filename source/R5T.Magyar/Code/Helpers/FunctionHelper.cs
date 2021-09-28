@@ -6,6 +6,16 @@ namespace System
 {
     public static class FunctionHelper
     {
+        public static bool Run<T>(Func<T, bool> predicate, T value, bool defaultValue = true)
+        {
+            var output = predicate is object
+                ? predicate(value)
+                : defaultValue
+                ;
+
+            return output;
+        }
+
         public static Task Run<T>(Func<T, Task> action, T value)
         {
             var output = action is object

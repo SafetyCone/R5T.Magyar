@@ -15,6 +15,11 @@ namespace R5T.Magyar.IO
         {
             var text = File.ReadAllText(filePath);
 
+            if(StringHelper.IsEmpty(text))
+            {
+                return Array.Empty<string>();
+            }
+
             var lines = text.Split(new[] { "\n", "\r\n" }, StringSplitOptions.None);
             return lines;
         }

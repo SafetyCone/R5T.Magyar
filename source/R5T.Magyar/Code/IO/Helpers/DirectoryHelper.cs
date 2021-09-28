@@ -86,7 +86,37 @@ namespace R5T.Magyar.IO
             string searchPattern)
         {
             var output = Directory.EnumerateFiles(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
+
             return output.AsDistinct();
+        }
+
+        public static IDistinctEnumerable<string> EnumerateAllChildFilePaths(
+            string directoryPath)
+        {
+            var output = DirectoryHelper.EnumerateChildFilePaths(
+                directoryPath,
+                SearchPatternHelper.All);
+
+            return output;
+        }
+
+        public static IDistinctEnumerable<string> EnumerateDescendentFilePaths(
+            string directoryPath,
+            string searchPattern)
+        {
+            var output = Directory.EnumerateFiles(directoryPath, searchPattern, SearchOption.AllDirectories);
+
+            return output.AsDistinct();
+        }
+
+        public static IDistinctEnumerable<string> EnumerateAllDescendentFilePaths(
+            string directoryPath)
+        {
+            var output = DirectoryHelper.EnumerateDescendentFilePaths(
+                directoryPath,
+                SearchPatternHelper.All);
+
+            return output;
         }
 
         public static IDistinctEnumerable<string> EnumerateChildDirectoryPaths(
@@ -94,6 +124,7 @@ namespace R5T.Magyar.IO
             string searchPattern)
         {
             var output = Directory.EnumerateDirectories(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
+
             return output.AsDistinct();
         }
 

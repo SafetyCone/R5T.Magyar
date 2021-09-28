@@ -47,6 +47,12 @@ namespace System
             var output = !String.IsNullOrEmpty(@string);
             return output;
         }
+
+        public static char Last(this string @string)
+        {
+            var output = @string[@string.Length - 1];
+            return output;
+        }
     }
 }
 
@@ -71,6 +77,9 @@ namespace R5T.Magyar
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Returns the string, without the ending.
+        /// </summary>
         public static string ExceptEnding(this string @string,
             string ending)
         {
