@@ -16,6 +16,7 @@ namespace System
         public const string Colon = ":";
         public static string Comma => ",";
         public static string CommaSeparatedListSpacedSeparator => ", ";
+        public static string Dash => "-";
         public const string DoubleDot = "..";
         public const string DoubleEquals = "==";
         public const string DoubleSlash = "//";
@@ -31,6 +32,7 @@ namespace System
         public const string OpenBrace = "{";
         public const string OpenBracket = "[";
         public const string OpenParenthesis = "(";
+        public static string PairedParentheses => "()";
         public const string Percent = "%";
         public const string Period = ".";
         public const string QuestionMark = "?";

@@ -637,7 +637,7 @@ namespace System.Linq
             return output;
         }
 
-        public static IEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
+        public static IOrderedEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
         {
             var output = items.OrderBy(keySelector);
             return output;

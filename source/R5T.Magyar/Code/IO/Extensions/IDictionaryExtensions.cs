@@ -7,9 +7,10 @@ namespace R5T.Magyar.IO
 {
     public static class IDictionaryExtensions
     {
-        public static void WriteToFile(this IDictionary<string, List<string>> stringsByString,
+        public static void WriteToFile<T>(this IDictionary<string, T> stringsByString,
             string filePath,
             bool overwrite = IOHelper.DefaultOverwriteValue)
+            where T : IEnumerable<string>
         {
             using (var writer = StreamWriterHelper.NewWrite(filePath, overwrite))
             {
@@ -26,6 +27,21 @@ namespace R5T.Magyar.IO
                     }
                 }
             }
+        }
+
+        public static void WriteToFileInAlphabeticalOrder<T>(this IDictionary<string, T> stringsByString,
+            string filePath,
+            bool overwrite = IOHelper.DefaultOverwriteValue)
+            where T : IEnumerable<string>
+        {
+            var stringsByStringsInOrder = stringsByString
+                .OrderAlphabetically(xPair => xPair.Key)
+                .ToDictionary(
+                    xPair => xPair.Key,
+                    xPair => xPair.Value
+                        .OrderAlphabetically());
+
+            stringsByStringsInOrder.WriteToFile(filePath, overwrite);
         }
 
         public static T FillFromFile<T>(this T stringsByString,

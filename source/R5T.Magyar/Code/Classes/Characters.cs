@@ -7,9 +7,12 @@ namespace System
     {
         public static char At => '@';
         public static char Backslash => '\\';
+        public static char CloseParenthesis => ')';
+        public static char Colon => ':';
         public static char Comma => ',';
         public new static char Equals => '=';
         public static char Minus => '-';
+        public static char OpenParenthesis => '(';
         public static char Period => '.';
         public static char Pipe => '|';
         public static char Plus => '+';

@@ -30,11 +30,11 @@ namespace R5T.Magyar
         // Source: https://stackoverflow.com/a/13188409/10658484
         public static Guid GetNewSeededGuid(int seed = SeedHelper.DefaultSeed)
         {
-            var randome = new Random(seed);
+            var random = new Random(seed);
 
             var guidBytes = new byte[16];
 
-            randome.NextBytes(guidBytes);
+            random.NextBytes(guidBytes);
 
             var output = new Guid(guidBytes);
             return output;

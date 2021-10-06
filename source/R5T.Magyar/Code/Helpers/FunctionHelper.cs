@@ -6,11 +6,14 @@ namespace System
 {
     public static class FunctionHelper
     {
-        public static bool Run<T>(Func<T, bool> predicate, T value, bool defaultValue = true)
+        /// <summary>
+        /// If the input <paramref name="value"/> is not an object, the <paramref name="defaultStool"/> value is returned.
+        /// </summary>
+        public static bool Run<T>(Func<T, bool> predicate, T value, bool defaultStool = true)
         {
             var output = predicate is object
                 ? predicate(value)
-                : defaultValue
+                : defaultStool
                 ;
 
             return output;
