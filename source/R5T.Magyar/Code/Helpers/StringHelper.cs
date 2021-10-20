@@ -50,6 +50,14 @@ namespace System
             return isFound;
         }
 
+        public static bool NotFound(int index)
+        {
+            var isFound = StringHelper.IsFound(index);
+
+            var notFound = !isFound;
+            return notFound;
+        }
+
         /// <summary>
         /// <paramref name="rhs"/> is less than <paramref name="lhs"/>.
         /// </summary>
@@ -86,6 +94,12 @@ namespace System
             return output;
         }
 
+        public static int LastIndex(string @string)
+        {
+            var output = @string.Length - 1;
+            return output;
+        }
+
         public static string NullIfNull(string value)
         {
             var isNull = value is null;
@@ -106,6 +120,20 @@ namespace System
         public static string[] Split(string separator, string value)
         {
             var output = value.Split(separator);
+            return output;
+        }
+
+        public static string ToLine(string value, string newLine)
+        {
+            var output = $"{newLine}{value}";
+            return output;
+        }
+
+        public static string ToLine(string value)
+        {
+            var newLine = Strings.NewLineForEnvironment;
+
+            var output = StringHelper.ToLine(value, newLine);
             return output;
         }
 

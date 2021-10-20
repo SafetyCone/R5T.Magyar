@@ -1,5 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
+using R5T.Magyar;
+
+
+namespace System
+{
+    public static class WasFoundExtensions
+    {
+        public static bool NotFound<T>(this WasFound<T> wasFound)
+        {
+            var output = !wasFound;
+            return output;
+        }
+
+        public static Dictionary<TKey, TValue> ToDictionaryFromWasFounds<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByKey)
+        {
+            var output = wasFoundByKey
+                .ToDictionary(
+                    xPair => xPair.Key,
+                    xPair => xPair.Value.Result);
+
+            return output;
+        }
+    }
+}
 
 namespace R5T.Magyar
 {
@@ -10,9 +36,7 @@ namespace R5T.Magyar
         /// </summary>
         public static bool AsBoolean<TResult>(this WasFound<TResult> wasFound)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
             return wasFound.Exists;
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public static (bool WasFound, TOutput output) ToTuple<TResult, TOutput>(this WasFound<TResult> wasFound, Func<TResult, TOutput> selector)

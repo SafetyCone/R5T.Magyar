@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 
 namespace R5T.Magyar
@@ -21,6 +22,21 @@ namespace R5T.Magyar
         public static void DoNothing<T>(T _)
         {
             // Do nothing.
+        }
+
+        public static Action GetDoNothingAction()
+        {
+            return ActionHelper.DoNothing;
+        }
+
+        public static Task DoNothingAsynchronous()
+        {
+            return Task.CompletedTask;
+        }
+
+        public static Func<Task> GetDoNothingAsynchronousAction()
+        {
+            return ActionHelper.DoNothingAsynchronous;
         }
 
         public static void Run(Action action)

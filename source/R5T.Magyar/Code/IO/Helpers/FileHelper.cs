@@ -60,6 +60,14 @@ namespace R5T.Magyar.IO
             return output;
         }
 
+        public static string GetParentDirectoryPath(string filePath)
+        {
+            var fileInfo = new FileInfo(filePath);
+
+            var parentDirectoryPath = fileInfo.Directory.FullName;
+            return parentDirectoryPath;
+        }
+
         /// <summary>
         /// Determine if a path is a file.
         /// </summary>
@@ -71,12 +79,10 @@ namespace R5T.Magyar.IO
             return isFile;
         }
 
-        public static string GetParentDirectoryPath(string filePath)
+        public static StreamWriter WriteTextFile(string filePath, bool overwrite = IOHelper.DefaultOverwriteValue)
         {
-            var fileInfo = new FileInfo(filePath);
-
-            var parentDirectoryPath = fileInfo.Directory.FullName;
-            return parentDirectoryPath;
+            var output = StreamWriterHelper.NewWrite(filePath, overwrite);
+            return output;
         }
 
         /// <summary>

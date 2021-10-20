@@ -69,6 +69,9 @@ namespace R5T.Magyar
             return isEmpty;
         }
 
+        /// <summary>
+        /// Returns true if there are no entries.
+        /// </summary>
         public static bool None<T>(this IEnumerable<T> enumerable)
         {
             var output = !enumerable.Any();
@@ -198,7 +201,10 @@ namespace System.Collections.Generic
             return enumerable.IsDistinct(EqualityComparer<T>.Default);
         }
 
-        public static IDistinctEnumerable<T> VerifyDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        /// <summary>
+        /// Named with -Enumerable to allow resolution of ambiguous IList.VerifyDistinct() vs. IEnumerable.VerifyDistinct() when required.
+        /// </summary>
+        public static IDistinctEnumerable<T> VerifyDistinctEnumerable<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
         {
             var isDistinct = enumerable.IsDistinct(equalityComparer);
             if (!isDistinct)
@@ -209,9 +215,22 @@ namespace System.Collections.Generic
             return enumerable.Wrap();
         }
 
+        public static IDistinctEnumerable<T> VerifyDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            return enumerable.VerifyDistinctEnumerable(equalityComparer);
+        }
+
+        /// <summary>
+        /// Named with -Enumerable to allow resolution of ambiguous IList.VerifyDistinct() vs. IEnumerable.VerifyDistinct() when required.
+        /// </summary>
+        public static IDistinctEnumerable<T> VerifyDistinctEnumerable<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.VerifyDistinctEnumerable(EqualityComparer<T>.Default);
+        }
+
         public static IDistinctEnumerable<T> VerifyDistinct<T>(this IEnumerable<T> enumerable)
         {
-            return enumerable.VerifyDistinct(EqualityComparer<T>.Default);
+            return enumerable.VerifyDistinctEnumerable();
         }
 
         public static IDistinctEnumerable<T> EnsureDistinct<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
@@ -766,6 +785,27 @@ namespace System.Linq
         public static IEnumerable<T> SkipFirst<T>(this IEnumerable<T> enumerable)
         {
             var output = enumerable.Skip(1);
+            return output;
+        }
+
+        public static Dictionary<TKey, T[]> ToDictionaryOfArrays<TKey, T>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
+        {
+            var output = enumerable
+                .GroupBy(keySelector)
+                .ToDictionary(
+                    xGroup => xGroup.Key,
+                    xGroup => xGroup.ToArray());
+
+            return output;
+        }
+
+        public static IEnumerable<IGrouping<TKey, TElement>> WhereDuplicates<TKey, TElement>(this IEnumerable<TElement> elements, Func<TElement, TKey> keySelector)
+        {
+            var output = elements
+                .GroupBy(keySelector)
+                .Where(xGroup => xGroup.Count() > 1)
+                ;
+
             return output;
         }
     }

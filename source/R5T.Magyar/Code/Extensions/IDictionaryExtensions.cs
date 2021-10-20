@@ -100,7 +100,7 @@ namespace System.Collections.Generic
         public static IDistinctValuedDictionary<TKey, TValue> ToDistinctValued<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TValue> valueEqualityComparer)
         {
             // Verify that the values are distinct (exception will be thrown if not).
-            dictionary.Values.VerifyDistinct(valueEqualityComparer);
+            dictionary.Values.VerifyDistinctEnumerable(valueEqualityComparer);
 
             // Input passes, so just wrap it.
             return dictionary.Wrap();
