@@ -19,6 +19,7 @@ namespace System
         public static char Slash => '/';
         public static char Space => ' ';
         public static char Tab => '\t';
+        public static char Tick => '`';
         public static char Underscore => '_';
     }
 }
