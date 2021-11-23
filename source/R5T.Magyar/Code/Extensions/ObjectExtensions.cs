@@ -22,6 +22,13 @@ namespace R5T.Magyar
 
             return value;
         }
+
+        public static T Modify<T>(this T value, Action<T> action)
+        {
+            action(value);
+
+            return value;
+        }    
     }
 }
 

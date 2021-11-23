@@ -20,9 +20,14 @@ namespace System
             }
 
             // Fire and forget in the threadpool.
-            _ = ExecuteTaskAsynchronously();
+            var executionTask = ExecuteTaskAsynchronously();
 
             semaphore.Wait();
+
+            if (executionTask.IsFaulted)
+            {
+                throw executionTask.Exception;
+            }
         }
 
         public static void ExecuteSynchronously(Func<Task> action)
@@ -38,9 +43,14 @@ namespace System
             }
 
             // Fire and forget in the threadpool.
-            _ = ExecuteTaskAsynchronously();
+            var executionTask = ExecuteTaskAsynchronously();
 
             semaphore.Wait();
+
+            if(executionTask.IsFaulted)
+            {
+                throw executionTask.Exception;
+            }
         }
     }
 }

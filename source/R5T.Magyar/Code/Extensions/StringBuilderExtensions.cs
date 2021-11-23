@@ -3,6 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 
 
+namespace System
+{
+    public static class StringBuilderExtensions
+    {
+        public static string GetString(this StringBuilder stringBuilder, Action<StringBuilder> modifier)
+        {
+            modifier(stringBuilder);
+
+            var output = stringBuilder.ToString();
+            return output;
+        }
+    }
+}
+
 namespace R5T.Magyar
 {
     public static class StringBuilderExtensions
