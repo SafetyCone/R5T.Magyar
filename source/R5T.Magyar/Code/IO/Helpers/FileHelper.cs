@@ -51,6 +51,13 @@ namespace R5T.Magyar.IO
             File.Delete(filePath); // Idempotent, so ok.
         }
 
+        public static void EnsureDirectoryForFilePathExists(string filePath)
+        {
+            var directoryPath = FileHelper.GetParentDirectoryPath(filePath);
+
+            DirectoryHelper.CreateDirectoryOkIfExists(directoryPath);
+        }
+
         /// <summary>
         /// Note, there is no system supported asynchrons method for testing file existence. :-( See: https://stackoverflow.com/questions/19076652/check-if-a-file-exists-async
         /// </summary>
