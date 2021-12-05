@@ -474,6 +474,12 @@ namespace System.Linq
             return output;
         }
 
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> items, T item, IEqualityComparer<T> equalityComparer)
+        {
+            var output = items.Where(x => !equalityComparer.Equals(x, item));
+            return output;
+        }
+
         public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int nElements)
         {
             return enumerable.Take(nElements);
