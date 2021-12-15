@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 
 namespace System
@@ -8,6 +9,22 @@ namespace System
 
     public static class BooleanExtensions
     {
+        public static void Invert<TKey>(this Dictionary<TKey, bool> dictionary)
+        {
+            foreach (var key in dictionary.Keys)
+            {
+                var value = dictionary[key];
+
+                dictionary[key] = !value;
+            }
+        }
+
+        public static bool Invert(this bool value)
+        {
+            var output = !value;
+            return output;
+        }
+
         public static string YesOrNo(this bool value)
         {
             var output = value

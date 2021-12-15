@@ -9,6 +9,36 @@ namespace System
 {
     public static class WasFoundExtensions
     {
+        public static bool AnyWereFound<T>(this Dictionary<T, WasFound<T>> wasFoundByValue)
+        {
+            var output = wasFoundByValue
+                .Where(xPair => xPair.Value.Exists)
+                .Any();
+
+            return output;
+        }
+
+        public static void ExceptionIfNotFound<T>(this WasFound<T> wasFound, string message)
+        {
+            wasFound.InvalidOperationIfNotFound(message);
+        }
+
+        public static T GetOrExceptionIfNotFound<T>(this WasFound<T> wasFound, string exceptionMessage)
+        {
+            wasFound.ExceptionIfNotFound(exceptionMessage);
+
+            var output = wasFound.Result;
+            return output;
+        }
+
+        public static void InvalidOperationIfNotFound<T>(this WasFound<T> wasFound, string message)
+        {
+            if(!wasFound)
+            {
+                throw new InvalidOperationException(message);
+            }
+        }
+
         public static bool NotFound<T>(this WasFound<T> wasFound)
         {
             var output = !wasFound;
@@ -22,6 +52,22 @@ namespace System
                     xPair => xPair.Key,
                     xPair => xPair.Value.Result);
 
+            return output;
+        }
+    }
+}
+
+namespace System.Linq
+{
+    public static class WasFoundExtensions
+    {
+        public static WasFound<T> FindSingle<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        {
+            var selectionOrDefault = items
+                .Where(predicate)
+                .SingleOrDefault();
+
+            var output = WasFound.From(selectionOrDefault);
             return output;
         }
     }

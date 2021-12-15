@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+
+using R5T.Magyar;
 
 
 namespace System
@@ -59,11 +62,29 @@ namespace System
 
 namespace System.Linq
 {
-    using System.Collections.Generic;
-
-
     public static class StringExtensions
     {
+        public static WasFound<string> FindSingleByValue(this IEnumerable<string> items, string value)
+        {
+            var itemOrDefault = items
+                .Where(xItem => xItem == value)
+                .SingleOrDefault();
+
+            var output = WasFound.From(itemOrDefault);
+            return output;
+        }
+
+        public static IEnumerable<string> GetDuplicatesInAlphabeticalOrder(this IEnumerable<string> strings)
+        {
+            var output = strings
+                .WhereDuplicates(xString => xString)
+                .Select(xGroup => xGroup.Key)
+                .OrderAlphabetically()
+                ;
+
+            return output;
+        }
+
         public static IEnumerable<string> OrderAlphabetically(this IEnumerable<string> items)
         {
             var output = items.OrderBy(x => x);
@@ -231,6 +252,20 @@ namespace R5T.Magyar.Extensions
         {
             var output = StringHelper.DecodeBase64Url(@string);
             return output;
+        }
+
+        public static IEnumerable<string> SortAlphabetically(this IEnumerable<string> strings)
+        {
+            var output = strings.OrderBy(x => x);
+            return output;
+        }
+
+        public static string CommaSeparatorJoin(this IEnumerable<string> strings)
+        {
+            var separator = $"{Characters.Comma}{Characters.Space}";
+
+            var joined = String.Join(separator, strings);
+            return joined;
         }
     }
 }

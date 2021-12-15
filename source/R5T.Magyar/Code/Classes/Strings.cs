@@ -20,7 +20,7 @@ namespace System
         public const string DoubleDot = "..";
         public const string DoubleEquals = "==";
         public const string DoubleSlash = "//";
-        public const string DoubleSpaces = "  ";
+        public static string DoubleSpaces => "  ";
         public const string Ellipsis = "...";
         public const string Empty = ""; // Constant, as opposed to String.Empty, which is static readonly. Constants can be used as default parameter values.
         public const string GreaterThan = ">";
@@ -35,6 +35,8 @@ namespace System
         public static string PairedParentheses => "()";
         public const string Percent = "%";
         public const string Period = ".";
+        public static string Pipe = "|";
+        public static string PipeSpace = "| ";
         public const string QuestionMark = "?";
         public const string S_LowerCase = "s";
         public const string Space = " ";

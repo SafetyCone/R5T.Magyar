@@ -5,6 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+namespace System
+{
+    using R5T.Magyar;
+
+
+    public static class DictionaryExtensions
+    {
+        public static WasFound<TValue> HasValue<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+        {
+            var containsKey = dictionary.ContainsKey(key);
+
+            var value = containsKey
+                ? dictionary[key]
+                : default
+                ;
+
+            var output = WasFound.From(containsKey, value);
+            return output;
+        }
+    }
+}
+
+
 // Extensions for which referencing the Magyar library and using the Magyar namespace is sufficient to indicate desire for use.
 namespace R5T.Magyar
 {

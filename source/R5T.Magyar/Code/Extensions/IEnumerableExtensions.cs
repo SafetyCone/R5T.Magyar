@@ -480,6 +480,35 @@ namespace System.Linq
             return output;
         }
 
+        public static IEnumerable<T> ExceptWhere<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        {
+            var output = items
+                .Where(x => !predicate(x))
+                ;
+
+            return output;
+        }
+
+        public static T[] FindArray<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        {
+            var filteredItems = items
+                .Where(predicate)
+                .ToArray();
+
+            return filteredItems;
+        }
+
+        public static WasFound<T> FindSingleByValue<T>(this IEnumerable<T> items, T value)
+            where T : IEquatable<T>
+        {
+            var itemOrDefault = items
+                .Where(xItem => xItem.Equals(value))
+                .SingleOrDefault();
+
+            var output = WasFound.From(itemOrDefault);
+            return output;
+        }
+
         public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int nElements)
         {
             return enumerable.Take(nElements);
