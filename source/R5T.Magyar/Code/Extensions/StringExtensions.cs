@@ -9,6 +9,9 @@ namespace System
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Returns the beginning, not including the character at the index (index of 1, i.e. the second character, would return the first character only).
+        /// </summary>
         public static string BeginningByIndex(this string @string,
             int index)
         {
@@ -55,6 +58,32 @@ namespace System
         {
             var output = @string[@string.Length - 1];
             return output;
+        }
+
+        public static int NthLastIndexOfAny(this string @string,
+            char[] anyOf,
+            int nth)
+        {
+            if(nth < 1)
+            {
+                throw new ArgumentException($"Nth must be one or greater. Found: {nth}.");
+            }
+
+            var subString = @string;
+            var lastIndexOfAny = StringHelper.IndexOfNotFound;
+
+            for (int iPass = 0; iPass < nth; iPass++)
+            {
+                lastIndexOfAny = subString.LastIndexOfAny(anyOf);
+                if(StringHelper.NotFound(lastIndexOfAny))
+                {
+                    return StringHelper.IndexOfNotFound; // Don't return the last index of any, return that there was no Nth.
+                }
+
+                subString = subString.BeginningByIndex(lastIndexOfAny);
+            }
+
+            return lastIndexOfAny;
         }
     }
 }

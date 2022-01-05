@@ -9,7 +9,7 @@ namespace System
 {
     public static class WasFoundExtensions
     {
-        public static bool AnyWereFound<T>(this Dictionary<T, WasFound<T>> wasFoundByValue)
+        public static bool AnyWereFound<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByValue)
         {
             var output = wasFoundByValue
                 .Where(xPair => xPair.Value.Exists)
@@ -18,9 +18,34 @@ namespace System
             return output;
         }
 
+        public static bool AnyNotFound<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByValue)
+        {
+            var output = wasFoundByValue.Values.AnyNotFound();
+            return output;
+        }
+
+        public static bool AnyNotFound<T>(this IEnumerable<WasFound<T>> wasFounds)
+        {
+            var output = wasFounds
+                .Where(xWasFound => !xWasFound.Exists)
+                .Any();
+
+            return output;
+        }
+
         public static void ExceptionIfNotFound<T>(this WasFound<T> wasFound, string message)
         {
             wasFound.InvalidOperationIfNotFound(message);
+        }
+
+        public static IEnumerable<TKey> GetKeysNotFound<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByValue)
+        {
+            var output = wasFoundByValue
+                .Where(xPair => !xPair.Value.Exists)
+                .Select(xPair => xPair.Key)
+                ;
+
+            return output;
         }
 
         public static T GetOrExceptionIfNotFound<T>(this WasFound<T> wasFound, string exceptionMessage)

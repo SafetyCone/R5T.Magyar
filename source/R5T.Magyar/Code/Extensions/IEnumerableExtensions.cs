@@ -682,6 +682,18 @@ namespace System.Linq
             return minimum;
         }
 
+        public static bool HasMoreThan<T>(this IEnumerable<T> enumerable, int count, out T[] elements)
+        {
+            // Take one more than desired, and then test the length of the array.
+            var elementsPlusOne = enumerable.Take(count + 1).ToArray();
+
+            var output = elementsPlusOne.Length > count;
+
+            elements = elementsPlusOne.Take(count).ToArray();
+
+            return output;
+        }
+
         /// <summary>
         /// Selects array as the preferred data structure for an evaluated enumerable.
         /// </summary>
@@ -842,6 +854,30 @@ namespace System.Linq
                 ;
 
             return output;
+        }
+
+        public static IEnumerable<(T1, T2)> ZipWithEqualLengthRequirement<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+        {
+            var firstEnumerator = first.GetEnumerator();
+            var secondEnumerator = second.GetEnumerator();
+
+            while(firstEnumerator.MoveNext())
+            {
+                var secondIsAvailable = secondEnumerator.MoveNext();
+                if(!secondIsAvailable)
+                {
+                    throw new InvalidOperationException("The second enumeration did not have as many elements as the first.");
+                }
+
+                yield return (firstEnumerator.Current, secondEnumerator.Current);
+            }
+
+            // At this point, we are all out of elements in the first enumeration. We should be out of elements in the second as well.
+            var secondIsAvailableAfterFirstIsExhausted = secondEnumerator.MoveNext();
+            if(secondIsAvailableAfterFirstIsExhausted)
+            {
+                throw new InvalidOperationException("The second enumeration had more elements than the first.");
+            }
         }
     }
 }
