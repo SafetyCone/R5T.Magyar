@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     /// <summary>
     /// Helper for writing files.

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     public static class StringStreamHelper
     {
@@ -11,7 +10,7 @@ namespace R5T.Magyar.IO
         {
             var encoding = Encoding.UTF8;
 
-            var bytes = Encoding.UTF8.GetBytes(@string);
+            var bytes = encoding.GetBytes(@string);
 
             return new MemoryStream(bytes);
         }

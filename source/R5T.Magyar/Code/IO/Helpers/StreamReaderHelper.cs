@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
 using R5T.Magyar.Extensions;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     /// <summary>
     /// A helper for the <see cref="StreamReader"/> class.

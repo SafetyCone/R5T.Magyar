@@ -9,7 +9,7 @@ namespace System
 
     public static class BooleanExtensions
     {
-        public static void Invert<TKey>(this Dictionary<TKey, bool> dictionary)
+        public static Dictionary<TKey, bool> Invert<TKey>(this Dictionary<TKey, bool> dictionary)
         {
             foreach (var key in dictionary.Keys)
             {
@@ -17,6 +17,8 @@ namespace System
 
                 dictionary[key] = !value;
             }
+
+            return dictionary;
         }
 
         public static bool Invert(this bool value)

@@ -93,6 +93,12 @@ namespace System.Linq
 {
     public static class StringExtensions
     {
+        public static IEnumerable<string> ExceptEmpty(this IEnumerable<string> items)
+        {
+            var output = items.Where(x => x != Strings.Empty);
+            return output;
+        }
+
         public static WasFound<string> FindSingleByValue(this IEnumerable<string> items, string value)
         {
             var itemOrDefault = items

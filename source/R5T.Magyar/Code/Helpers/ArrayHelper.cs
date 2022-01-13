@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace R5T.Magyar
+namespace System
 {
     public static class ArrayHelper
     {
@@ -62,7 +62,7 @@ namespace R5T.Magyar
             return output;
         }
 
-        public static T[] NewEmpty<T>()
+        public static T[] Empty<T>()
         {
             return new T[] { };
         }

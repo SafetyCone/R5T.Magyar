@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace R5T.Magyar.IO
 {
+    using System.IO;
+
+
     public static class IDictionaryExtensions
     {
         public static void WriteToFile<T>(this IDictionary<string, T> stringsByString,

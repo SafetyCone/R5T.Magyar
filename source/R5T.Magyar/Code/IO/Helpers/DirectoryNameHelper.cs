@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     public static class DirectoryNameHelper
     {

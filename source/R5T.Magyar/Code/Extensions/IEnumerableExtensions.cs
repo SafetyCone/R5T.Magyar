@@ -70,15 +70,6 @@ namespace R5T.Magyar
         }
 
         /// <summary>
-        /// Returns true if there are no entries.
-        /// </summary>
-        public static bool None<T>(this IEnumerable<T> enumerable)
-        {
-            var output = !enumerable.Any();
-            return output;
-        }
-
-        /// <summary>
         /// Get the Nth-to-last element.
         /// N starts at 1st-to-last is the last.
         /// Problematic evaluation of the enumerable (ToArray).
@@ -480,6 +471,9 @@ namespace System.Linq
             return output;
         }
 
+        /// <summary>
+        /// Same as where, except that the output contains values where the predicate is false.
+        /// </summary>
         public static IEnumerable<T> ExceptWhere<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
             var output = items
@@ -695,6 +689,15 @@ namespace System.Linq
         }
 
         /// <summary>
+        /// Returns true if there are no entries.
+        /// </summary>
+        public static bool None<T>(this IEnumerable<T> enumerable)
+        {
+            var output = !enumerable.Any();
+            return output;
+        }
+
+        /// <summary>
         /// Selects array as the preferred data structure for an evaluated enumerable.
         /// </summary>
         public static T[] Now<T>(this IEnumerable<T> items)
@@ -769,6 +772,22 @@ namespace System.Linq
             }
 
             return areEqual;
+        }
+
+        public static Dictionary<T, bool> SetContains<T>(this IEnumerable<T> set,
+            IEnumerable<T> values)
+        {
+            // Ensure unique.
+            var valuesHash = new HashSet<T>(values);
+            var setHash = new HashSet<T>(set);
+
+            var output = valuesHash
+                .Select(x => new { Guid = x, SetContains = setHash.Contains(x) })
+                .ToDictionary(
+                    x => x.Guid,
+                    x => x.SetContains);
+
+            return output;
         }
 
         public static async Task<bool> SetEqualAsync<T>(this IEnumerable<T> x, IEnumerable<T> y, IEqualityComparer<T> equalityComparer, Func<string, Task> messageHandler)

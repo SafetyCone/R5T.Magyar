@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+
+using R5T.Magyar;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     public static class DirectoryHelper
     {
@@ -31,7 +32,7 @@ namespace R5T.Magyar.IO
         {
             if (Directory.Exists(directoryPath))
             {
-                Directory.Delete(directoryPath, true);
+                DirectoryHelper.DeleteRobust(directoryPath);
             }
         }
 

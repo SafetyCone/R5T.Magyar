@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using R5T.Magyar;
 
-namespace R5T.Magyar
+
+namespace System
 {
     public static class EnumerableHelper
     {

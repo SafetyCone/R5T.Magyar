@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     public static class FileHelper
     {

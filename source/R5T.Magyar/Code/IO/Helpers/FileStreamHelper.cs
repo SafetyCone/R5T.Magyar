@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
 
 
-namespace R5T.Magyar.IO
+namespace System.IO
 {
     public static class FileStreamHelper
     {

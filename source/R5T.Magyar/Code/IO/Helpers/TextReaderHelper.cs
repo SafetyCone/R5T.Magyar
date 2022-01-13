@@ -1,9 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 
+using R5T.Magyar;
 
-namespace R5T.Magyar.IO
+
+namespace System.IO
 {
     public static class TextReaderHelper
     {
@@ -13,6 +14,12 @@ namespace R5T.Magyar.IO
         public static bool IsEndOfTextLine(string line)
         {
             var output = line == TextReaderHelper.EndOfTextLine;
+            return output;
+        }
+
+        public static TextReader New(string filePath)
+        {
+            var output = new StreamReader(filePath);
             return output;
         }
 
