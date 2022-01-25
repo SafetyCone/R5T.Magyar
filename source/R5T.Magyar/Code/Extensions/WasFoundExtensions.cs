@@ -70,6 +70,28 @@ namespace System
             return output;
         }
 
+        public static WasFound<T> OrIfNotFound<T>(this WasFound<T> wasFound,
+            Func<T> orIfNotFound)
+        {
+            var output = wasFound
+                ? wasFound
+                : WasFound.From(wasFound.Exists, orIfNotFound())
+                ;
+
+            return output;
+        }
+
+        public static T ResultOrIfNotFound<T>(this WasFound<T> wasFound,
+            Func<T> orIfNotFound)
+        {
+            var output = wasFound
+                ? wasFound.Result
+                : orIfNotFound()
+                ;
+
+            return output;
+        }
+
         public static Dictionary<TKey, TValue> ToDictionaryFromWasFounds<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByKey)
         {
             var output = wasFoundByKey

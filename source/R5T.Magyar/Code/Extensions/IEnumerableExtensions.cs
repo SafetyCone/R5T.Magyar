@@ -508,6 +508,20 @@ namespace System.Linq
             return enumerable.Take(nElements);
         }
 
+        public static IEnumerable<T> FromIndex<T>(this IEnumerable<T> enumerable, int startIndexInclusive)
+        {
+            var output = enumerable.Skip(startIndexInclusive);
+            return output;
+        }
+
+        public static IEnumerable<T> FromIndex<T>(this IEnumerable<T> enumerable, int startIndexInclusive, int endIndexInclusive)
+        {
+            var takeCount = endIndexInclusive - startIndexInclusive + 1;
+
+            var output = enumerable.FromIndex(startIndexInclusive).Take(takeCount);
+            return output;
+        }
+
         public static WasFound<T> GetPriorAlphabeticalElement<T>(this IEnumerable<T> elements, Func<T, string> keySelector, string key)
         {
             var element = elements
@@ -706,6 +720,12 @@ namespace System.Linq
             return output;
         }
 
+        public static bool OnlyOne<T>(this IEnumerable<T> items)
+        {
+            var output = items.Count() == 1;
+            return output;
+        }
+
         public static IOrderedEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
         {
             var output = items.OrderBy(keySelector);
@@ -851,6 +871,12 @@ namespace System.Linq
         public static IEnumerable<T> SkipFirst<T>(this IEnumerable<T> enumerable)
         {
             var output = enumerable.Skip(1);
+            return output;
+        }
+
+        public static IEnumerable<T> TakeFirst<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.Take(1);
             return output;
         }
 

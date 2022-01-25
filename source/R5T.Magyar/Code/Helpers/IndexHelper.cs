@@ -13,6 +13,7 @@ namespace System
         public static int NegativeOne => -1;
 
         public static int FirstInsertionIndex => 0;
+        public static int NotFound => IndexHelper.NegativeOne;
 
 
         public static bool IsFirstInsertionIndex(int index)
@@ -21,9 +22,23 @@ namespace System
             return output;
         }
 
+        public static bool IsFound(int index)
+        {
+            var isNotFound = IndexHelper.IsNotFound(index);
+
+            var output = !isNotFound;
+            return output;
+        }
+
         public static bool IsNegativeOne(int index)
         {
             var output = IndexHelper.NegativeOne == index;
+            return output;
+        }
+
+        public static bool IsNotFound(int index)
+        {
+            var output = IndexHelper.NotFound == index;
             return output;
         }
 

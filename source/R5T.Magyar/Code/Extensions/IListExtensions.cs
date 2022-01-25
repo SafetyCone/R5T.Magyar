@@ -2,6 +2,18 @@
 using System.Collections.Generic;
 
 
+namespace System
+{
+    public static class IListExtensions
+    {
+        public static int LastIndex<T>(this IList<T> list)
+        {
+            var output = list.Count - 1;
+            return output;
+        }
+    }
+}
+
 namespace System.Linq
 {
     public static class IListExtensions

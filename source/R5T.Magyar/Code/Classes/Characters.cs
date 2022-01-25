@@ -13,6 +13,7 @@ namespace System
         public static char Comma => ',';
         public new static char Equals => '=';
         public static char Minus => '-';
+        public static char NewLine => '\n';
         public static char OpenBrace => '[';
         public static char OpenParenthesis => '(';
         public static char Period => '.';

@@ -125,6 +125,12 @@ namespace System.Linq
             var output = items.OrderBy(x => x);
             return output;
         }
+
+        public static IEnumerable<string> Trim(this IEnumerable<string> strings)
+        {
+            var output = strings.Select(x => x.Trim());
+            return output;
+        }
     }
 }
 

@@ -28,7 +28,13 @@ namespace R5T.Magyar
             action(value);
 
             return value;
-        }    
+        }
+
+        public static WasFound<T> WasFound<T>(this T value)
+        {
+            var output = Magyar.WasFound.From(value);
+            return output;
+        }
     }
 }
 

@@ -39,7 +39,7 @@ namespace System
 
         public static Task Run<T>(Func<T, Task> action, Func<T> valueGenerator)
         {
-            if( action is object)
+            if(action is object)
             {
                 var value = valueGenerator();
 
@@ -48,6 +48,18 @@ namespace System
             else
             {
                 return Task.CompletedTask;
+            }
+        }
+
+        public static Task<TOut> Run<TIn, TOut>(Func<TIn, Task<TOut>> action, TIn @in)
+        {
+            if (action is object)
+            {
+                return action(@in);
+            }
+            else
+            {
+                return Task.FromResult(default(TOut));
             }
         }
     }
