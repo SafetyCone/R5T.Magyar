@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 
-namespace System.Collections.Generic
+namespace System
 {
     public static class ListHelper
     {

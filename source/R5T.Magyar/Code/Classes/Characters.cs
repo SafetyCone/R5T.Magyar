@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace System
+namespace R5T.Magyar
 {
     public static class Characters
     {
@@ -24,5 +24,7 @@ namespace System
         public static char Tab => '\t';
         public static char Tick => '`';
         public static char Underscore => '_';
+
+        public static char I_UpperCase => 'I';
     }
 }

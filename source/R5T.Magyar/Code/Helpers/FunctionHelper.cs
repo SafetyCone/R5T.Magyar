@@ -51,7 +51,7 @@ namespace System
             }
         }
 
-        public static Task<TOut> Run<TIn, TOut>(Func<TIn, Task<TOut>> action, TIn @in)
+        public static Task<TOut> RunElseDefault<TIn, TOut>(Func<TIn, Task<TOut>> action, TIn @in)
         {
             if (action is object)
             {
@@ -60,6 +60,18 @@ namespace System
             else
             {
                 return Task.FromResult(default(TOut));
+            }
+        }
+
+        public static Task<T> RunElseInput<T>(Func<T, Task<T>> action, T @in)
+        {
+            if (action is object)
+            {
+                return action(@in);
+            }
+            else
+            {
+                return Task.FromResult(@in);
             }
         }
     }

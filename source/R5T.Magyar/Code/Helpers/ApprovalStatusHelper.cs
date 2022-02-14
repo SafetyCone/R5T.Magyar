@@ -56,7 +56,7 @@ namespace R5T.Magyar
             return message;
         }
 
-        public static ArgumentException GetApprovalWasStillPendingException(string argumentName = Strings.Empty)
+        public static ArgumentException GetApprovalWasStillPendingException(string argumentName = Strings.Empty_Const)
         {
             var message = ApprovalStatusHelper.GetApprovalWasStillPendingExceptionMessage();
 

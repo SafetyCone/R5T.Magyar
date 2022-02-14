@@ -134,6 +134,18 @@ namespace System
             uniqueValues.Add(value);
         }
 
+        public static void AddValueByKey<TKey, TValue>(this IDictionary<TKey, List<TValue>> valuesByKey,
+            TKey key,
+            TValue value)
+        {
+            var values = valuesByKey.ContainsKey(key)
+                ? valuesByKey[key]
+                : valuesByKey.AddAndReturnValue(key, new List<TValue>())
+                ;
+
+            values.Add(value);
+        }
+
         public static TValue AcquireValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
             TKey key,
             Func<TValue> valueConstructor)

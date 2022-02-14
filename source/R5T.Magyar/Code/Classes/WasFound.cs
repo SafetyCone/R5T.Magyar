@@ -98,6 +98,16 @@ namespace R5T.Magyar
             return output;
         }
 
+        public static WasFound<T[]> FromEnumerable<T>(IEnumerable<T> result)
+        {
+            var exists = result is object && result.Any();
+
+            var resultArray = result.ToArray();
+
+            var output = new WasFound<T[]>(exists, resultArray);
+            return output;
+        }
+
         public static WasFound<T> NotFound<T>()
         {
             var wasFound = new WasFound<T>(false, default);

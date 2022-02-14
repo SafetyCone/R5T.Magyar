@@ -54,9 +54,25 @@ namespace System
             return output;
         }
 
+        /// <summary>
+        /// The index of the end is one past the index of the last character.
+        /// This is the same as the length of the string.
+        /// </summary>
+        public static int IndexOfEnd(this string @string)
+        {
+            var output = @string.Length;
+            return output;
+        }
+
         public static char Last(this string @string)
         {
             var output = @string[@string.Length - 1];
+            return output;
+        }
+
+        public static int LastIndex(this string @string)
+        {
+            var output = @string.Length - 1;
             return output;
         }
 

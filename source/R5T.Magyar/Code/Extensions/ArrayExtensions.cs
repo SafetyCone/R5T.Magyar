@@ -17,6 +17,12 @@ namespace System
 
             return output;
         }
+
+        public static int LastIndex<T>(this T[] array)
+        {
+            var output = array.Length - 1;
+            return output;
+        }
     }
 }
 

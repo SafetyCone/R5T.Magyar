@@ -458,6 +458,23 @@ namespace System.Linq
             return output;
         }
 
+        /// <summary>
+        /// Returns an empty enumerable if the input enumerable has the default IEnumerable&lt;T&gt; value.
+        /// The default for an IEnumerable&lt;T&gt; is null. This can cause problems with null reference exceptions.
+        /// This method allows easily providing an empty enumerable if the input is default (with the drawback that you have to remember to use it).
+        /// </summary>
+        public static IEnumerable<T> EmptyIfDefault<T>(this IEnumerable<T> items)
+        {
+            var itemsIsDefault = items == default;
+
+            var output = itemsIsDefault
+                ? Enumerable.Empty<T>()
+                : items
+                ;
+
+            return output;
+        }
+
         public static IEnumerable<T> Except<T>(this IEnumerable<T> items, T item)
             where T : IEquatable<T>
         {
@@ -522,16 +539,16 @@ namespace System.Linq
             return output;
         }
 
-        public static WasFound<T> GetPriorAlphabeticalElement<T>(this IEnumerable<T> elements, Func<T, string> keySelector, string key)
+        public static Dictionary<T, int> GetIndexByItem<T>(this IEnumerable<T> elements)
         {
-            var element = elements
-                .OrderAlphabetically(keySelector)
-                .Where(x => StringHelper.IsLessThan(keySelector(x), key))
-                .LastOrDefault()
-                ;
+            var count = 0;
 
-            var wasFound = WasFound.From(element);
-            return wasFound;
+            var output = elements
+                .ToDictionary(
+                    x => x,
+                    x => count++);
+
+            return output;
         }
 
         public static WasFound<T> GetPostAlphabeticalElement<T>(this IEnumerable<T> elements, Func<T, string> keySelector, string key)
@@ -546,11 +563,32 @@ namespace System.Linq
             return wasFound;
         }
 
+        public static WasFound<T> GetPriorAlphabeticalElement<T>(this IEnumerable<T> elements, Func<T, string> keySelector, string key)
+        {
+            var element = elements
+                .OrderAlphabetically(keySelector)
+                .Where(x => StringHelper.IsLessThan(keySelector(x), key))
+                .LastOrDefault()
+                ;
+
+            var wasFound = WasFound.From(element);
+            return wasFound;
+        }
+
+        /// <inheritdoc cref="IListExtensions.GetTrailingAppendix{T}(IList{T}, IList{T})"/>
+        public static IEnumerable<T> GetTrailingAppendix<T>(this IEnumerable<T> elements,
+            IEnumerable<T> otherElements)
+        {
+            var output = elements.Now().GetTrailingAppendix(otherElements.Now());
+            return output;
+        }
+
         /// <summary>
         /// Returns the elements in <paramref name="elements"/> that are after the last common element in other elements.
         /// Example: elements [A, B, C, E] with other elements [A, B, D, E] would return [C, E]. This is not just a set complement.
         /// </summary>
-        public static IEnumerable<T> GetTrailingComplement<T>(this IEnumerable<T> elements, IEnumerable<T> otherElements)
+        public static IEnumerable<T> GetTrailingComplement<T>(this IEnumerable<T> elements,
+            IEnumerable<T> otherElements)
         {
             var equalityComparer = EqualityComparer<T>.Default;
 
@@ -732,6 +770,24 @@ namespace System.Linq
             return output;
         }
 
+        public static T SecondOrDefault<T>(this IEnumerable<T> items)
+        {
+            var output = items
+                .SkipFirst()
+                .FirstOrDefault();
+
+            return output;
+        }
+
+        public static T Second<T>(this IEnumerable<T> items)
+        {
+            var output = items
+                .SkipFirst()
+                .First();
+
+            return output;
+        }
+
         public static IEnumerable<TResult> SelectIncludeNulls<T, TResult>(this IEnumerable<T> items, Func<T, TResult> selector, bool includeNulls = false)
             where TResult: class
         {
@@ -888,6 +944,12 @@ namespace System.Linq
                     xGroup => xGroup.Key,
                     xGroup => xGroup.ToArray());
 
+            return output;
+        }
+
+        public static HashSet<T> Unique<T>(this IEnumerable<T> enumerable)
+        {
+            var output = new HashSet<T>(enumerable);
             return output;
         }
 

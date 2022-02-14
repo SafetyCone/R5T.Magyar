@@ -34,6 +34,27 @@ namespace System.Linq
         }
 
         /// <summary>
+        /// Returns the elements of <paramref name="elements"/> that occur after the common initial elements specified by <paramref name="otherElements"/>.
+        /// If <paramref name="elements"/> does not start with the elements of <paramref name="otherElements"/>, an exception is thrown.
+        /// </summary>
+        public static IEnumerable<T> GetTrailingAppendix<T>(this IList<T> elements,
+            IList<T> otherElements)
+        {
+            var equalityComparer = EqualityComparer<T>.Default;
+
+            var otherElementsLength = otherElements.Count;
+
+            var beginningSequenceEquals = elements.Take(otherElementsLength).SequenceEqual(otherElements, equalityComparer);
+            if (!beginningSequenceEquals)
+            {
+                throw new Exception("The beginning of the elements sequence did not match the other elements sequence. The elements sequence must begin with the same elements as the other sequence.");
+            }
+
+            var output = elements.Skip(otherElementsLength);
+            return output;
+        }
+
+        /// <summary>
         /// Named with -List to allow resolution of ambiguous IList.VerifyDistinct() vs. IEnumerable.VerifyDistinct() when required.
         /// </summary>
         public static void VerifyDistinctList<T>(this IList<T> items, IEqualityComparer<T> equalityComparer)
