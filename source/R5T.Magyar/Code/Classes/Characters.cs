@@ -11,9 +11,11 @@ namespace R5T.Magyar
         public static char CloseParenthesis => ')';
         public static char Colon => ':';
         public static char Comma => ',';
+        public static char Dash => '-';
         public new static char Equals => '=';
         public static char Minus => '-';
         public static char NewLine => '\n';
+        public static char OpenAngleBrace => '<';
         public static char OpenBrace => '[';
         public static char OpenParenthesis => '(';
         public static char Period => '.';
