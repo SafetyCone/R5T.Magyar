@@ -16,6 +16,15 @@ namespace System
         public static int NotFound => IndexHelper.NegativeOne;
 
 
+        /// <summary>
+        /// Assumes a zero-based first index.
+        /// </summary>
+        public static bool IsFirstIndex(int index)
+        {
+            var output = index == IndexHelper.Zero;
+            return output;
+        }
+
         public static bool IsFirstInsertionIndex(int index)
         {
             var output = IndexHelper.FirstInsertionIndex == index;
@@ -27,6 +36,14 @@ namespace System
             var isNotFound = IndexHelper.IsNotFound(index);
 
             var output = !isNotFound;
+            return output;
+        }
+
+        public static bool IsLastIndex(
+            int index,
+            int count)
+        {
+            var output = index == (count - 1);
             return output;
         }
 
