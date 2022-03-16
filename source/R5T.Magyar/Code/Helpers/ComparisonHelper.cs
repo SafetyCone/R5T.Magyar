@@ -5,7 +5,13 @@ namespace System
 {
     public static class ComparisonHelper
     {
+        /// <summary>
+        /// Indicates that x is less than y.
+        /// </summary>
         public static int LessThan => -1;
+        /// <summary>
+        /// Indicates that x is greater than y.
+        /// </summary>
         public static int GreaterThan => 1;
         public static int EqualTo => 0;
 

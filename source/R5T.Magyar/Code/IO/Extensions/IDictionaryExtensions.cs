@@ -10,6 +10,31 @@ namespace R5T.Magyar.IO
 
     public static class IDictionaryExtensions
     {
+        public static IEnumerable<string> GetLines<T>(this IDictionary<string, T> stringsByString)
+            where T : IEnumerable<string>
+        {
+            string line;
+            
+            foreach (var key in stringsByString.Keys)
+            {
+                var strings = stringsByString[key];
+
+                line = $"{key} (Count: {strings.Count()})";
+                
+                yield return line;
+
+                foreach (var @string in strings)
+                {
+                    line = $"{Strings.Tab}{@string}";
+
+                    yield return line;
+                }
+
+                // Group separator.
+                yield return "\n***\n";
+            }
+        }
+
         public static void WriteToFile<T>(this IDictionary<string, T> stringsByString,
             string filePath,
             bool overwrite = IOHelper.DefaultOverwriteValue)

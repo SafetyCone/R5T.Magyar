@@ -7,6 +7,7 @@ namespace R5T.Magyar
     {
         public static char At => '@';
         public static char Backslash => '\\';
+        public static char CloseAngleBrace => '>';
         public static char CloseBrace => ']';
         public static char CloseParenthesis => ')';
         public static char Colon => ':';
