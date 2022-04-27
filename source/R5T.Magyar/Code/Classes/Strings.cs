@@ -43,6 +43,7 @@ namespace R5T.Magyar
         public const string Space_Const = " ";
         public static string Slash => "/";
         public static string Tab => "\t";
+        public static string Tick => "`";
         public static string Underscore => "_";
 
 #pragma warning disable IDE1006 // Naming Styles

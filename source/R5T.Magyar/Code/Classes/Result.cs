@@ -78,7 +78,7 @@ namespace R5T.Magyar
 
         public static Result<T> Failure<T>(T value)
         {
-            var output = new Result<T>(value, true);
+            var output = new Result<T>(value, false);
             return output;
         }
     }

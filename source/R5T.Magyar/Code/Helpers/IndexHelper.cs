@@ -83,5 +83,23 @@ namespace System
             var output = count;
             return output;
         }
+
+        /// <summary>
+        /// Gets the length of the list that would include the index. (Adds 1 (one) to the index.)
+        /// </summary>
+        public static int ToLength_Inclusive(int index)
+        {
+            var output = index + 1;
+            return output;
+        }
+
+        /// <summary>
+        /// Gets the length of the list that would exclude the index. (Returns the index.)
+        /// </summary>
+        public static int ToLength_Exclusive(int index)
+        {
+            var output = index;
+            return output;
+        }
     }
 }

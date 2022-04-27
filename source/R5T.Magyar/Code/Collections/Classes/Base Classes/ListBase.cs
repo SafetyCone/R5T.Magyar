@@ -5,62 +5,89 @@ using System.Collections.Generic;
 
 namespace R5T.Magyar
 {
-    public class ListBase<T> : IList<T>
+    public abstract class ListBase<T> : IList<T>
     {
-        public T this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public int Count => throw new NotImplementedException();
-
-        public bool IsReadOnly => throw new NotImplementedException();
-
-        public void Add(T item)
+        protected readonly List<T> zList;
+        public T this[int index]
         {
-            throw new NotImplementedException();
+            get => this.zList[index];
+            set => this.zList[index] = value;
+        }
+        public int Count => this.zList.Count;
+        public bool IsReadOnly => (this.zList as IList<T>).IsReadOnly;
+
+
+        private ListBase(List<T> list)
+        {
+            this.zList = list;
         }
 
-        public void Clear()
+        public ListBase()
+            : this(new List<T>())
         {
-            throw new NotImplementedException();
         }
 
-        public bool Contains(T item)
+        public ListBase(IEnumerable<T> enumerable)
+            : this(new List<T>(enumerable))
         {
-            throw new NotImplementedException();
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public ListBase(int capacity)
+            : this(new List<T>(capacity))
         {
-            throw new NotImplementedException();
+        }
+
+        public virtual void Add(T item)
+        {
+            this.zList.Add(item);
+        }
+
+        public virtual void Clear()
+        {
+            this.zList.Clear();
+        }
+
+        public virtual bool Contains(T item)
+        {
+            var output = this.zList.Contains(item);
+            return output;
+        }
+
+        public virtual void CopyTo(T[] array, int arrayIndex)
+        {
+            this.zList.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.zList.GetEnumerator();
         }
 
-        public int IndexOf(T item)
+        public virtual int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            var output = this.zList.IndexOf(item);
+            return output;
         }
 
-        public void Insert(int index, T item)
+        public virtual void Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            this.zList.Insert(index, item);
         }
 
-        public bool Remove(T item)
+        public virtual bool Remove(T item)
         {
-            throw new NotImplementedException();
+            var output = this.zList.Remove(item);
+            return output;
         }
 
-        public void RemoveAt(int index)
+        public virtual void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            this.zList.RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.zList.GetEnumerator();
         }
     }
 }

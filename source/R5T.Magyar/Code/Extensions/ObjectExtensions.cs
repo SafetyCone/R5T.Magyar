@@ -42,6 +42,24 @@ namespace R5T.Magyar.Extensions
 {
     public static class ObjectExtensions
     {
+        public static T2 Cast<T1, T2>(this T1 obj)
+            where T2 : class
+        {
+            var output = obj as T2;
+            return output;
+        }
+
+        public static T IfIsDefaultThen<T>(this T objOrDefault, T alternativeIfDefault)
+            where T : class
+        {
+            var output = objOrDefault == default
+                ? alternativeIfDefault
+                : objOrDefault
+                ;
+
+            return output;
+        }
+
         public static T[] ToArray<T>(this T item)
         {
             var output = new T[] { item };

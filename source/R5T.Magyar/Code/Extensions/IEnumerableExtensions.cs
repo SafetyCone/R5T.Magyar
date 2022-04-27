@@ -19,75 +19,6 @@ namespace R5T.Magyar
             yield return value;
         }
 
-        public static IEnumerable<T> ExceptFirst<T>(this IEnumerable<T> enumerable)
-        {
-            var output = enumerable.Skip(1);
-            return output;
-        }
-
-        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable)
-        {
-            var output = enumerable.ExceptLast(1);
-            return output;
-        }
-
-        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable, int nElements)
-        {
-            var count = enumerable.Count();
-
-            var enumerator = enumerable.GetEnumerator();
-            for (int iElement = nElements; iElement < count; iElement++) // For each except the last N.
-            {
-                enumerator.MoveNext();
-
-                yield return enumerator.Current;
-            }
-        }
-
-        public static bool AnyDuplicates<T>(this IEnumerable<T> items)
-        {
-            var anyDuplicates = items.GetDuplicates().Any();
-            return anyDuplicates;
-        }
-
-        public static IEnumerable<T> GetDuplicates<T>(this IEnumerable<T> items)
-        {
-            var output = items
-                .GroupBy(item => item)
-                .Where(group => group.Count() > 1)
-                .Select(group => group.Key)
-                ;
-
-            return output;
-        }
-
-        public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
-        {
-            var count = enumerable.Count();
-
-            var isEmpty = count < 1;
-            return isEmpty;
-        }
-
-        /// <summary>
-        /// Get the Nth-to-last element.
-        /// N starts at 1st-to-last is the last.
-        /// Problematic evaluation of the enumerable (ToArray).
-        /// </summary>
-        public static T NthToLast<T>(this IEnumerable<T> enumerable, int nth)
-        {
-            var array = enumerable.ToArray();
-
-            var secondToLast = array[array.Length - nth];
-            return secondToLast;
-        }
-
-        public static T SecondToLast<T>(this IEnumerable<T> enumerable)
-        {
-            var output = enumerable.NthToLast(2);
-            return output;
-        }
-
         public static EnumerableWrapper<T> Wrap<T>(this IEnumerable<T> enumerable)
         {
             var wrapper = EnumerableWrapper.From(enumerable);
@@ -183,7 +114,10 @@ namespace System.Collections.Generic
             var distinctEnumerable = enumerable.ToDistinct(equalityComparer);
 
             // If both the distinct and the input enumerable have the same number of elements, the input enumerable is distinct.
-            var isDistinct = distinctEnumerable.Count() == enumerable.Count();
+            var enumerableCount = enumerable.Count();
+            var distinctEnumerableCount = distinctEnumerable.Count();
+
+            var isDistinct = distinctEnumerableCount == enumerableCount;
             return isDistinct;
         }
 
@@ -427,6 +361,79 @@ namespace System.Linq
 
     public static class IEnumerableExtensions
     {
+        public static bool AnyDuplicates<T>(this IEnumerable<T> items)
+        {
+            var anyDuplicates = items.GetDuplicates().Any();
+            return anyDuplicates;
+        }
+
+        public static IEnumerable<T> GetDistinct_KeepFirst<T>(this IEnumerable<T> items, IEqualityComparer<T> equalityComparer)
+        {
+            var hash = new HashSet<T>(equalityComparer);
+            foreach (var item in items)
+            {
+                if(hash.Contains(item))
+                {
+                    continue;
+                }
+                // Else
+
+                hash.Add(item);
+
+                yield return item;
+            }
+        }
+
+        public static IEnumerable<T> GetDistinct_KeepFirst<T>(this IEnumerable<T> items)
+        {
+            var output = items.GetDistinct_KeepFirst(EqualityComparer<T>.Default);
+            return output;
+        }
+
+        public static IEnumerable<T> GetDistinct_KeepLast<T>(this IEnumerable<T> items, IEqualityComparer<T> equalityComparer)
+        {
+            var hash = new HashSet<T>(equalityComparer);
+
+            hash.AddRangeKeepLast(items);
+
+            return hash;
+        }
+
+        public static IEnumerable<T> GetDistinct_KeepLast<T>(this IEnumerable<T> items)
+        {
+            var output = items.GetDistinct_KeepLast(EqualityComparer<T>.Default);
+            return output;
+        }
+
+        /// <summary>
+        /// Chooses <see cref="GetDistinct_KeepFirst{T}(IEnumerable{T}, IEqualityComparer{T})"/> as the default.
+        /// </summary>
+        public static IEnumerable<T> GetDistinct<T>(this IEnumerable<T> items, IEqualityComparer<T> equalityComparer)
+        {
+            var output = items.GetDistinct_KeepFirst(equalityComparer);
+            return output;
+        }
+
+        /// <summary>
+        /// Chooses <see cref="GetDistinct_KeepFirst{T}(IEnumerable{T})"/> as the default.
+        /// </summary>
+        public static IEnumerable<T> GetDistinct<T>(this IEnumerable<T> items)
+        {
+            var output = items.GetDistinct_KeepFirst();
+            return output;
+        }
+
+        public static IEnumerable<T> GetDuplicates<T>(this IEnumerable<T> items)
+        {
+            var output = items
+                .GroupBy(item => item)
+                .Where(group => group.Count() > 1)
+                .Select(group => group.Key)
+                ;
+
+            return output;
+        }
+
         public static WasFound<T[]> AnyMissing<T>(this IEnumerable<T> required, IEnumerable<T> available)
         {
             var theMissing = required.Except(available).ToArray();
@@ -435,6 +442,16 @@ namespace System.Linq
 
             var output = WasFound.From(anyMissing, theMissing);
             return output;
+        }
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
+        {
+            return enumerable.Concat(appendix);
+        }
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, params T[] appendix)
+        {
+            return enumerable.Concat(appendix);
         }
 
         public static IEnumerable<T> AppendRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
@@ -449,6 +466,18 @@ namespace System.Linq
             var uniqueItemCount = items.Distinct().Count();
 
             var output = uniqueItemCount == itemCount;
+            return output;
+        }
+
+        public static IDistinctList<T> AsDistinctList<T>(this IEnumerable<T> enumerable)
+        {
+            var output = new DistinctList<T>(enumerable);
+            return output;
+        }
+
+        public static IDistinctList<T> AsDistinctList<T>(this IEnumerable<T> enumerable, IEqualityComparer<T> equalityComparer)
+        {
+            var output = new DistinctList<T>(enumerable, equalityComparer);
             return output;
         }
 
@@ -498,6 +527,31 @@ namespace System.Linq
                 ;
 
             return output;
+        }
+
+        public static IEnumerable<T> ExceptFirst<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.Skip(1);
+            return output;
+        }
+
+        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.ExceptLast(1);
+            return output;
+        }
+
+        public static IEnumerable<T> ExceptLast<T>(this IEnumerable<T> enumerable, int nElements)
+        {
+            var count = enumerable.Count();
+
+            var enumerator = enumerable.GetEnumerator();
+            for (int iElement = nElements; iElement < count; iElement++) // For each except the last N.
+            {
+                enumerator.MoveNext();
+
+                yield return enumerator.Current;
+            }
         }
 
         public static T[] FindArray<T>(this IEnumerable<T> items, Func<T, bool> predicate)
@@ -686,6 +740,41 @@ namespace System.Linq
             }
         }
 
+        public static int LastIndexOf<T>(this IEnumerable<T> enumerable, T value, IEqualityComparer<T> equalityComparer)
+        {
+            var output = enumerable.LastIndexWhere(x => equalityComparer.Equals(x, value));
+            return output;
+        }
+
+        public static int LastIndexOf<T>(this IEnumerable<T> enumerable, T value)
+        {
+            var equalityComparer = EqualityComparer<T>.Default;
+
+            var output = enumerable.LastIndexOf(value, equalityComparer);
+            return output;
+        }
+
+        public static int LastIndexWhere<T>(this IEnumerable<T> enumerable,
+            Func<T, bool> predicate)
+        {
+            var output = IndexHelper.NotFound;
+
+            var index = 0;
+            foreach (var item in enumerable)
+            {
+                var success = predicate(item);
+                if (success)
+                {
+                    output = index;
+                }
+
+                index++;
+            }
+
+            // Not found.
+            return output;
+        }
+
         public static T MaximumBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
         {
             var maximum = enumerable.MaximumBy(keySelector, null);
@@ -740,6 +829,27 @@ namespace System.Linq
             return output;
         }
 
+        public static bool HasMoreThanOne<T>(this IEnumerable<T> items)
+        {
+            var enumerator = items.GetEnumerator();
+
+            // Ignore the first element.
+            enumerator.MoveNext();
+
+            // Return whether there is a second element.
+            var output = enumerator.MoveNext();
+            return output;
+        }
+
+        /// <summary>
+        /// Quality-of-life overload for <see cref="HasMoreThanOne{T}(IEnumerable{T})"/>.
+        /// </summary>
+        public static bool Multiple<T>(this IEnumerable<T> items)
+        {
+            var output = items.HasMoreThanOne();
+            return output;
+        }
+
         /// <summary>
         /// Returns true if there are no entries.
         /// </summary>
@@ -755,6 +865,33 @@ namespace System.Linq
         public static T[] Now<T>(this IEnumerable<T> items)
         {
             var output = items.ToArray();
+            return output;
+        }
+
+        public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            var count = enumerable.Count();
+
+            var isEmpty = count < 1;
+            return isEmpty;
+        }
+
+        /// <summary>
+        /// Get the Nth-to-last element.
+        /// N starts at 1st-to-last is the last.
+        /// Problematic evaluation of the enumerable (ToArray).
+        /// </summary>
+        public static T NthToLast<T>(this IEnumerable<T> enumerable, int nth)
+        {
+            var array = enumerable.ToArray();
+
+            var secondToLast = array[array.Length - nth];
+            return secondToLast;
+        }
+
+        public static T SecondToLast<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.NthToLast(2);
             return output;
         }
 
@@ -953,12 +1090,34 @@ namespace System.Linq
             return output;
         }
 
-        public static IEnumerable<IGrouping<TKey, TElement>> WhereDuplicates<TKey, TElement>(this IEnumerable<TElement> elements, Func<TElement, TKey> keySelector)
+        public static IEnumerable<IGrouping<TKey, TElement>> WhereDuplicates<TKey, TElement>(this IEnumerable<TElement> elements,
+            Func<TElement, TKey> keySelector,
+            IEqualityComparer<TKey> equalityComparer)
         {
             var output = elements
-                .GroupBy(keySelector)
+                .GroupBy(
+                    keySelector,
+                    equalityComparer)
                 .Where(xGroup => xGroup.Count() > 1)
                 ;
+
+            return output;
+        }
+
+        public static IEnumerable<IGrouping<TKey, TElement>> WhereDuplicates<TKey, TElement>(this IEnumerable<TElement> elements,
+            Func<TElement, TKey> keySelector)
+        {
+            var output = elements.WhereDuplicates(
+                keySelector,
+                EqualityComparer<TKey>.Default);
+
+            return output;
+        }
+
+        public static IEnumerable<IGrouping<T, T>> WhereDuplicates<T>(this IEnumerable<T> elements)
+        {
+            var output = elements.WhereDuplicates(
+                x => x);
 
             return output;
         }

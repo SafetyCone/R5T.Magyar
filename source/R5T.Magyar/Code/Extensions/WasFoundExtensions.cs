@@ -18,6 +18,17 @@ namespace System
             return output;
         }
 
+        //public static bool SingleWasFound<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByValue)
+        //{
+        //    var singleOrDefault = wasFoundByValue
+        //        .Where(xPair => xPair.Value.Exists)
+        //        .SingleOrDefault();
+
+        //    var output = singleOrDefault != default;
+
+        //    return output;
+        //}
+
         public static bool AnyNotFound<TKey, TValue>(this IDictionary<TKey, WasFound<TValue>> wasFoundByValue)
         {
             var output = wasFoundByValue.Values.AnyNotFound();
@@ -62,6 +73,17 @@ namespace System
             {
                 throw new InvalidOperationException(message);
             }
+        }
+
+        public static bool IsFound<T>(this WasFound<T> wasFound)
+        {
+            return wasFound.Exists;
+        }
+
+        public static bool IsNotFound<T>(this WasFound<T> wasFound)
+        {
+            var output = !wasFound.Exists;
+            return output;
         }
 
         public static bool NotFound<T>(this WasFound<T> wasFound)
@@ -115,6 +137,24 @@ namespace System.Linq
                 .SingleOrDefault();
 
             var output = WasFound.From(selectionOrDefault);
+            return output;
+        }
+
+        public static IEnumerable<WasFound<T>> WhereFound<T>(this IEnumerable<WasFound<T>> items)
+        {
+            var output = items
+                .Where(x => x.Exists)
+                ;
+
+            return output;
+        }
+
+        public static IEnumerable<WasFound<T>> WhereNotFound<T>(this IEnumerable<WasFound<T>> items)
+        {
+            var output = items
+                .Where(x => !x.Exists)
+                ;
+
             return output;
         }
     }

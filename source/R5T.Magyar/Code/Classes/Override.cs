@@ -25,7 +25,7 @@ namespace R5T.Magyar
     }
 
 
-    public struct Override<T>
+    public class Override<T>
     {
         #region Static
 
@@ -48,14 +48,21 @@ namespace R5T.Magyar
         #endregion
 
 
-        public bool IsOverridden { get; }
-        public T Value { get; }
+        public bool IsOverridden { get; private set; }
+        public T Value { get; private set; }
 
 
         public Override(bool set, T value)
         {
             this.IsOverridden = set;
             this.Value = value;
+        }
+
+        public void SetOverride(T value)
+        {
+            this.Value = value;
+
+            this.IsOverridden = true;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -103,6 +104,17 @@ namespace System.IO
         public static Task<string[]> ReadAllLines(string filePath)
         {
             return StreamReaderHelper.ReadAllLines(filePath);
+        }
+
+        public static async Task<string[]> ReadAllLines_TrimEmpty(string filePath)
+        {
+            var lines = await StreamReaderHelper.ReadAllLines(filePath);
+
+            var output = lines
+                .Where(x => x.IsNonNullOrEmpty())
+                .Now();
+
+            return output;
         }
 
         public static async Task<string> Read(string filePath)

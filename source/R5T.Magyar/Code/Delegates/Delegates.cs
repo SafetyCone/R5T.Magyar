@@ -9,10 +9,20 @@ namespace System
 }
 
 
+namespace System.Additions
+{
+    /// <summary>
+    /// An equality comparison.
+    /// </summary>
+    public delegate bool EqualityComparison<in T>(T x, T y);
+}
+
+
 namespace System.Collections.Generic
 {
     public delegate IEnumerable<T> Selector<T>(IEnumerable<T> items);
 }
+
 
 
 namespace R5T.Magyar

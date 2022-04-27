@@ -39,6 +39,45 @@ namespace System
 }
 
 
+namespace System.Linq
+{
+    public static class BooleanExtensions
+    {
+        public static bool All(this IEnumerable<bool> booleans)
+        {
+            foreach (var boolean in booleans)
+            {
+                if(!boolean)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool AnyTrue(this IEnumerable<bool> booleans)
+        {
+            foreach (var boolean in booleans)
+            {
+                if (boolean)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool AnyTrueValues<TKey>(this IDictionary<TKey, bool> dictionary)
+        {
+            var output = dictionary.Values.AnyTrue();
+            return output;
+        }
+    }
+}
+    
+
 namespace R5T.Magyar
 {
     public static class BooleanExtensions

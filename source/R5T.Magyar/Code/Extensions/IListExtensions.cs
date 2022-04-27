@@ -11,6 +11,20 @@ namespace System
             var output = list.Count - 1;
             return output;
         }
+
+        public static int LastIndexForInsertion<T>(this IList<T> list)
+        {
+            var lastIndex = list.LastIndex();
+
+            if(IndexHelper.IsNotFound(lastIndex))
+            {
+                return IndexHelper.FirstInsertionIndex;
+            }
+            else
+            {
+                return lastIndex;
+            }
+        }
     }
 }
 

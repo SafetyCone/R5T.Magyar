@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace System
 {
+    using N8;
+
+
     public static class HashSetExtensions
     {
         /// <summary>
@@ -47,6 +50,18 @@ namespace System
             return hashSet;
         }
 
+        public static void AddRangeThrowIfDuplicate<T>(this HashSet<T> hashSet, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                var alreadyPresent = hashSet.Contains(item);
+                if(alreadyPresent)
+                {
+                    throw hashSet.GetValueAlreadyExistsException();
+                }
+            }
+        }
+
         // Exists in a new version of .NET Core: https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1.trygetvalue?redirectedfrom=MSDN&view=net-6.0#System_Collections_Generic_HashSet_1_TryGetValue__0__0__
         ///// <summary>
         ///// For use with hash sets of a type where the same identity might not correspond to the same object instance (or with hash sets using a custom equality comparer).
@@ -58,5 +73,18 @@ namespace System
 
         //    hashItem = hashSet.tryget
         //}
+    }
+}
+
+
+namespace N8
+{
+    public static class HashSetExtensions
+    {
+        public static Exception GetValueAlreadyExistsException<T>(this HashSet<T> _)
+        {
+            var output = new Exception("Value already exists. Attempted to add duplicate value.");
+            return output;
+        }
     }
 }

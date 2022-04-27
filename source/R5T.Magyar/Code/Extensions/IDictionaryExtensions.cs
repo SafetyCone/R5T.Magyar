@@ -52,6 +52,67 @@ namespace R5T.Magyar
 }
 
 
+namespace System
+{
+    public static class IDictionaryExtensions
+    {
+        public static TValue AddAndReturnValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+            TKey key,
+            TValue value)
+        {
+            dictionary.Add(key, value);
+
+            return value;
+        }
+
+        public static void AddUniqueValueByKey<TKey, TValue>(this IDictionary<TKey, HashSet<TValue>> uniqueValuesByKey,
+            TKey key,
+            TValue value)
+        {
+            var uniqueValues = uniqueValuesByKey.ContainsKey(key)
+                ? uniqueValuesByKey[key]
+                : uniqueValuesByKey.AddAndReturnValue(key, new HashSet<TValue>())
+                ;
+
+            uniqueValues.Add(value);
+        }
+
+        /// <summary>
+        /// Adds a value to the list of values corresponding to the provided key.
+        /// If the key does not exist, a new list of valies is created for it, and the value is then added to the new list.
+        /// </summary>
+        public static void AddValueByKey<TKey, TValue>(this IDictionary<TKey, List<TValue>> valuesByKey,
+            TKey key,
+            TValue value)
+        {
+            var values = valuesByKey.ContainsKey(key)
+                ? valuesByKey[key]
+                : valuesByKey.AddAndReturnValue(key, new List<TValue>())
+                ;
+
+            values.Add(value);
+        }
+
+        public static TValue AcquireValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+            TKey key,
+            Func<TValue> valueConstructor)
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                var value = dictionary[key];
+                return value;
+            }
+            else
+            {
+                var value = valueConstructor();
+
+                return dictionary.AddAndReturnValue(key, value);
+            }
+        }
+    }
+}
+
+
 namespace System.Collections.Generic
 {
     public static class IDictionaryExtensions
@@ -109,58 +170,4 @@ namespace System.Collections.Generic
 }
 
 
-namespace System
-{
-    public static class IDictionaryExtensions
-    {
-        public static TValue AddAndReturnValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
-            TKey key,
-            TValue value)
-        {
-            dictionary.Add(key, value);
 
-            return value;
-        }
-
-        public static void AddUniqueValueByKey<TKey, TValue>(this IDictionary<TKey, HashSet<TValue>> uniqueValuesByKey,
-            TKey key,
-            TValue value)
-        {
-            var uniqueValues = uniqueValuesByKey.ContainsKey(key)
-                ? uniqueValuesByKey[key]
-                : uniqueValuesByKey.AddAndReturnValue(key, new HashSet<TValue>())
-                ;
-
-            uniqueValues.Add(value);
-        }
-
-        public static void AddValueByKey<TKey, TValue>(this IDictionary<TKey, List<TValue>> valuesByKey,
-            TKey key,
-            TValue value)
-        {
-            var values = valuesByKey.ContainsKey(key)
-                ? valuesByKey[key]
-                : valuesByKey.AddAndReturnValue(key, new List<TValue>())
-                ;
-
-            values.Add(value);
-        }
-
-        public static TValue AcquireValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
-            TKey key,
-            Func<TValue> valueConstructor)
-        {
-            if(dictionary.ContainsKey(key))
-            {
-                var value = dictionary[key];
-                return value;
-            }
-            else
-            {
-                var value = valueConstructor();
-
-                return dictionary.AddAndReturnValue(key, value);
-            }
-        }
-    }
-}

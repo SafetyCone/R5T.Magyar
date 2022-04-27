@@ -90,6 +90,9 @@ namespace R5T.Magyar
             return wasFound;
         }
 
+        /// <summary>
+        /// Was found only if the array is non-null and non-empty.
+        /// </summary>
         public static WasFound<T[]> FromArray<T>(T[] result)
         {
             var exists = result is object && result.Any();
