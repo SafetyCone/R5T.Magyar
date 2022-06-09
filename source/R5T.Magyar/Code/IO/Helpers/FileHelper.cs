@@ -9,7 +9,7 @@ namespace System.IO
     public static class FileHelper
     {
         /// <summary>
-        /// Actually reads all lines. The <see cref="File.ReadLines(string)"/> method omits blank last lines!
+        /// Actually reads all lines. The <see cref="File.ReadLines(string)"/> method omits blank lines, but adding the new line character to the previous line!
         /// </summary>
         public static string[] ActuallyReadAllLines(string filePath)
         {
@@ -150,12 +150,23 @@ namespace System.IO
             }
         }
 
-        public static Task WriteAllLines(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        public static Task WriteAllLines(
+            string filePath,
+            IEnumerable<string> lines,
+            bool overwrite = IOHelper.DefaultOverwriteValue)
         {
             return StreamWriterHelper.WriteAllLines(filePath, lines, overwrite);
         }
 
-        public static void WriteAllLinesSynchronous(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
+        public static Task WriteAllLines(
+            string filePath,
+            bool overwrite = IOHelper.DefaultOverwriteValue,
+            params string[] lines)
+        {
+            return StreamWriterHelper.WriteAllLines(filePath, lines, overwrite);
+        }
+
+        public static void WriteAllLines_Synchronous(string filePath, IEnumerable<string> lines, bool overwrite = IOHelper.DefaultOverwriteValue)
         {
             StreamWriterHelper.WriteAllLinesSynchronous(filePath, lines, overwrite);
         }

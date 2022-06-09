@@ -1,3 +1,4 @@
+R5T.Magyar - .NET C# language extensions.
 R5T.Magyar - An extensions and helpers library for types in .NET Standard.
 
 Goals

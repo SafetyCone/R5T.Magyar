@@ -12,6 +12,15 @@ namespace R5T.Magyar.Xml
         /// An XML writer can be created with settings specifying to omit the XML declaration, but other settings must be set to get the desired default behavior.
         /// This method produces an XML writer that omits the declaration.
         /// </summary>
+        public static XmlWriter NewOmitDeclaration_Synchronous(Stream stream)
+        {
+            var settings = XmlWriterSettingsHelper.GetNoDeclaration_Synchronous();
+
+            var writer = XmlWriter.Create(stream, settings);
+            return writer;
+        }
+
+        /// <inheritdoc cref="NewOmitDeclaration_Synchronous(Stream)"/>
         public static XmlWriter NewOmitDeclaration(Stream stream)
         {
             var settings = XmlWriterSettingsHelper.GetNoDeclaration();
@@ -23,6 +32,15 @@ namespace R5T.Magyar.Xml
         /// <summary>
         /// Gets the standard XML writer.
         /// </summary>
+        public static XmlWriter New_Synchronous(Stream stream)
+        {
+            var settings = XmlWriterSettingsHelper.GetStandardSettings();
+
+            var writer = XmlWriter.Create(stream, settings);
+            return writer;
+        }
+
+        /// <inheritdoc cref="New_Synchronous(Stream)"/>
         public static XmlWriter New(Stream stream)
         {
             var settings = XmlWriterSettingsHelper.GetStandardSettings();

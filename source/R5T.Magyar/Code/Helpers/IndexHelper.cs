@@ -25,6 +25,15 @@ namespace System
             return output;
         }
 
+        /// <inheritdoc cref="IsFirstIndex(int)"/>
+        public static bool IsNotFirstIndex(int index)
+        {
+            var isFirstIndex = IndexHelper.IsFirstIndex(index);
+
+            var output = !isFirstIndex;
+            return output;
+        }
+
         public static bool IsFirstInsertionIndex(int index)
         {
             var output = IndexHelper.FirstInsertionIndex == index;

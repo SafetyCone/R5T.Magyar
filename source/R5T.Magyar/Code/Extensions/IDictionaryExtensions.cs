@@ -109,6 +109,20 @@ namespace System
                 return dictionary.AddAndReturnValue(key, value);
             }
         }
+
+        public static TValue ValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+            TKey key,
+            TValue defaultValue)
+        {
+            var dictionaryContainsKey = dictionary.ContainsKey(key);
+
+            var output = dictionaryContainsKey
+                ? dictionary[key]
+                : defaultValue
+                ;
+
+            return output;
+        }
     }
 }
 

@@ -34,7 +34,7 @@ namespace System.Threading.Tasks
 }
 
 
-namespace R5T.Magyar
+namespace R5T.Magyar.Extensions
 {
     using System.Threading.Tasks;
 

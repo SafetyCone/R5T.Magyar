@@ -179,11 +179,11 @@ namespace R5T.Magyar
             return (wasFound, output);
         }
 
-        public static WasFound<TDestination> Convert<TSource, TDestination>(this WasFound<TSource> wasFound, Func<TSource, TDestination> converter)
+        public static WasFound<TDestination> Convert<TSource, TDestination>(this WasFound<TSource> wasFound, Func<TSource, TDestination> converterIfFound)
         {
             if(wasFound)
             {
-                var convertedResult = converter(wasFound.Result);
+                var convertedResult = converterIfFound(wasFound.Result);
 
                 var output = WasFound.From(wasFound, convertedResult);
                 return output;

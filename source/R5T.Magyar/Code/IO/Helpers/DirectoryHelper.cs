@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 using R5T.Magyar;
 
@@ -87,6 +89,28 @@ namespace System.IO
             string searchPattern)
         {
             var output = Directory.EnumerateFiles(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
+
+            return output.AsDistinct();
+        }
+
+        public static IDistinctEnumerable<string> EnumerateChildFilePathsByRegex(
+            string directoryPath,
+            string regexPattern)
+        {
+            var output = Directory.EnumerateFiles(directoryPath, SearchPatternHelper.All, SearchOption.TopDirectoryOnly)
+                .Where(x => Regex.IsMatch(x, regexPattern))
+                ;
+
+            return output.AsDistinct();
+        }
+
+        public static IDistinctEnumerable<string> EnumerateChildFilePathsByRegexOnFileName(
+            string directoryPath,
+            string regexPattern)
+        {
+            var output = Directory.EnumerateFiles(directoryPath, SearchPatternHelper.All, SearchOption.TopDirectoryOnly)
+                .Where(x => Regex.IsMatch(new FileInfo(x).Name, regexPattern))
+                ;
 
             return output.AsDistinct();
         }

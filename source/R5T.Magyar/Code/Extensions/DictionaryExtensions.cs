@@ -74,6 +74,9 @@ namespace R5T.Magyar
 // Extensions for which referencing the Magyar library, using the Magyar namespace, and appending the extensions namespace name token is sufficient to indicate desire for use.
 namespace R5T.Magyar.Extensions
 {
+    using System.Linq;
+
+
     public static class DictionaryExtensions
     {
         public static Dictionary<TKey, TValue> ShallowClone<TKey, TValue>(this Dictionary<TKey, TValue> dictionary)

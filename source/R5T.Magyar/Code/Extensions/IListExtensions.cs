@@ -25,6 +25,24 @@ namespace System
                 return lastIndex;
             }
         }
+
+        /// <summary>
+        /// Gets one past the last index of the list to allow an element to be "inserted" at the end of the list.
+        /// </summary>
+        public static int GetIndexForInsertionAtEnd<T>(this IList<T> list)
+        {
+            // The count is the same value as last index + 1.
+            var output = list.Count;
+            return output;
+        }
+
+        /// <inheritdoc cref="GetIndexForInsertionAtEnd{T}(IList{T})"/>
+        public static int GetIndexForInsertionAtEnd<T>(this IReadOnlyCollection<T> readOnlyCollection)
+        {
+            // The count is the same value as last index + 1.
+            var output = readOnlyCollection.Count;
+            return output;
+        }
     }
 }
 
@@ -32,6 +50,15 @@ namespace System.Linq
 {
     public static class IListExtensions
     {
+        public static void EnsureHas<T>(this IList<T> list, T item)
+        {
+            var hasItem = list.Contains(item);
+            if(!hasItem)
+            {
+                list.Add(item);
+            }
+        }
+
         public static int GetIndexOfPriorAlphabeticalElement<T>(this IList<T> list, Func<T, string> keySelector, string key)
         {
             var priorAlphabeticalElementWasFound = list.GetPriorAlphabeticalElement(keySelector, key);

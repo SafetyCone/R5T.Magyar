@@ -34,33 +34,6 @@ namespace System.Collections.Generic
 
     public static class IEnumerableExtensions
     {
-        public static void For<T>(this IEnumerable<T> enumerable, Action<T, int> actionWithIndex)
-        {
-            var index = 0;
-            foreach (var item in enumerable)
-            {
-                actionWithIndex(item, index);
-
-                index++;
-            }
-        }
-
-        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
-        {
-            foreach (var item in enumerable)
-            {
-                action(item);
-            }
-        }
-
-        public static async Task ForEach<T>(this IEnumerable<T> enumerable, Func<T, Task> action)
-        {
-            foreach (var item in enumerable)
-            {
-                await action(item);
-            }
-        }
-
         /// <summary>
         /// Get all repeated elements (including all elements in each series of repeats).
         /// </summary>
@@ -504,6 +477,15 @@ namespace System.Linq
             return output;
         }
 
+        /// <summary>
+        /// Selects array as the preferred data structure for an evaluated enumerable.
+        /// </summary>
+        public static T[] Evaluate<T>(this IEnumerable<T> items)
+        {
+            var output = items.ToArray();
+            return output;
+        }
+
         public static IEnumerable<T> Except<T>(this IEnumerable<T> items, T item)
             where T : IEquatable<T>
         {
@@ -577,6 +559,47 @@ namespace System.Linq
         public static IEnumerable<T> FirstN<T>(this IEnumerable<T> enumerable, int nElements)
         {
             return enumerable.Take(nElements);
+        }
+
+        public static void For<T>(this IEnumerable<T> enumerable, Action<T, int> actionWithIndex)
+        {
+            var index = 0;
+            foreach (var item in enumerable)
+            {
+                actionWithIndex(item, index);
+
+                index++;
+            }
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var item in enumerable)
+            {
+                action(item);
+            }
+        }
+
+        /// <summary>
+        /// Counter starts at one by default (unlike index, which starts at zero by default).
+        /// </summary>
+        public static void ForEach_WithCounter<T>(this IEnumerable<T> enumerable, Action<T, int> action_WithCounter)
+        {
+            var counter = 1;
+            foreach (var item in enumerable)
+            {
+                action_WithCounter(item, counter);
+
+                counter++;
+            }
+        }
+
+        public static async Task ForEach<T>(this IEnumerable<T> enumerable, Func<T, Task> action)
+        {
+            foreach (var item in enumerable)
+            {
+                await action(item);
+            }
         }
 
         public static IEnumerable<T> FromIndex<T>(this IEnumerable<T> enumerable, int startIndexInclusive)
@@ -754,25 +777,28 @@ namespace System.Linq
             return output;
         }
 
+        /// <summary>
+        /// Returns the last index where the predicate is true, else if the predicate is not true for any of the items of the enumerable, returns <see cref="IndexHelper.NotFound"/>.
+        /// </summary>
         public static int LastIndexWhere<T>(this IEnumerable<T> enumerable,
             Func<T, bool> predicate)
         {
-            var output = IndexHelper.NotFound;
+            var index = IndexHelper.NotFound;
 
-            var index = 0;
+            var counter = 0;
             foreach (var item in enumerable)
             {
                 var success = predicate(item);
                 if (success)
                 {
-                    output = index;
+                    index = counter;
                 }
 
-                index++;
+                counter++;
             }
 
             // Not found.
-            return output;
+            return index;
         }
 
         public static T MaximumBy<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector)
@@ -868,6 +894,30 @@ namespace System.Linq
             return output;
         }
 
+        /// <summary>
+        /// Returns the first index where the predicate is true, else if the predicate is not true for any of the items of the enumerable, returns <see cref="IndexHelper.NotFound"/>.
+        /// </summary>
+        public static int IndexWhere<T>(this IEnumerable<T> enumerable,
+            Func<T, bool> predicate)
+        {
+            var index = IndexHelper.NotFound;
+
+            var counter = 0;
+            foreach (var item in enumerable)
+            {
+                var success = predicate(item);
+                if (success)
+                {
+                    return counter;
+                }
+
+                counter++;
+            }
+
+            // Not found.
+            return index;
+        }
+
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
         {
             var count = enumerable.Count();
@@ -904,6 +954,17 @@ namespace System.Linq
         public static IOrderedEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
         {
             var output = items.OrderBy(keySelector);
+            return output;
+        }
+
+        public static IEnumerable<T> OrderByDescending<T, TKey>(this IEnumerable<T> items,
+            Func<T, TKey> keySelector,
+            Comparison<TKey> comparison)
+        {
+            var output = items.OrderByDescending(
+                keySelector,
+                new ComparisonBasedComparer<TKey>(comparison));
+
             return output;
         }
 
@@ -1070,6 +1131,12 @@ namespace System.Linq
         public static IEnumerable<T> TakeFirst<T>(this IEnumerable<T> enumerable)
         {
             var output = enumerable.Take(1);
+            return output;
+        }
+
+        public static List<T> ToList_HandleDefault<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable?.ToList() ?? new List<T>();
             return output;
         }
 
