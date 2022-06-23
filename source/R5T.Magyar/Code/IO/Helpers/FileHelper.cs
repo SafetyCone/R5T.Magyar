@@ -9,7 +9,7 @@ namespace System.IO
     public static class FileHelper
     {
         /// <summary>
-        /// Actually reads all lines. The <see cref="File.ReadLines(string)"/> method omits blank lines, but adding the new line character to the previous line!
+        /// Actually reads all lines. The <see cref="File.ReadLines(string)"/> method omits blank lines, instead adding the new line character to the previous line!
         /// </summary>
         public static string[] ActuallyReadAllLines(string filePath)
         {
