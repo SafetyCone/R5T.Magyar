@@ -35,7 +35,7 @@ namespace R5T.Magyar
 
         public static ItemCount<T>[] GetDuplicatesNow<T>(this CountOfItems<T> count)
         {
-            var output = count.GetDuplicates().Now();
+            var output = count.GetDuplicates().Now_OLD();
             return output;
         }
     }

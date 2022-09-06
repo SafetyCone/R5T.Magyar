@@ -17,7 +17,7 @@ namespace R5T.Magyar.Results
 
         public static MultipleActionResult From(IEnumerable<ActionResult> actionResults)
         {
-            var actionResultsArray = actionResults.Now();
+            var actionResultsArray = actionResults.ToArray();
 
             var output = MultipleActionResult.From(actionResultsArray);
             return output;
@@ -75,7 +75,7 @@ namespace R5T.Magyar.Results
 
         public static MultipleActionResult From_UnsuccessfulOnlyOrSingleSuccess(IEnumerable<ActionResult> actionResults)
         {
-            var actionResultsArray = actionResults.Now();
+            var actionResultsArray = actionResults.ToArray();
 
             var output = MultipleActionResult.From_UnsuccessfulOnlyOrSingleSuccess(actionResultsArray);
             return output;
@@ -85,7 +85,7 @@ namespace R5T.Magyar.Results
         {
             var unsuccessful = actionResults
                 .Where(x => x.Result.Unsuccessful())
-                .Now();
+                .ToArray();
 
             var anyUnsuccessful = unsuccessful.Any();
 
@@ -124,7 +124,7 @@ namespace R5T.Magyar.Results
         }
 
         public MultipleActionResult(IEnumerable<ActionResult> actionResults)
-            : this(actionResults.Now())
+            : this(actionResults.ToArray())
         {
         }
     }

@@ -112,7 +112,7 @@ namespace System.IO
 
             var output = lines
                 .Where(x => x.IsNonNullOrEmpty())
-                .Now();
+                .ToArray();
 
             return output;
         }

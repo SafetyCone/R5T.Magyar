@@ -104,6 +104,17 @@ namespace System
         }
 
         public static T ResultOrIfNotFound<T>(this WasFound<T> wasFound,
+            T orIfNotFound)
+        {
+            var output = wasFound
+                ? wasFound.Result
+                : orIfNotFound
+                ;
+
+            return output;
+        }
+
+        public static T ResultOrIfNotFound<T>(this WasFound<T> wasFound,
             Func<T> orIfNotFound)
         {
             var output = wasFound

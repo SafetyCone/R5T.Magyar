@@ -456,7 +456,7 @@ namespace System.Linq
 
         public static bool ContainsAll<T>(this IEnumerable<T> superset, IEnumerable<T> subset)
         {
-            var output = subset.Except(superset).None();
+            var output = subset.Except(superset).None_OLD();
             return output;
         }
 
@@ -656,7 +656,7 @@ namespace System.Linq
         public static IEnumerable<T> GetTrailingAppendix<T>(this IEnumerable<T> elements,
             IEnumerable<T> otherElements)
         {
-            var output = elements.Now().GetTrailingAppendix(otherElements.Now());
+            var output = elements.Now_OLD().GetTrailingAppendix(otherElements.Now_OLD());
             return output;
         }
 
@@ -879,7 +879,7 @@ namespace System.Linq
         /// <summary>
         /// Returns true if there are no entries.
         /// </summary>
-        public static bool None<T>(this IEnumerable<T> enumerable)
+        public static bool None_OLD<T>(this IEnumerable<T> enumerable)
         {
             var output = !enumerable.Any();
             return output;
@@ -888,7 +888,7 @@ namespace System.Linq
         /// <summary>
         /// Selects array as the preferred data structure for an evaluated enumerable.
         /// </summary>
-        public static T[] Now<T>(this IEnumerable<T> items)
+        public static T[] Now_OLD<T>(this IEnumerable<T> items)
         {
             var output = items.ToArray();
             return output;
