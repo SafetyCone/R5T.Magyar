@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using R5T.Magyar;
+
 
 namespace System.Collections.Generic
 {

@@ -137,23 +137,6 @@ namespace System.Linq
             return output;
         }
 
-        public static IEnumerable<string> OrderAlphabetically(this IEnumerable<string> items)
-        {
-            var output = items.OrderBy(x => x);
-            return output;
-        }
-
-        public static IEnumerable<string> OrderAlphabetically_OnlyIfDebug(this IEnumerable<string> items)
-        {
-            var output = items
-#if DEBUG
-                .OrderAlphabetically()
-#endif
-                ;
-
-            return output;
-        }
-
         public static IEnumerable<string> Trim(this IEnumerable<string> strings)
         {
             var output = strings.Select(x => x.Trim());
@@ -174,6 +157,23 @@ namespace R5T.Magyar
             string ending)
         {
             var output = @string.Substring(0, @string.Length - ending.Length);
+            return output;
+        }
+
+        public static IEnumerable<string> OrderAlphabetically(this IEnumerable<string> items)
+        {
+            var output = items.OrderBy(x => x);
+            return output;
+        }
+
+        public static IEnumerable<string> OrderAlphabetically_OnlyIfDebug(this IEnumerable<string> items)
+        {
+            var output = items
+#if DEBUG
+                .OrderAlphabetically()
+#endif
+                ;
+
             return output;
         }
     }

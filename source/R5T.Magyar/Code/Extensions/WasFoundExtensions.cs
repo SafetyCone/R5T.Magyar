@@ -216,7 +216,7 @@ namespace R5T.Magyar
                 return default;
             }
 
-            var output = wasFound.Convert<TSource, TDestination>(GetDefaultDestination);
+            var output = wasFound.Convert(GetDefaultDestination);
             return output;
         }
 

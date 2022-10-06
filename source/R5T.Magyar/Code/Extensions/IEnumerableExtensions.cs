@@ -9,6 +9,21 @@ namespace R5T.Magyar
 {
     public static class IEnumerableExtensions
     {
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
+        {
+            return enumerable.Concat(appendix);
+        }
+
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, params T[] appendix)
+        {
+            return enumerable.Concat(appendix);
+        }
+
+        public static IEnumerable<T> AppendRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
+        {
+            return enumerable.Concat(appendix);
+        }
+
         public static IEnumerable<T> Append2<T>(this IEnumerable<T> enumerable, T value)
         {
             foreach (var item in enumerable)
@@ -17,6 +32,42 @@ namespace R5T.Magyar
             }
 
             yield return value;
+        }
+
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (var item in enumerable)
+            {
+                action(item);
+            }
+        }
+
+        public static async Task ForEach<T>(this IEnumerable<T> enumerable, Func<T, Task> action)
+        {
+            foreach (var item in enumerable)
+            {
+                await action(item);
+            }
+        }
+
+        /// <summary>
+        /// Counter starts at one by default (unlike index, which starts at zero by default).
+        /// </summary>
+        public static void ForEach_WithCounter<T>(this IEnumerable<T> enumerable, Action<T, int> action_WithCounter)
+        {
+            var counter = 1;
+            foreach (var item in enumerable)
+            {
+                action_WithCounter(item, counter);
+
+                counter++;
+            }
+        }
+
+        public static IOrderedEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
+        {
+            var output = items.OrderBy(keySelector);
+            return output;
         }
 
         public static EnumerableWrapper<T> Wrap<T>(this IEnumerable<T> enumerable)
@@ -417,21 +468,6 @@ namespace System.Linq
             return output;
         }
 
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
-        {
-            return enumerable.Concat(appendix);
-        }
-
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, params T[] appendix)
-        {
-            return enumerable.Concat(appendix);
-        }
-
-        public static IEnumerable<T> AppendRange<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
-        {
-            return enumerable.Concat(appendix);
-        }
-
         public static bool AreUnique<T>(this IEnumerable<T> items)
         {
             var itemCount = items.Count();
@@ -569,36 +605,6 @@ namespace System.Linq
                 actionWithIndex(item, index);
 
                 index++;
-            }
-        }
-
-        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
-        {
-            foreach (var item in enumerable)
-            {
-                action(item);
-            }
-        }
-
-        /// <summary>
-        /// Counter starts at one by default (unlike index, which starts at zero by default).
-        /// </summary>
-        public static void ForEach_WithCounter<T>(this IEnumerable<T> enumerable, Action<T, int> action_WithCounter)
-        {
-            var counter = 1;
-            foreach (var item in enumerable)
-            {
-                action_WithCounter(item, counter);
-
-                counter++;
-            }
-        }
-
-        public static async Task ForEach<T>(this IEnumerable<T> enumerable, Func<T, Task> action)
-        {
-            foreach (var item in enumerable)
-            {
-                await action(item);
             }
         }
 
@@ -948,12 +954,6 @@ namespace System.Linq
         public static bool OnlyOne<T>(this IEnumerable<T> items)
         {
             var output = items.Count() == 1;
-            return output;
-        }
-
-        public static IOrderedEnumerable<T> OrderAlphabetically<T>(this IEnumerable<T> items, Func<T, string> keySelector)
-        {
-            var output = items.OrderBy(keySelector);
             return output;
         }
 
