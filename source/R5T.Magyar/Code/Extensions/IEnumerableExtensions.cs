@@ -70,6 +70,12 @@ namespace R5T.Magyar
             return output;
         }
 
+        public static IEnumerable<T> SkipFirst<T>(this IEnumerable<T> enumerable)
+        {
+            var output = enumerable.Skip(1);
+            return output;
+        }
+
         public static EnumerableWrapper<T> Wrap<T>(this IEnumerable<T> enumerable)
         {
             var wrapper = EnumerableWrapper.From(enumerable);
@@ -1120,12 +1126,6 @@ namespace System.Linq
             }
             
             return setEquals;
-        }
-
-        public static IEnumerable<T> SkipFirst<T>(this IEnumerable<T> enumerable)
-        {
-            var output = enumerable.Skip(1);
-            return output;
         }
 
         public static IEnumerable<T> TakeFirst<T>(this IEnumerable<T> enumerable)
