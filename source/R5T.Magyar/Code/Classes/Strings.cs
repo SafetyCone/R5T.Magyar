@@ -26,7 +26,7 @@ namespace R5T.Magyar
         public static string GreaterThan => ">";
         public static string Hash => "#";
         public static string LessThan => "<"; // No other name for it: https://english.stackexchange.com/questions/255262/what-is-the-name-of-the-symbols-and
-        public static string Null => null;
+        public const string Null = null;
         public static string NewLineForWindows => "\r\n";
         public static string NewLineForNonWindows => "\n";
         public static string OpenBrace => "{";
