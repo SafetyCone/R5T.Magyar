@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.6.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R5T.Magyar.Construction", "R5T.Magyar.Construction\R5T.Magyar.Construction.csproj", "{CBFF1B4F-831D-40C5-9670-986B3E6F546A}"
 EndProject
@@ -28,6 +28,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R5T.Magyar.T002.X000", "R5T.Magyar.T002.X000\R5T.Magyar.T002.X000.csproj", "{EB19D24B-6B2D-47E9-BF01-F4CA0BF342D5}"
 EndProject
 Global
+	GlobalSection(NestedProjects) = preSolution
+		{2328A95E-DC51-4795-9DAE-F38F2A1CC96B} = {F2505D43-7E93-452E-A69C-14FFB028FF8D}
+		{618C4486-9124-460A-9923-368382CD7958} = {F2505D43-7E93-452E-A69C-14FFB028FF8D}
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -172,10 +176,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{2328A95E-DC51-4795-9DAE-F38F2A1CC96B} = {F2505D43-7E93-452E-A69C-14FFB028FF8D}
-		{618C4486-9124-460A-9923-368382CD7958} = {F2505D43-7E93-452E-A69C-14FFB028FF8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F7E26C0-0B28-46AB-8B5D-1D2962BEDFF5}
