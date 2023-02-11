@@ -7,6 +7,8 @@ namespace R5T.Magyar.IO
 {
     using System.IO;
 
+    using R5T.Magyar.Extensions;
+
 
     public static class IDictionaryExtensions
     {

@@ -14,6 +14,11 @@ namespace R5T.Magyar
             return enumerable.Concat(appendix);
         }
 
+        public static IEnumerable<T> Append2<T>(this IEnumerable<T> enumerable, IEnumerable<T> appendix)
+        {
+            return enumerable.Concat(appendix);
+        }
+
         public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, params T[] appendix)
         {
             return enumerable.Concat(appendix);

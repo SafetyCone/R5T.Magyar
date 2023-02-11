@@ -108,6 +108,9 @@ namespace System
 
 namespace System.Linq
 {
+    using R5T.Magyar.Extensions;
+
+
     public static class StringExtensions
     {
         public static IEnumerable<string> ExceptEmpty(this IEnumerable<string> items)
@@ -146,9 +149,9 @@ namespace System.Linq
 }
 
 
-namespace R5T.Magyar
+namespace R5T.Magyar.Extensions
 {
-    public static class StringExtensions
+    public static partial class StringExtensions
     {
         /// <summary>
         /// Returns the string, without the ending.
@@ -161,6 +164,12 @@ namespace R5T.Magyar
         }
 
         public static IEnumerable<string> OrderAlphabetically(this IEnumerable<string> items)
+        {
+            var output = items.OrderBy(x => x);
+            return output;
+        }
+
+        public static IEnumerable<string> OrderAlphabetically2(this IEnumerable<string> items)
         {
             var output = items.OrderBy(x => x);
             return output;
@@ -182,7 +191,7 @@ namespace R5T.Magyar
 
 namespace R5T.Magyar.Extensions
 {
-    public static class StringExtensions
+    public static partial class StringExtensions
     {
         public static string Prefix(this string @string, char prefix)
         {
