@@ -89,7 +89,7 @@ namespace R5T.Magyar.IO
 
                 while (!reader.EndOfStream)
                 {
-                    var strings = stringsByString.AcquireValue(key, () => new List<string>());
+                    var strings = stringsByString.AcquireValue_OLD(key, () => new List<string>());
 
                     while(!reader.EndOfStream)
                     {

@@ -93,7 +93,7 @@ namespace System
             values.Add(value);
         }
 
-        public static TValue AcquireValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
+        public static TValue AcquireValue_OLD<TKey, TValue>(this IDictionary<TKey, TValue> dictionary,
             TKey key,
             Func<TValue> valueConstructor)
         {

@@ -33,7 +33,8 @@ namespace R5T.Magyar
         public static string OpenBracket => "[";
         public static string OpenParenthesis => "(";
         public static string PairedParentheses => "()";
-        public static string Percent => "%";
+        public const string Percent_Constant = "%";
+        public static string Percent => Strings.Percent_Constant;
         public static string Period => ".";
         public const string Period_Const = ".";
         public static string Pipe => "|";
