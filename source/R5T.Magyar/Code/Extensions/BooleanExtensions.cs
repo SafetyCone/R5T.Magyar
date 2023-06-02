@@ -29,9 +29,11 @@ namespace System
 
         public static string YesOrNo(this bool value)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             var output = value
                 ? Words.Yes
                 : Words.No;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             return output;
         }

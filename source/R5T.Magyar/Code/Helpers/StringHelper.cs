@@ -104,9 +104,12 @@ namespace System
         {
             var isNull = value is null;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             var output = isNull
                 ? $"<{Words.Null}>"
-                : value;
+                : value
+                ;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             return output;
         }
